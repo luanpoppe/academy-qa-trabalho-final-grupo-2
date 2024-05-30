@@ -1,21 +1,17 @@
 import { faker } from "@faker-js/faker";
-const user = {
-    name: faker.person.firstName() + " teste",
-    email: faker.internet.email(),
-    password: faker.internet.password(8)
-}
+const apiUrl = "https://raromdb-3c39614e42d4.herokuapp.com"
 
 Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
     const userObject = {
-        name: user.name,
-        email: user.email,
-        password: user.password,
+        name: faker.person.firstName() + " teste",
+        email: faker.internet.email(),
+        password: faker.internet.password(8),
         ...newUser
     }
 
     return cy.request({
         method: "POST",
-        url: "/api/users",
+        url: apiUrl + "/api/users",
         body: userObject,
         failOnStatusCode: !acceptFail
     }).then((response) => {
@@ -31,7 +27,7 @@ Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
 Cypress.Commands.add("updateUser", function (userId, newUserInfos, token) {
     return cy.request({
         method: "PUT",
-        url: "/api/users/" + userId,
+        url: apiUrl + "/api/users/" + userId,
         body: {
             name: newUserInfos.name,
             password: newUserInfos.password
@@ -44,14 +40,13 @@ Cypress.Commands.add("updateUser", function (userId, newUserInfos, token) {
 
 Cypress.Commands.add("login", function (userInfo) {
     const userObject = {
-        email: user.email,
-        password: user.password,
-        ...userInfo
+        email: userInfo.email,
+        password: userInfo.password,
     }
 
     return cy.request({
         method: 'POST',
-        url: '/api/auth/login',
+        url: apiUrl + '/api/auth/login',
         body: userObject,
     })
 })
@@ -59,7 +54,7 @@ Cypress.Commands.add("login", function (userInfo) {
 Cypress.Commands.add("promoteAdmin", function (token) {
     return cy.request({
         method: 'PATCH',
-        url: '/api/users/admin',
+        url: apiUrl + '/api/users/admin',
         auth: {
             bearer: token
         },
@@ -69,7 +64,7 @@ Cypress.Commands.add("promoteAdmin", function (token) {
 Cypress.Commands.add("promoteCritic", function (token) {
     return cy.request({
         method: 'PATCH',
-        url: '/api/users/apply',
+        url: apiUrl + '/api/users/apply',
         auth: {
             bearer: token
         },
@@ -89,7 +84,7 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
         return cy.promoteAdmin(token).then(function (resposta) {
             return cy.request({
                 method: "DELETE",
-                url: "/api/users/" + userObject.id,
+                url: apiUrl + "/api/users/" + userObject.id,
                 auth: {
                     bearer: token,
                 },
@@ -101,7 +96,7 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
 Cypress.Commands.add("listAllUsers", function (token) {
     return cy.request({
         method: 'GET',
-        url: '/api/users',
+        url: apiUrl + '/api/users',
         auth: {
             bearer: token
         },
@@ -111,7 +106,7 @@ Cypress.Commands.add("listAllUsers", function (token) {
 Cypress.Commands.add("getUser", function (userId, token = null) {
     return cy.request({
         method: 'GET',
-        url: '/api/users/' + userId,
+        url: apiUrl + '/api/users/' + userId,
         auth: {
             bearer: token
         },
@@ -121,7 +116,7 @@ Cypress.Commands.add("getUser", function (userId, token = null) {
 Cypress.Commands.add("reviewMovie", function (movieInfo, token) {
     return cy.request({
         method: 'POST',
-        url: '/api/users/review',
+        url: apiUrl + '/api/users/review',
         body: {
             movieId: movieInfo.id || movieInfo.movieId,
             score: movieInfo.score,
@@ -136,7 +131,7 @@ Cypress.Commands.add("reviewMovie", function (movieInfo, token) {
 Cypress.Commands.add("getUserReviews", function (token) {
     return cy.request({
         method: 'GET',
-        url: '/api/users/review/all',
+        url: apiUrl + '/api/users/review/all',
         auth: {
             bearer: token
         },

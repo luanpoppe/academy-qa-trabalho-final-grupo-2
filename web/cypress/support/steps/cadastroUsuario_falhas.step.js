@@ -11,6 +11,10 @@ import CadastroPage from "../pages/cadastroPage";
 const regisUser = new CadastroPage();
 var senha = fakerPT_BR.internet.password(8);
 
+Before(function () {
+  cy.createUser()
+})
+
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
 });
