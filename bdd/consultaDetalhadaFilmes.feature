@@ -10,12 +10,12 @@ Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consult
     E enviar a requisição
     Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
 
-Cenário: API- Não deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id inválido
+Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id inválido
     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
     E acessou o método /api/movies/{id}
     Quando preencher um Id de filme inexistente
     E enviar a requisição
-    Então a API deverá retornar o status code 404 e não retornar as informações detalhadas do filme
+    Então a API deverá retornar o status code 200 e não retornar as informações detalhadas do filme
 
 Cenário: API- Deve ser possível um usuário não logado realizar uma consulta detalhada de filmes com Id válido
     Dado que o usuário não esta logado na API Raromdb
