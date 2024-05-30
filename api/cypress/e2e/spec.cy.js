@@ -4,13 +4,20 @@
 describe('template spec', () => {
   let user
 
+  after(function () {
+    cy.deleteUser(user)
+  })
+
   it('passes', () => {
     // cy.visit('https://example.cypress.io')
-    cy.createUser({ password: "senhaa" }).then(function (resposta) {
-      console.log('resposta', resposta)
+    cy.createUser({ password: "ksjdfasd" }, true).then(function (resposta) {
+      cy.log('resposta', resposta)
       user = resposta
-      cy.deleteUser(user)
     })
-
+  })
+  it('descricao_do_teste', function () {
+    cy.login(user).then(function (resposta) {
+      cy.log('resposta', resposta)
+    })
   })
 })

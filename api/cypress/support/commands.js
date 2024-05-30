@@ -5,7 +5,7 @@ const user = {
     password: faker.internet.password(8)
 }
 
-Cypress.Commands.add("createUser", function (newUser) {
+Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
     const userObject = {
         name: user.name,
         email: user.email,
@@ -17,12 +17,18 @@ Cypress.Commands.add("createUser", function (newUser) {
         method: "POST",
         url: "/api/users",
         body: userObject,
+        failOnStatusCode: !acceptFail
     }).then((response) => {
-        const userCreated = {
-            ...userObject,
-            ...response.body
+        if (response.status == 201) {
+            const userCreated = {
+                ...userObject,
+                ...response.body,
+                response: response
+            }
+            return userCreated
+        } else {
+            return response
         }
-        return userCreated
     });
 });
 
@@ -60,3 +66,17 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
         })
     });
 });
+
+Cypress.Commands.add("login", function (userInfo) {
+    const userObject = {
+        email: user.email,
+        password: user.password,
+        ...userInfo
+    }
+
+    return cy.request({
+        method: 'POST',
+        url: '/api/auth/login',
+        body: userObject,
+    })
+})
