@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 Cypress.Commands.add("getAllMovies", function () {
     return cy.request({
         method: 'GET',
@@ -75,4 +77,34 @@ Cypress.Commands.add("promoteToAdminAndDeleteMovie", function (userInfo, movieId
                 }
             })
         })
+})
+
+Cypress.Commands.add("createUserAndMovie", function (movieInfo) {
+    let token
+    let userCreated
+    return cy.createUser({ email: faker.internet.email() }).then(function (resposta) {
+        userCreated = resposta
+        return cy.login(resposta).then(function (resposta) {
+            token = resposta.body.accessToken
+            return cy.promoteAdmin(token).then(function () {
+                return cy.request({
+                    method: 'POST',
+                    url: '/api/movies',
+                    body: {
+                        title: movieInfo.title,
+                        genre: movieInfo.genre,
+                        description: movieInfo.description,
+                        durationInMinutes: movieInfo.durationInMinutes,
+                        releaseYear: movieInfo.releaseYear
+                    },
+                    auth: {
+                        bearer: token
+                    },
+                }).then(function () {
+                    cy.deleteUser(userCreated)
+                })
+            })
+        })
+    })
+
 })
