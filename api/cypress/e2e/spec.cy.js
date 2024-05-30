@@ -48,15 +48,19 @@ describe('template spec', () => {
       // cy.updateUser(user.id, { name: "novoNome", password: "novaSenha" }, token)
       // user.password = "novaSenha"
 
-      cy.updateMovie(15, {
+      const updateMovieInfo = {
         description: "descrição novaaa",
         durationInMinutes: 60,
         genre: "comédia",
         releaseYear: 1997,
         title: "Filme QALabs"
-      }, token)
+      }
+
+      cy.updateMovie(15, updateMovieInfo, token)
 
       cy.searchMovie("qaLabs")
+
+      cy.createUserAndMovie(updateMovieInfo)
     })
 
   })

@@ -12,23 +12,19 @@ Funcionalidade: Registrar Usuário
     
     Cenário: Não deve ser possível registrar usuário sem informar um nome
         Quando preenche todos os campos do formulário exceto o campo nome
-        Então o site exibe alerta no formulário "alerta"
+        E acessar a funcionalidade salvar
+        Então o site exibe alerta de nome no formulário "Informe o nome."
     
     Cenário: Não deve ser possível registrar usuário sem informar o e-mail
-        Quando informar um nome
-        E não informar um e-mail válido
-        E informar uma senha válida
-        E confirmar a senha anterior informada
-        E acessa a funcionalidade salvar
-        Então deve alertar no formulário a obrigatoriedade do email
+        Quando preenche todos os campos do formulário exceto o campo email
+        E acessar a funcionalidade salvar
+        Então o site exibe alerta de email no formulário
     
     Cenário: Não deve ser possível registrar usuário sem informar senha
-        Quando informar um nome
-        E não informar um e-mail válido
-        E informar não informar senha
-        E acessa a funcionalidade salvar
-        Então deve alertar no formulário a obrigatoriedade da senha
+        Quando preenche todos os campos do formulário exceto o campo senha
+        E acessar a funcionalidade salvar
+        Então o site exibe alerta de senha no formulário
     
-    Cenário: Não deve ser possível registrar usuário com nome com mais de 100 caracteres
+    # Cenário: Não deve ser possível registrar usuário com nome com mais de 100 caracteres
 
 
