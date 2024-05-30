@@ -9,38 +9,45 @@ var idMovie;
 
 describe("Consulta detalhada de filmes", function () {
   before(function () {
-    cy.createUser({ password: "123456" }).then(function (resposta) {
-      console.log("resposta", resposta);
-      user = resposta;
-      cy.login(user).then((response) => {
-        token = response.body.accessToken;
-        cy.promoteAdmin(token).then(() => {
-          cy.fixture("requests/bodyNewMovie.json")
-            .then((movieBody) => {
-              cy.createMovie(movieBody, token);
-            })
-            .then((response) => {
-              idMovie = response.body.id;
-            });
+    cy.fixture("requests/bodyNewMovie.json")
+      .then((movieBody) => {
+        cy.createUserAndMovie(movieBody);
+      })
+      .then((response) => {
+        idMovie = response.movie.body.id;
+        user = response.user;
+      });
+  });
+  after(function () {
+    cy.log(user);
+    cy.promoteToAdminAndDeleteMovie(
+      { email: user.email, password: user.password },
+      idMovie
+    );
+  });
+
+  describe("Usuario comum", function () {
+    before(function () {
+      cy.createUser().then(function (resposta) {
+        userComum = resposta;
+      });
+    });
+    after(function () {
+      cy.deleteUser(userComum);
+    });
+    it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido", function () {
+      cy.login(user).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + idMovie,
+          auth: {
+            bearer: response.body.accessToken,
+          },
+        }).then(function () {
+          expect(response.status).to.equal(200);
         });
       });
     });
-  });
-  after(function () {
-    cy.deleteMovie(idMovie, token);
-    cy.deleteUser(user);
-  });
-  it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido", function () {
-    cy.createUser({ email: faker.internet.email(), password: "123456" }).then(
-      function (resposta) {
-        console.log("resposta", resposta);
-        userComum = resposta;
-        cy.getMovie(idMovie).then(function (response) {
-          expect(response.status).to.equal(200);
-        });
-        cy.deleteUser(userComum);
-      }
-    );
   });
 
   it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id inválido", function () {
@@ -60,5 +67,9 @@ describe("Consulta detalhada de filmes", function () {
     cy.getMovie(idMovie).then(function (response) {
       expect(response.status).to.equal(200);
     });
-  });
+  }); // describe("Usuario crítico", function () {});
+
+  // describe("Usuario administrador", function () {});
+
+  // describe("Usuario não logado", function () {});
 });
