@@ -2,14 +2,11 @@
 
 declare namespace Cypress {
     interface Chainable<Subject> {
-        /**
-         * Login description
-        */
-        createUser(newUser: {
+        createUser(newUser?: {
             name: string
             email: string
             password: string
-        }, acceptFail: boolean): Chainable<any>
+        }, acceptFail?: boolean): Chainable<any>
 
         updateUser(userId: number, newUserInfos: {
             name: string,
@@ -52,6 +49,14 @@ declare namespace Cypress {
             durationInMinutes: number
             releaseYear: number
         }, token: string): Chainable<any>
+
+        createUserAndMovie(movieInfo: {
+            title: string
+            genre: string
+            description: string
+            durationInMinutes: number
+            releaseYear: number
+        }): Chainable<any>
 
         updateMovie(movieId: number, movieInfo: {
             title: string
