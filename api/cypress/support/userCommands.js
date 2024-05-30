@@ -19,17 +19,27 @@ Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
         body: userObject,
         failOnStatusCode: !acceptFail
     }).then((response) => {
-        if (response.status == 201) {
-            const userCreated = {
-                ...userObject,
-                ...response.body,
-                response: response
-            }
-            return userCreated
-        } else {
-            return response
+        const userCreated = {
+            ...userObject,
+            ...response.body,
+            response: response
         }
+        return userCreated
     });
+});
+
+Cypress.Commands.add("updateUser", function (userId, newUserInfos, token) {
+    return cy.request({
+        method: "PUT",
+        url: "/api/users/" + userId,
+        body: {
+            name: newUserInfos.name,
+            password: newUserInfos.password
+        },
+        auth: {
+            bearer: token
+        }
+    })
 });
 
 Cypress.Commands.add("login", function (userInfo) {
@@ -76,8 +86,8 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
 
     return cy.login(userObject).then((responseLogar) => {
         token = responseLogar.body.accessToken;
-        cy.promoteAdmin(token).then(function (resposta) {
-            cy.request({
+        return cy.promoteAdmin(token).then(function (resposta) {
+            return cy.request({
                 method: "DELETE",
                 url: "/api/users/" + userObject.id,
                 auth: {
