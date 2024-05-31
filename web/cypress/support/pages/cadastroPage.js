@@ -5,6 +5,7 @@ export default class CadastroPage {
   inputConfirmarSenha = "[placeholder='Confirmar senha']";
 
   buttonCadastrar = ".account-save-button";
+  buttonOk = "";
   erroFormulario = ".input-error";
   erroCadastro = ".error-message";
 

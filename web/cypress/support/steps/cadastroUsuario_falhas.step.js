@@ -69,22 +69,25 @@ When("preenche nome com mais de 100 caracteres", function () {
   regisUser.typeNome(nomeCaractere);
 });
 
-When("preencher todos os campos restante do formulário", function () {
-  regisUser.typeEmail(email);
-  regisUser.typeSenha(senha);
-  regisUser.typeConfSenha(senha);
-});
+When(
+  "preencher todos os campos restante do formulário com dados válidos",
+  function () {
+    regisUser.typeEmail(email);
+    regisUser.typeSenha(senha);
+    regisUser.typeConfSenha(senha);
+  }
+);
 
 //usar comands pra pegar um usuario ja cadastrado
 When(
-  "preenche todos os campos do formulário utilizando um email ja cadastrado",
+  "preenche todos os campos do formulário e utiliza um email ja cadastrado",
   function () {}
 );
 
 When("preenche todos os campos dos formulários", function () {
   regisUser.typeNome(nome);
   regisUser.typeEmail(email);
-  regisUser.typeSenha(senha);
+  regisUser.typeSenha("123456");
 });
 
 When(
@@ -92,6 +95,50 @@ When(
   function (senhaConf) {
     cy.get(regisUser.inputConfirmarSenha).type(senhaConf);
   }
+);
+
+When(
+  "preenche todos os campos dos formulários e utiliza senha menor que 6 digitos {string} {string}",
+  function (mensagem) {
+    regisUser.typeNome(nome);
+    regisUser.typeEmail(email);
+    regisUser.typeSenha(mensagem);
+    regisUser.typeConfSenha(mensagem);
+  }
+);
+
+When(
+  "preenche todos os campos dos formulários e utiliza senha maior que 12 digitos {string} {string}",
+  function (mensagem) {
+    regisUser.typeNome(nome);
+    regisUser.typeEmail(email);
+    regisUser.typeSenha(mensagem);
+    regisUser.typeConfSenha(mensagem);
+  }
+);
+
+When(
+  "preenche todos os campos dos formulários e utiliza email inválido {string}",
+  function (mensagem) {
+    regisUser.typeNome(nome);
+    regisUser.typeEmail(mensagem);
+    regisUser.typeSenha(senha);
+    regisUser.typeConfSenha(senha);
+  }
+);
+
+When(
+  "preenche o campo nome com mais de cinco espaços sem caracteres",
+  function () {
+    regisUser.typeNome("     ");
+  }
+);
+
+When("realiza o cadastro de usuário com sucesso", function () {});
+
+When(
+  "acessa funcionalidade salvar com os dados do usuario recém cadastrado preenchido no formulário",
+  function () {}
 );
 
 Then("deve alertar no formulário os campos obrigatórios", function () {
@@ -127,16 +174,6 @@ Then(
   }
 );
 
-//interceptar pra verificar se o status retornado é 409
-Then(
-  "a operação de registro não poderá ser concluída alertando que o e-mail ja está cadastrado",
-  function () {
-    cy.get(regisUser.erroCadastro).contains(
-      "E-mail já cadastrado. Utilize outro e-mail"
-    );
-  }
-);
-
 Then(
   "a operação de registro não poderá ser concluida com alerta no formulario {string}",
   function (alerta) {
@@ -150,3 +187,15 @@ Then(
     cy.get(regisUser.erroFormulario).contains(alerta);
   }
 );
+
+//interceptar pra verificar se o status retornado é 409
+Then(
+  "a operação de registro não poderá ser concluída alertando que o e-mail ja está cadastrado",
+  function () {
+    cy.get(regisUser.erroCadastro).contains(
+      "E-mail já cadastrado. Utilize outro e-mail"
+    );
+  }
+);
+
+Then("o botão OK deve retornar para o formulário", function () {});
