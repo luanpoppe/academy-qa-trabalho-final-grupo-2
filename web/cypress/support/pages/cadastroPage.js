@@ -7,7 +7,7 @@ export default class CadastroPage {
   buttonCadastrar = ".account-save-button";
   buttonOk = "";
   erroFormulario = ".input-error";
-  erroCadastro = ".error-message";
+  mensagemCadastro = ".error-message";
 
   typeNome(nome) {
     cy.get(this.inputNome).type(nome);
