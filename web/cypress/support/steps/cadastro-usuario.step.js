@@ -33,10 +33,7 @@ When(
 );
 
 When("acessar a funcionalidade salvar", function () {
-  cy.intercept(
-    "POST",
-    "https://raromdb-3c39614e42d4.herokuapp.com/api/users"
-  ).as("post");
+  cy.intercept("POST", "/api/users").as("post");
   regisUser.clickCadastrar();
 });
 
@@ -53,6 +50,10 @@ When(
   }
 );
 
+When("concluir o cadastro de usuário com sucesso", function () {
+  regisUser.registrarUsuario();
+});
+
 Then("o usuario deve ser registrado com sucesso", function () {
   cy.wait("@post").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(201);
@@ -68,4 +69,24 @@ Then("o usuario deve ser registrado com conta do tipo comum", function () {
     type = intercept.response.body.type;
     cy.wrap(type).should("eq", 0);
   });
+});
+
+Then(
+  "deve retornar para o formulário de cadastro clicando no botão OK",
+  function () {
+    regisUser.clickOK();
+
+    cy.get(regisUser.campoForms).eq(0).should("be.visible");
+    cy.get(regisUser.campoForms).eq(1).should("be.visible");
+    cy.get(regisUser.campoForms).eq(2).should("be.visible");
+    cy.get(regisUser.campoForms).eq(3).should("be.visible");
+  }
+);
+
+Then("o usuário deve está automaticamente logado no site", function () {
+  regisUser.clickOK();
+  cy.wait("@auth").then(function (intercept) {
+    expect(intercept.response.statusCode).to.equal(200);
+  });
+  cy.get(regisUser.clickPerfil).contains("Perfil");
 });

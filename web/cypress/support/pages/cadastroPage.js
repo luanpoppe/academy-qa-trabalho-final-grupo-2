@@ -12,6 +12,8 @@ export default class CadastroPage {
   mensagemCadastro = ".error-message";
   campoForms = ".profile-input";
 
+  clickPerfil = ".movies-page-link";
+
   typeNome(nome) {
     cy.get(this.inputNome).type(nome);
   }
@@ -46,6 +48,10 @@ export default class CadastroPage {
     cy.get(this.inputSenha).type(senha);
     cy.get(this.inputConfirmarSenha).type(senha);
     cy.get(this.buttonCadastrar).click();
-    cy.get(this.buttonOk).click();
+    cy.intercept(
+      "POST",
+      "https://raromdb-3c39614e42d4.herokuapp.com/api/auth/login"
+    ).as("auth");
+    // cy.get(this.buttonOk).click();
   }
 }

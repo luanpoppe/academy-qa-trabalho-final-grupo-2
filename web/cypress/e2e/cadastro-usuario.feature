@@ -24,12 +24,12 @@ Funcionalidade: Registrar Usuário
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com conta do tipo comum
     
-    # Cenário: Deve ser possível retornar para o formulário após confirmar a mensagem de cadastro com sucesso
-    #   Quando concluir o cadastro de usuário com sucesso
-    #   Então deve retornar para o formulário de cadastro clicando no botão OK
+    Cenário: Deve ser possível retornar para o formulário após confirmar a mensagem de cadastro com sucesso
+      Quando concluir o cadastro de usuário com sucesso
+      Então deve retornar para o formulário de cadastro clicando no botão OK
 
-    # Cenário: Deve ser possível está automaticamente logado após registro
-    #   Quando concluir o cadastro de usuário com sucesso
-    #   Então o usuário deve está automaticamente logado no site
+    Cenário: Deve ser possível está automaticamente logado após registro
+      Quando concluir o cadastro de usuário com sucesso
+      Então o usuário deve está automaticamente logado no site
 
 
