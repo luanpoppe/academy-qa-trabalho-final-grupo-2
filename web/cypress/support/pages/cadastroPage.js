@@ -5,7 +5,9 @@ export default class CadastroPage {
   inputConfirmarSenha = "[placeholder='Confirmar senha']";
 
   buttonCadastrar = ".account-save-button";
+  buttonOk = "";
   erroFormulario = ".input-error";
+  mensagemCadastro = ".error-message";
 
   typeNome(nome) {
     cy.get(this.inputNome).type(nome);
