@@ -121,3 +121,20 @@ Cypress.Commands.add("createUserAndMovie", function (movieInfo) {
       });
     });
 });
+Cypress.Commands.add(
+  "reviewMovie",
+  function (movieId, scoreMovie, reviewText, token) {
+    return cy.request({
+      method: "POST",
+      url: apiUrl + "/api/users/review",
+      body: {
+        movieId: movieId,
+        score: scoreMovie,
+        reviewText: reviewText,
+      },
+      auth: {
+        bearer: token,
+      },
+    });
+  }
+);
