@@ -83,7 +83,55 @@ Funcionalidade: Criação de Filmes
         Quando tentar adicionar um novo filme sem uma duração
         Então o cadastro não deve ser realizado
 
+    Cenário: Não deve ser possível criar um filme com uma duração sem ser um número
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma duração que não seja um número
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com uma duração que seja um número decimal
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma duração que que seja um número decimal
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com uma duração que seja 0
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma duração que que seja 0
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com uma duração que seja negativa
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma duração que que seja negativa
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com uma duração que seja maior do que 720 horas
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma duração que que seja maior do que 720 horas
+        Então o cadastro não deve ser realizado
+
     Cenário: Não deve ser possível criar um filme sem um ano de lançamento
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme sem um ano de lançamento
         Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com um ano de lançamento sem ser um número
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um ano de lançamento que não seja um número
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com um ano de lançamento que seja um número decimal
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um ano de lançamento que que seja um número decimal
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com um ano de lançamento que seja menor que que 1895
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um ano de lançamento que que seja menor que que 1895
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com um ano de lançamento que seja maior do que o ano atual
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um ano de lançamento que que seja maior do que o ano atual
+        Então o cadastro não deve ser realizado
+
+
+    # Cenário: Deve ser possível adicionar dois filmes com as exatas mesmas informações

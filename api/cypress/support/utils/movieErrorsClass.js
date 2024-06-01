@@ -46,7 +46,7 @@ export class MovieErrors {
     ]
 
     releaseYearErrors = {
-        releaseYearMaxNumber: "releaseYear must not be greater than 2024",
+        releaseYearMaxNumber: `releaseYear must not be greater than ${new Date().getFullYear()}`,
         releaseYearMinNumber: "releaseYear must not be less than 1895",
         releaseYearMustBeInteger: "releaseYear must be an integer number",
         releaseYearMustBeNumber: "releaseYear must be a number conforming to the specified constraints",
