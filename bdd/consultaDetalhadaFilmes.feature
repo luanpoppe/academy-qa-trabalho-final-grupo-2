@@ -3,75 +3,61 @@
 Funcionalidade: Consulta detalhada de filmes
 
 
-Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido
-    Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
+# Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme existente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
 
-Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id inválido
-    Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme inexistente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e não retornar as informações detalhadas do filme
+# Cenário: API- Não deve retornar dados do filme quando um usuário do tipo comum realizar uma consulta detalhada de filmes com Id inválido
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme inexistente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e não retorna as informações detalhadas do filme
 
-Cenário: API- Deve ser possível um usuário não logado realizar uma consulta detalhada de filmes com Id válido
-    Dado que o usuário não esta logado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
+# Cenário: API- Deve ser possível um usuário não logado realizar uma consulta detalhada de filmes com Id válido
+#     Dado que o usuário não esta logado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme existente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
 
-Cenário: API- Deve ser possível um usuário do tipo crítico realizar uma consulta detalhada de filmes com Id válido
-    Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
+# Cenário: API- Não deve retornar dados do filme quando um usuário não logado realizar uma consulta detalhada de filmes com Id inválido
+#     Dado que o usuário não esta logado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme inexistente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e não retorna as informações detalhadas do filme
 
-Cenário: API- Deve ser possível um usuário do tipo administrador realizar uma consulta detalhada de filmes com Id válido
-    Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
+# Cenário: API- Deve ser possível um usuário do tipo crítico realizar uma consulta detalhada de filmes com Id válido
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme existente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
 
-Cenário: API- Deve ser possível retornar o Id do filme ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o Id do filme
+# Cenário: API- Não deve retornar dados do filme quando um usuário do tipo crítico realizar uma consulta detalhada de filmes com Id inválido
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme inexistente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e não retorna as informações detalhadas do filme
 
-Cenário: API- Deve ser possível retornar o título do filme ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o título do filme
+# Cenário: API- Deve ser possível um usuário do tipo administrador realizar uma consulta detalhada de filmes com Id válido
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme existente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar as informações detalhadas do filme
 
-Cenário: API- Deve ser possível retornar a descrição do filme ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar a descrição do filme
-
-Cenário: API- Deve ser possível retornar o genêro do filme ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o genêro do filme
-
-Cenário: API- Deve ser possível retornar o ano de lançamento do filme ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o ano de lançamento do filme
+# Cenário: API- Não deve retornar dados do filme quando um usuário do tipo administrador realizar uma consulta detalhada de filmes com Id inválido
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher um Id de filme inexistente
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e não retorna as informações detalhadas do filme
 
 Cenário: API- Deve ser possível retornar o link da imagem de capa do filme ao realizar uma consulta detalhada de filmes
     Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
@@ -80,20 +66,6 @@ Cenário: API- Deve ser possível retornar o link da imagem de capa do filme ao 
     E enviar a requisição
     Então a API deverá retornar o status code 200 e retornar o o link da imagem de capa do filme
 
-Cenário: API- Deve ser possível retornar totalizador da média das avaliações realizadas por usuários comuns e admins ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o totalizador da média das avaliações de audiência realizadas
-
-Cenário: API- Deve ser possível retornar totalizador das avaliações realizadas por usuários críticos ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o totalizador da média das avaliações críticas realizadas
-
 Cenário: API- Deve ser possível avaliar um filme ao realizar uma consulta detalhada de filmes
     Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
     E acessou o método /api/movies/{id}
@@ -101,12 +73,12 @@ Cenário: API- Deve ser possível avaliar um filme ao realizar uma consulta deta
     E enviar a requisição
     Então a API deverá retornar o status code 200 e uma opção para realizar avaliação
 
-Cenário: API- Deve ser possível retornar todas as avaliações realizadas no filme ao consultá-lo detalhadamente
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
+Cenário: API- Deve ser possível um usuário do tipo comum retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+    Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
     E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
+    Quando preencher o Id de um filme com avaliações
     E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar todas as avaliações realizadas no filme
+    Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme
 
 Cenário: API- Deve ser possível retornar a data e hora das avaliações realizadas no filme ao consultá-lo detalhadamente
     Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
