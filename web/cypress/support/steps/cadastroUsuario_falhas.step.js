@@ -145,6 +145,7 @@ When(
 
 When("realiza o cadastro de usuário com sucesso", function () {
   regisUser.registrarUsuario();
+  regisUser.clickOK();
 });
 
 When(

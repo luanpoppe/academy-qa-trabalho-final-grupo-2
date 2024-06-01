@@ -48,10 +48,7 @@ export default class CadastroPage {
     cy.get(this.inputSenha).type(senha);
     cy.get(this.inputConfirmarSenha).type(senha);
     cy.get(this.buttonCadastrar).click();
-    cy.intercept(
-      "POST",
-      "https://raromdb-3c39614e42d4.herokuapp.com/api/auth/login"
-    ).as("auth");
+    cy.intercept("POST", "/api/auth/login").as("auth");
     // cy.get(this.buttonOk).click();
   }
 }
