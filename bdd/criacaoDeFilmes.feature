@@ -38,11 +38,6 @@ Funcionalidade: Criação de Filmes
         Quando tentar adicionar um novo filme com um título contendo 101 caracteres
         Então o cadastro não deve ser realizado
 
-    Cenário: Não deve ser possível criar um filme com um título contendo 101 caracteres
-        Dado que um usuário é administrador
-        Quando tentar adicionar um novo filme com um título contendo 101 caracteres
-        Então o cadastro não deve ser realizado
-
     Cenário: Não deve ser possível criar um filme sem um gênero
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme sem um gênero
@@ -52,10 +47,35 @@ Funcionalidade: Criação de Filmes
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme com um gênero vazio
         Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com um gênero sendo um número
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um gênero sendo um número
+        Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com um gênero contendo 101 caracteres
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um gênero contendo 101 caracteres
+        Então o cadastro não deve ser realizado
 
     Cenário: Não deve ser possível criar um filme sem uma descrição
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme sem uma descrição
+        Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com uma descrição vazia
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma descrição vazia
+        Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com uma descrição sendo um número
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma descrição sendo um número
+        Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível criar um filme com uma descrição contendo 501 caracteres
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma descrição contendo 501 caracteres
         Então o cadastro não deve ser realizado
 
     Cenário: Não deve ser possível criar um filme sem uma duração

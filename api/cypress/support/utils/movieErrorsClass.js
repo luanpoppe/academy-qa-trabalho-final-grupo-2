@@ -22,7 +22,9 @@ export class MovieErrors {
     descriptionErrors = {
         descriptionMustBeLonger: "description must be longer than or equal to 1 characters",
         descriptionMustBeString: "description must be a string",
-        descriptionMustNotBeEmpty: "description should not be empty"
+        descriptionMustNotBeEmpty: "description should not be empty",
+        descriptionMustBeShortherAndLonger: "description must be longer than or equal to 1 and shorter than or equal to 500 characters",
+        descriptionMustBeShorter: "description must be shorter than or equal to 500 characters",
     }
 
     allDescriptionErrors = [this.descriptionErrors.descriptionMustBeLonger, this.descriptionErrors.descriptionMustBeString, this.descriptionErrors.descriptionMustNotBeEmpty]

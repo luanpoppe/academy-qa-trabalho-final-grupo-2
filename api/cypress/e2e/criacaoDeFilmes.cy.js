@@ -264,10 +264,6 @@ describe('Criação de Filmes', function () {
           temporaryMovie.genre += "a"
         }
 
-        cy.log('temporaryMovie.genre', temporaryMovie.genre)
-        cy.log('temporaryMovie.genre', temporaryMovie.genre.length)
-
-
         cy.request({
           method: "POST",
           url: "/api/movies",
@@ -284,32 +280,101 @@ describe('Criação de Filmes', function () {
       })
     })
 
+    describe('Casos de falha da descrição do filme', function () {
+      it('Não deve ser possível criar um filme sem uma descrição', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: null
+        }
 
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(3)
+          cy.wrap(movieErrors.allDescriptionErrors).each(function (error) {
+            expect(resposta.body.message).to.deep.include(error)
+          })
+        })
+      })
 
+      it('Não deve ser possível criar um filme com uma descrição vazia', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: ""
+        }
 
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(2)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeLonger)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustNotBeEmpty)
+        })
+      })
 
-    it('Não deve ser possível criar um filme sem uma descrição', function () {
-      const temporaryMovie = {
-        ...movie,
-        description: null
-      }
+      it('Não deve ser possível criar um filme com a descrição sendo um número', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: 1234
+        }
 
-      cy.request({
-        method: "POST",
-        url: "/api/movies",
-        body: temporaryMovie,
-        auth: {
-          bearer: token
-        },
-        failOnStatusCode: false
-      }).then(function (resposta) {
-        expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.have.length(3)
-        cy.wrap(movieErrors.allDescriptionErrors).each(function (error) {
-          expect(resposta.body.message).to.deep.include(error)
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(2)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeShortherAndLonger)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeString)
+        })
+      })
+
+      it('Não deve ser possível criar um filme com uma descrição contendo 501 caracteres', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: "a"
+        }
+
+        while (temporaryMovie.description.length < 501) {
+          temporaryMovie.description += "a"
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(1)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeShorter)
         })
       })
     })
+
+
 
     it('Não deve ser possível criar um filme sem uma duração', function () {
       const temporaryMovie = {
