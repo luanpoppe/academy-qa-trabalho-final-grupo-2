@@ -6,6 +6,12 @@ Funcionalidade: Evolução para perfil administrador
     Contexto: Acessar a API Raromdb 
         Dado que o usuário acessou o site da Api Raromdb
 
+    Cenário: Não deve ser possível evoluir usuário para perfil Administrador sem realizar Login
+        E se cadastrou no sistema 
+        E não realizou Login
+        Quando acessar a funcionalidade "Promote User to Admin"
+        Então não deve ser possível evoluir usuário para perfil Administrador
+
     Cenário: Deve ser possível evoluir usuário Comum para perfil Administrador com sucesso
         E se cadastrou no sistema 
         E realizou Login
@@ -19,10 +25,6 @@ Funcionalidade: Evolução para perfil administrador
         Quando acessar a funcionalidade "Promote User to Admin"
         Então o perfil do usuário deve se tornar Administrador
 
-    Cenário: Não deve ser possível evoluir usuário para perfil Administrador sem realizar Login
-        E se cadastrou no sistema 
-        E não realizou Login
-        Quando acessar a funcionalidade "Promote User to Admin"
-        Então não deve ser possível evoluir usuário para perfil Administrador
+
 
    
