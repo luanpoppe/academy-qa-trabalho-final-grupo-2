@@ -121,6 +121,7 @@ Cypress.Commands.add("createUserAndMovie", function (movieInfo) {
       });
     });
 });
+
 Cypress.Commands.add(
   "reviewMovie",
   function (movieId, scoreMovie, reviewText, token) {

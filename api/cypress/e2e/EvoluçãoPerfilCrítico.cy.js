@@ -13,7 +13,7 @@ describe('Evolução para perfil crítico', function () {
 
     afterEach(function () {
         cy.deleteUser(usuarioCriado);
-      })
+    })
 
     it('Não deve ser possível evoluir usuário para perfil crítico sem realizar Login', function () {
         cy.request({
