@@ -6,6 +6,12 @@ Funcionalidade: Evolução para perfil crítico
     Contexto: Acessar a API Raromdb 
         Dado que o usuário acessou o site da Api Raromdb
 
+    Cenário: Não deve ser possível evoluir usuário para perfil crítico sem realizar Login
+        E se cadastrou no sistema 
+        E não realizou Login
+        Quando acessar a funcionalidade "Promote User to critic"
+        Então não deve ser possível evoluir usuário para perfil crítico
+
     Cenário: Deve ser possível evoluir usuário Comum para perfil crítico com sucesso
         E se cadastrou no sistema 
         E realizou Login
@@ -19,10 +25,5 @@ Funcionalidade: Evolução para perfil crítico
         Quando acessar a funcionalidade "Promote User to critic"
         Então o perfil do usuário deve se tornar crítico
 
-    Cenário: Não deve ser possível evoluir usuário para perfil crítico sem realizar Login
-        E se cadastrou no sistema 
-        E não realizou Login
-        Quando acessar a funcionalidade "Promote User to critic"
-        Então não deve ser possível evoluir usuário para perfil crítico
 
     

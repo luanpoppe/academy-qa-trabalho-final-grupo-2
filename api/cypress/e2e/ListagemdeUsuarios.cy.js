@@ -8,14 +8,28 @@ describe('Consulta geral de Usuários', function () {
   beforeEach(function () {
     cy.createUser().then((newUser) => {
       usuarioCriado = newUser;
-  
-      cy.login(usuarioCriado).then((login) => {
-        token = login.body.accessToken
-      });
+     
+    });
+  });
+
+  it('Não deve ser possível realizar a consulta de todos os usuários cadastrados, sem efetuar login', function () {
+    cy.request({
+      method: 'GET',
+      url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users',
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.be.eq('Access denied.');
+      expect(response.body.error).to.be.eq('Unauthorized');
     });
   });
 
   it('Não deve ser possível realizar a consulta de todos os usuários cadastrados sendo um usuário Comum', function () {
+
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+    });
+
     cy.request({
       method: 'GET',
       url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users',
@@ -28,6 +42,10 @@ describe('Consulta geral de Usuários', function () {
   });
 
   it('Não deve ser possível realizar a consulta de todos os usuários cadastrados sendo um usuário Crítico', function () {
+
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+    });
 
     cy.promoteCritic(token).then(function () {
       cy.request({
@@ -43,6 +61,10 @@ describe('Consulta geral de Usuários', function () {
   });
 
   it('Deve ser possível realizar a consulta de todos os usuários cadastrados sendo um usuário Administrador', function () {
+
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+    });
 
     cy.promoteAdmin(token);
 

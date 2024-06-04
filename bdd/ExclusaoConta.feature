@@ -6,19 +6,23 @@ Funcionalidade: Exclusão da conta
     Contexto: Acessar a API Raromdb 
         Dado que o usuário acessou o site da Api Raromdb
 
-    Cenário: Não deve ser possível excluir sua conta ou a de outro usuário, sendo um usuário com perfil Comum 
+    Cenário: Não deve ser possível realizar exclusão de uma conta, sem efetuar login 
+        Quando acessar a funcionalidade "Delete User"
+        Então não deve ser possível excluir a conta de um usuário
+
+    Cenário: Não deve ser possível realizar exclusão de uma conta, sendo um usuário com perfil Comum 
         E realizou Login
         E é um usuário com perfil Comum
         Quando acessar a funcionalidade "Delete User"
         Então não deve ser possível excluir a conta de um usuário
 
-    Cenário: Não deve ser possível excluir sua conta ou a de outro usuário, sendo um usuário com perfil Crítico 
+    Cenário: Não deve ser possível realizar exclusão de uma conta, sendo um usuário com perfil Crítico 
         E realizou Login
         E é um usuário com perfil Crítico
         Quando acessar a funcionalidade "Delete User"
         Então não deve ser possível excluir a conta de um usuário
 
-    Cenário: Deve ser possível excluir sua conta ou a de outro usuário, sendo um usuário com perfil Administrador
+    Cenário: Deve ser possível realizar exclusão de uma conta, sendo um usuário com perfil Administrador
         E realizou Login
         E é um usuário com perfil Administrador
         Quando acessar a funcionalidade "Delete User"

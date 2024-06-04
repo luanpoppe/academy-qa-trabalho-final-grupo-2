@@ -6,6 +6,10 @@ Funcionalidade: Listagem
     Contexto: Acessar a API Raromdb 
         Dado que o usuário acessou o site da Api Raromdb
 
+    Cenário: Não deve ser possível realizar a consulta de todos os usuários cadastrados, sem efetuar login
+        Quando acessar a funcionalidade "List Users"
+        Então não deve ser possível acessar a lista de usuários
+    
     Cenário: Não deve ser possível realizar a consulta de todos os usuários cadastrados, sendo um usuário Comum 
         E realizou Login
         E é um usuário com perfil Comum
