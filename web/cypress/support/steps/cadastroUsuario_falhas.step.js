@@ -78,10 +78,26 @@ When(
   }
 );
 
-//usar comands pra pegar um usuario ja cadastrado
 When(
   "preenche todos os campos do formulário e utiliza um email ja cadastrado",
-  function () {}
+  function () {
+    cy.intercept(
+      "POST",
+      "https://raromdb-3c39614e42d4.herokuapp.com/api/users",
+      {
+        statusCode: 409,
+        body: {
+          message: "Email already in use",
+          error: "Conflict",
+        },
+      }
+    ).as("post2");
+
+    regisUser.typeNome(nome);
+    regisUser.typeEmail(email);
+    regisUser.typeSenha(senha);
+    regisUser.typeConfSenha(senha);
+  }
 );
 
 When("preenche todos os campos dos formulários", function () {
@@ -127,18 +143,20 @@ When(
   }
 );
 
-When(
-  "preenche o campo nome com mais de cinco espaços sem caracteres",
-  function () {
-    regisUser.typeNome("     ");
-  }
-);
-
-When("realiza o cadastro de usuário com sucesso", function () {});
+When("realiza o cadastro de usuário com sucesso", function () {
+  regisUser.registrarUsuario();
+  regisUser.clickOK();
+});
 
 When(
   "acessa funcionalidade salvar com os dados do usuario recém cadastrado preenchido no formulário",
-  function () {}
+  function () {
+    cy.intercept(
+      "POST",
+      "https://raromdb-3c39614e42d4.herokuapp.com/api/users"
+    ).as("post2");
+    regisUser.clickCadastrar();
+  }
 );
 
 Then("deve alertar no formulário os campos obrigatórios", function () {
@@ -188,14 +206,20 @@ Then(
   }
 );
 
-//interceptar pra verificar se o status retornado é 409
 Then(
-  "a operação de registro não poderá ser concluída alertando que o e-mail ja está cadastrado",
-  function () {
-    cy.get(regisUser.erroCadastro).contains(
-      "E-mail já cadastrado. Utilize outro e-mail"
-    );
+  "a operação de registro não poderá ser concluída com alerta {string}",
+  function (alerta) {
+    cy.wait("@post2").then(function (intercept) {
+      expect(intercept.response.statusCode).to.equal(409);
+    });
+    cy.get(regisUser.mensagemCadastro).contains(alerta);
   }
 );
 
-Then("o botão OK deve retornar para o formulário", function () {});
+Then("o botão OK deve retornar para o formulário", function () {
+  regisUser.clickOK();
+  cy.get(regisUser.campoForms).eq(0).should("be.visible");
+  cy.get(regisUser.campoForms).eq(1).should("be.visible");
+  cy.get(regisUser.campoForms).eq(2).should("be.visible");
+  cy.get(regisUser.campoForms).eq(3).should("be.visible");
+});

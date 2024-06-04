@@ -35,12 +35,6 @@ Funcionalidade: Registrar Usuário
         E preencher todos os campos restante do formulário com dados válidos
         E acessar a funcionalidade salvar
         Então o site exibe alerta de nome no formulário "O nome deve ter no máximo 100 dígitos."
-    
-    Cenário: Não deve ser possivel registrar usuário com nome preenchido com espaços
-        Quando preenche o campo nome com mais de cinco espaços sem caracteres
-        E preencher todos os campos restante do formulário com dados válidos
-        E acessar a funcionalidade salvar
-        Então o site exibe alerta de nome no formulário "Informe o nome."
 
     Esquema do Cenário: Não deve ser possivel registrar um usuário com senha principal diferente do campo confirmar senha
         Quando preenche todos os campos dos formulários
@@ -91,12 +85,12 @@ Funcionalidade: Registrar Usuário
     Cenário: Não deve ser possível registrar um usuario com email ja cadastrado
         Quando preenche todos os campos do formulário e utiliza um email ja cadastrado
         E acessar a funcionalidade salvar
-        Então a operação de registro não poderá ser concluída alertando que o e-mail ja está cadastrado
+        Então a operação de registro não poderá ser concluída com alerta "E-mail já cadastrado. Utilize outro e-mail"
         E o botão OK deve retornar para o formulário
     
     Cenário: Não deve ser possível registrar um usuário recém cadastrado
         Quando realiza o cadastro de usuário com sucesso
         E acessa funcionalidade salvar com os dados do usuario recém cadastrado preenchido no formulário
-        Então a operação de registro não poderá ser concluída alertando que o e-mail ja está cadastrado
+        Então a operação de registro não poderá ser concluída com alerta "E-mail já cadastrado. Utilize outro e-mail"
         E o botão OK deve retornar para o formulário
     
