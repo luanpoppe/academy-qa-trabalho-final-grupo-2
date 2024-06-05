@@ -6,6 +6,7 @@ describe("Cenários de testes de criação de usuário", function () {
   let password = fakerPT_BR.internet.password(6);
   let id;
   let token;
+  let usuarioCriado;
 
   describe("Cenários de testes de criação de usuário com falhas", function () {
     email = fakerPT_BR.internet.email();
@@ -189,12 +190,12 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário preenchendo campo 'name' diferente de string", () => {
+    it.only("Não deve ser possível cadastrar usuário preenchendo campo 'name' diferente de string", () => {
       cy.request({
         method: "POST",
         url: "/api/users/",
         body: {
-          name: 1234567,
+          name: 123456,
           email: email,
           password: password,
         },
@@ -233,7 +234,18 @@ describe("Cenários de testes de criação de usuário", function () {
   });
 
   describe("Cenários de teste de criação de usuário com sucesso", function () {
-    email = fakerPT_BR.internet.email();
+    beforeEach(() => {
+      email = fakerPT_BR.internet.email().toLowerCase();
+    });
+
+    afterEach(() => {
+      cy.deleteUser({
+        email: email,
+        id: id,
+        password: password,
+      });
+    });
+
     it("Deve ser possível criar usuários com dados válidos", function () {
       cy.request({
         method: "POST",
@@ -245,18 +257,18 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
-        // expect(resposta.body).to.deep.include({
-        //   name: name,
-        //   email: email, //teste quebrando pois a api converte letra maiuscula em minuscula
-        // });
+        expect(resposta.body).to.deep.include({
+          name: name,
+          email: email,
+        });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
         expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
       });
     });
 
     it("Deve ser possivel criar usuário com nome de 100 caracteres", function () {
-      email = fakerPT_BR.internet.email();
       let nomeCaractere = "";
       for (let i = 0; i < 100; i++) {
         nomeCaractere += "C";
@@ -277,6 +289,54 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
         expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possivel criar usuário com nome de 99 caracteres", function () {
+      let nomeCaractere = "";
+      for (let i = 0; i < 99; i++) {
+        nomeCaractere += "C";
+      }
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: nomeCaractere,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.include({
+          email: email,
+          name: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        });
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body.type).to.be.equal(0);
+        expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possivel criar usuário com nome de 1 caractere", function () {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: "C",
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.include({
+          name: "C",
+        });
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body.type).to.be.equal(0);
+        expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
       });
     });
   });

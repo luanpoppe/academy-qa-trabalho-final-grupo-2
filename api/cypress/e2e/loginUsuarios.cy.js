@@ -17,8 +17,9 @@ describe("Login de cadastros de usuários", () => {
     });
   });
 
-  //deletar usuario criado
-  afterEach(() => {});
+  afterEach(() => {
+    cy.deleteUser(usuarioCriado);
+  });
 
   describe("Cenários de falhas de autenticação do usuário", function () {
     it("Não deve ser possível usuário autenticar-se sem informar email", () => {
@@ -73,6 +74,7 @@ describe("Login de cadastros de usuários", () => {
       }).then((resposta) => {
         expect(resposta.status).to.equal(200);
         expect(resposta.body.accessToken).to.be.a("string");
+        token = resposta.body.accessToken;
       });
     });
   });
