@@ -122,6 +122,54 @@ describe("Consulta detalhada de filmes", function () {
           });
         });
     });
+    it("Deve ser possível um usuário do tipo comum retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            5,
+            "são realmente muito velozes e mega furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.audienceScore).to.equal(5);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo comum retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            5,
+            "são realmente muito velozes e mega furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.criticScore).to.equal(0);
+          });
+        });
+    });
   });
   describe("Usuario crítico", function () {
     before(function () {
@@ -211,6 +259,44 @@ describe("Consulta detalhada de filmes", function () {
               userCriado.name
             );
             expect(response.body.reviews[0].user.type).to.equal(2);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo crítico retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(idMovie, 1, "não são velozes nem furiosos", token);
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.audienceScore).to.equal(0);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo crítico retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(idMovie, 1, "não são velozes nem furiosos", token);
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.criticScore).to.equal(1);
           });
         });
     });
@@ -317,6 +403,54 @@ describe("Consulta detalhada de filmes", function () {
           });
         });
     });
+    it("Deve ser possível um usuário do tipo administrador retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            4,
+            "são realmente muito velozes, mas pouco furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.audienceScore).to.equal(4);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo administrador retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(userCriado)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            4,
+            "são realmente muito velozes, mas pouco furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+            auth: {
+              bearer: token,
+            },
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.criticScore).to.equal(0);
+          });
+        });
+    });
   });
 
   describe("Usuario não logado", function () {
@@ -386,6 +520,48 @@ describe("Consulta detalhada de filmes", function () {
             expect(response.body.reviews[0].user.id).to.equal(user.id);
             expect(response.body.reviews[0].user.name).to.equal(user.name);
             expect(response.body.reviews[0].user.type).to.equal(1);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo não logado retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(user)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            2,
+            "são pouco velozes e pouco furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.audienceScore).to.equal(2);
+          });
+        });
+    });
+    it("Deve ser possível um usuário do tipo não logado retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente", function () {
+      cy.login(user)
+        .then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            2,
+            "são pouco velozes e pouco furiosos",
+            token
+          );
+        })
+        .then(function () {
+          cy.request({
+            method: "GET",
+            url: "/api/movies/" + idMovie,
+          }).then(function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.criticScore).to.equal(0);
           });
         });
     });

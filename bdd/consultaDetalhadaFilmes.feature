@@ -127,21 +127,53 @@ Cenário: API- Deve ser possível avaliar um filme ao realizar uma consulta deta
 #     E enviar a requisição
 #     Então a API deverá retornar o status code 200 e retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme
 
-Cenário: API- Deve ser possível retornar o totalizador das avaliações realizadas por usuários comuns e admins ao realizar uma consulta detalhada de filmes
-    Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher o Id de um filme com avaliações
-    Então deverá retornar o totalizador da média das avaliações da audiência realizadas do filme selecionado
+# Cenário: API- Deve ser possível um usuário do tipo comum retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da audiência realizadas no filme selecionado
 
-Cenário: API- Deve ser possível retornar totalizador das avaliações realizadas por usuários críticos ao realizar uma consulta detalhada de filmes
-    Dado que o usuário de qualquer tipo acessou a tela de consulta de filmes no Frontend Raromdb
-    Quando inserir um Id válido na url
-    Então deverá retornar o totalizador da média das avaliações da crítica realizadas do filme selecionado
+# Cenário: API- Deve ser possível um usuário do tipo crítico retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da audiência realizadas no filme selecionado
 
+# Cenário: API- Deve ser possível um usuário do tipo administrador retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da audiência realizadas no filme selecionado
 
+# Cenário: API- Deve ser possível um usuário do tipo não logado retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo não logado esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da audiência realizadas no filme selecionado    
 
+# Cenário: API- Deve ser possível um usuário do tipo comum retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da crítica realizadas no filme selecionado   
 
+#  Cenário: API- Deve ser possível um usuário do tipo crítico retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da crítica realizadas no filme selecionado
 
+# Cenário: API- Deve ser possível um usuário do tipo administrador retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da crítica realizadas no filme selecionado
+
+# Cenário: API- Deve ser possível um usuário do tipo não logado retornar um totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo não logado esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     Então deverá retornar o totalizador da média das avaliações da crítica realizadas no filme selecionado
 
 Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações realizadas por usuários comuns e admins ao consultar um filme 
     Dado que o usuário de qualquer tipo acessou a tela de consulta de filmes no Frontend Raromdb
