@@ -139,3 +139,16 @@ Cypress.Commands.add(
     });
   }
 );
+
+Cypress.Commands.add(
+  "listReviews",
+  function (token) {
+    return cy.request({
+      method: "GET",
+      url: apiUrl + "/api/users/review/all",
+      auth: {
+        bearer: token,
+      },
+    });
+  }
+);
