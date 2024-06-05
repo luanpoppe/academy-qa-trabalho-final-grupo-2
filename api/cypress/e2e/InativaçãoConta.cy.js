@@ -2,7 +2,7 @@
 ///  <reference path="../support/index.d.ts" />
 import { fakerPT_BR } from "@faker-js/faker";
 
-describe('Evolução para perfil Administrador', function () {
+describe('Inativação de conta de um usuário', function () {
     var usuarioCriado;
     var token;
 

@@ -1,9 +1,11 @@
 ///  <reference types="cypress" />
 ///  <reference path="../support/index.d.ts" />
 
-describe('Evolução para perfil Administrador', function () {
+describe('Evolução de usuário para perfil Administrador', function () {
     var usuarioCriado;
     var token;
+    var idFilme;
+    var reviewFilme;
 
     beforeEach(function () {
         cy.createUser().then((newUser) => {
@@ -13,7 +15,7 @@ describe('Evolução para perfil Administrador', function () {
 
     afterEach(function () {
         cy.deleteUser(usuarioCriado);
-      })
+    })
 
     it('Não deve ser possível evoluir usuário para perfil Administrador sem realizar Login', function () {
         cy.request({
@@ -47,5 +49,34 @@ describe('Evolução para perfil Administrador', function () {
                 })
             });
         })
+    });
+
+    it('Deve ser possível identificar quando uma review for feita por um usuário Administrador', function () {
+
+        cy.login(usuarioCriado).then((login) => {
+            token = login.body.accessToken
+        }).then(function () {
+            cy.promoteAdmin(token).then(function () {
+                cy.createMovie({
+                    title: "Divertidamente 2",
+                    genre: "Animação",
+                    description: "Divertida Mente 2 marca a sequência da famosa história de Riley (Kaitlyn Dias).",
+                    durationInMinutes: 93,
+                    releaseYear: 2024
+                }, token).then((movie) => {
+                    idFilme = movie.body.id
+                }).then(function () {
+                    
+                    // cy.reviewMovie({
+                    //     movieId: idFilme,
+                    //     scoreMovie: 4,
+                    //     reviewText: "O filme é muito divertido!"
+                    // }, token)
+
+                    cy.deleteMovie(idFilme,token);
+
+                })
+            })
+        });
     });
 });

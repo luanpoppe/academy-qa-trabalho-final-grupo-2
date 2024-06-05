@@ -1,7 +1,7 @@
 ///  <reference types="cypress" />
 ///  <reference path="../support/index.d.ts" />
 
-describe('Evolução para perfil crítico', function () {
+describe('Evolução de usuário para perfil crítico', function () {
     var usuarioCriado;
     var token;
 

@@ -23,7 +23,13 @@ Funcionalidade: Evolução para perfil crítico
         Quando acessar a funcionalidade "Promote User to critic"
         Então o perfil do usuário deve se tornar crítico
     
-
+    Cenário: Deve ser possível identificar quando uma review for feita por um usuário Crítico
+        E se cadastrou no sistema         
+        E realizou Login
+        E se tornou um usuário Crítico
+        E criou uma review de um filme 
+        Quando acessar a funcionalidade "List reviews"
+        Então deve ser possível ver que a review foi realizada por um usuário com perfil Crítico
 
 
     

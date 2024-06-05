@@ -1,7 +1,7 @@
 ///  <reference types="cypress" />
 ///  <reference path="../support/index.d.ts" />
 
-describe('Consulta geral de Usuários', function () {
+describe('Consulta geral de Usuários - Listagem', function () {
   var usuarioCriado;
   var token;
 
