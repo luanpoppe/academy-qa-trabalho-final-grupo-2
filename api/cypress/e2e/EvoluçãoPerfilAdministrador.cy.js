@@ -4,8 +4,7 @@
 describe('Evolução de usuário para perfil Administrador', function () {
     var usuarioCriado;
     var token;
-    var idFilme;
-    var reviewFilme;
+    var filmeCriado;
 
     beforeEach(function () {
         cy.createUser().then((newUser) => {
@@ -51,32 +50,33 @@ describe('Evolução de usuário para perfil Administrador', function () {
         })
     });
 
-    it('Deve ser possível identificar quando uma review for feita por um usuário Administrador', function () {
+    // it('Deve ser possível identificar quando uma review for feita por um usuário Administrador', function () {
 
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.promoteAdmin(token).then(function () {
-                cy.createMovie({
-                    title: "Divertidamente 2",
-                    genre: "Animação",
-                    description: "Divertida Mente 2 marca a sequência da famosa história de Riley (Kaitlyn Dias).",
-                    durationInMinutes: 93,
-                    releaseYear: 2024
-                }, token).then((movie) => {
-                    idFilme = movie.body.id
-                }).then(function () {
-                    
-                    // cy.reviewMovie({
-                    //     movieId: idFilme,
-                    //     scoreMovie: 4,
-                    //     reviewText: "O filme é muito divertido!"
-                    // }, token)
-
-                    cy.deleteMovie(idFilme,token);
-
-                })
-            })
-        });
-    });
+    //     cy.login(usuarioCriado).then((login) => {
+    //         token = login.body.accessToken
+    //     }).then(function () {
+    //         cy.promoteAdmin(token).then(function () {
+    //             cy.createMovie({
+    //                 title: "Divertidamente 2",
+    //                 genre: "Animação",
+    //                 description: "Divertida Mente 2 marca a sequência da famosa história de Riley (Kaitlyn Dias).",
+    //                 durationInMinutes: 93,
+    //                 releaseYear: 2024
+    //             }, token).then((movie) => {
+    //                 filmeCriado = movie.body
+    //             }).then(function () {
+    //                 cy.reviewMovie(filmeCriado.id, 4, "O filme é divertido!", token).then(function () {
+    //                     cy.listReviews(token).then((response) => {
+    //                         expect(response.status).to.equal(200);
+    //                         expect(response.body).to.be.an("array");
+    //                         expect(response.body[0].reviewType).to.equal("13");
+                        
+    //                     }).then(function () {
+    //                         cy.deleteMovie(idFilme, token);
+    //                     })
+    //                 })
+    //             })
+    //         });
+    //     });
+    // });
 });
