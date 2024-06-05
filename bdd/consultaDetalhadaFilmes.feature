@@ -73,61 +73,74 @@ Cenário: API- Deve ser possível avaliar um filme ao realizar uma consulta deta
     E enviar a requisição
     Então a API deverá retornar o status code 200 e uma opção para realizar avaliação
 
-Cenário: API- Deve ser possível um usuário do tipo comum retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+# Cenário: API- Deve ser possível um usuário do tipo comum retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme
+
+# Cenário: API- Deve ser possível um usuário do tipo crítico retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme    
+# Cenário: API- Deve ser possível um usuário do tipo administrador retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme
+# Cenário: API- Deve ser possível um usuário do tipo não logado retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo não logado esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme
+
+# Cenário: API- Deve ser possível um usuário do tipo comum retornar os dados do(s) usuário(s) que realizou a(S) avaliação(s) do filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme
+
+# Cenário: API- Deve ser possível um usuário do tipo crítico retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo crítico esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme
+
+# Cenário: API- Deve ser possível um usuário do tipo administrador retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo administrador esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme
+
+# Cenário: API- Deve ser possível um usuário do tipo não logado retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme ao consultá-lo detalhadamente
+#     Dado que o usuário do tipo não logado esta logado e autenticado na API Raromdb
+#     E acessou o método /api/movies/{id}
+#     Quando preencher o Id de um filme com avaliações
+#     E enviar a requisição
+#     Então a API deverá retornar o status code 200 e retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme
+
+Cenário: API- Deve ser possível retornar o totalizador das avaliações realizadas por usuários comuns e admins ao realizar uma consulta detalhada de filmes
     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
     E acessou o método /api/movies/{id}
     Quando preencher o Id de um filme com avaliações
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e todas as informações de avaliações realizadas no filme
+    Então deverá retornar o totalizador da média das avaliações da audiência realizadas do filme selecionado
 
-Cenário: API- Deve ser possível retornar a data e hora das avaliações realizadas no filme ao consultá-lo detalhadamente
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar todas as avaliações realizadas no filme
+Cenário: API- Deve ser possível retornar totalizador das avaliações realizadas por usuários críticos ao realizar uma consulta detalhada de filmes
+    Dado que o usuário de qualquer tipo acessou a tela de consulta de filmes no Frontend Raromdb
+    Quando inserir um Id válido na url
+    Então deverá retornar o totalizador da média das avaliações da crítica realizadas do filme selecionado
 
-Cenário: API- Deve ser possível retornar o nome dos usuários que realizaram as avaliações do filme ao consultar detalhadamente um filme
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o nome dos usuários que realizaram as avaliações do filme
 
-Cenário: API- Deve ser possível retornar o tipo dos usuários que realizaram as avaliações do filme ao consultar detalhadamente um filme
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o tipo dos usuários que realizaram as avaliações do filme
 
-Cenário: API- Deve ser possível retornar o Id dos usuários que realizaram as avaliações do filme ao consultar detalhadamente um filme
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o Id dos usuários que realizaram as avaliações do filme
 
-Cenário: API- Deve ser possível retornar a nota de todas avaliações realizadas no filme ao consultá-lo detalhadamente 
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar a nota de todas avaliações realizadas no filme
-
-Cenário: API- Deve ser possível retornar o texto de todas avaliações realizadas no filme ao consultá-lo detalhadamente 
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o texto de todas avaliações realizadas no filme
-
-Cenário: API- Deve ser possível retornar o tipo de avaliação de todas avaliações realizadas no filme ao consultá-lo detalhadamente 
-    Dado que o usuário de qualquer tipo esta logado e autenticado na API Raromdb
-    E acessou o método /api/movies/{id}
-    Quando preencher um Id de filme existente
-    E enviar a requisição
-    Então a API deverá retornar o status code 200 e retornar o tipo de avaliação de todas avaliações realizadas no filme
 
 
 Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações realizadas por usuários comuns e admins ao consultar um filme 
