@@ -2,10 +2,6 @@
 ///  <reference path="../support/index.d.ts" />
 
 describe("Login de cadastros de usuários", () => {
-  let email;
-  let nome;
-  let password;
-  let id;
   let token;
   let usuarioCriado;
 
