@@ -1,7 +1,9 @@
 #language: pt
 
 Funcionalidade: Consulta detalhada de filmes
-
+Como uma pessoa qualquer acessando o sistema
+Desejo poder consultar mais detalhes de um filme
+Para pode visualizar todas as informações registradas para aquele filme
 
 # Cenário: API- Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido
 #     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
@@ -175,12 +177,12 @@ Cenário: API- Deve ser possível avaliar um filme ao realizar uma consulta deta
 #     Quando preencher o Id de um filme com avaliações
 #     Então deverá retornar o totalizador da média das avaliações da crítica realizadas no filme selecionado
 
-Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações realizadas por usuários comuns e admins ao consultar um filme 
+Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações de audiência realizadas ao consultar um filme 
     Dado que o usuário de qualquer tipo acessou a tela de consulta de filmes no Frontend Raromdb
     Quando inserir um Id válido na url
     Então deverá visualizar a quantidade de avaliações da audiência realizadas
 
-Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações realizadas por usuários críticos ao consultar um filme 
+Cenário: FRONT- Deve ser possível visualizar a quantidade de avaliações da crítica realizadas ao consultar um filme  
     Dado que o usuário de qualquer tipo acessou a tela de consulta de filmes no Frontend Raromdb
     Quando inserir um Id válido na url
     Então deverá visualizar a quantidade de avaliações da crítica realizadas
