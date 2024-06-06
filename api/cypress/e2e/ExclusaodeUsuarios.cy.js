@@ -85,7 +85,7 @@ describe('Exclusão de Usuários', function () {
         });
     });
 
-    it('Deve ser possível realizar exclusão de uma conta, sendo um usuário com perfil Administrador', function () {
+    it('Deve ser possível que um usuário com perfil Administrador, exclua a própria conta', function () {
         cy.deleteUser(usuarioCriado).then((response) => {
             expect(response.status).to.equal(204);
             expect(response.body).to.equal("");
