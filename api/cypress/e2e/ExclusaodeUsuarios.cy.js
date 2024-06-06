@@ -5,7 +5,7 @@ describe('Exclusão de Usuários', function () {
     var usuarioCriado;
     var token;
 
-    before(function () {
+    beforeEach(function () {
         cy.createUser().then((newUser) => {
             usuarioCriado = newUser;
         });

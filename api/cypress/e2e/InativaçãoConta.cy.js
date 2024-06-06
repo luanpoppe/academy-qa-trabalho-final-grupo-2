@@ -24,7 +24,7 @@ describe('Inativação de conta de um usuário', function () {
         });
     });
 
-    it(' Deve ser possível inativar conta, sendo um usuário Comum', function () {
+    it('Deve ser possível inativar conta, sendo um usuário Comum', function () {
 
         cy.login(usuarioCriado).then((login) => {
             token = login.body.accessToken
@@ -38,7 +38,6 @@ describe('Inativação de conta de um usuário', function () {
 
 
     it('Deve ser possível inativar a conta com sucesso, sendo um usuário Administrador', function () {
-
         cy.login(usuarioCriado).then((login) => {
             token = login.body.accessToken
         }).then(function () {
