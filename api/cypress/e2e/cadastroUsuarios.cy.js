@@ -190,7 +190,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it.only("Não deve ser possível cadastrar usuário preenchendo campo 'name' diferente de string", () => {
+    it("Não deve ser possível cadastrar usuário preenchendo campo 'name' diferente de string", () => {
       cy.request({
         method: "POST",
         url: "/api/users/",
@@ -212,25 +212,29 @@ describe("Cenários de testes de criação de usuário", function () {
         });
       });
     });
-    // it.only("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
-    //   cy.request({
-    //     method: "POST",
-    //     url: "/api/users",
-    //     body: {
-    //       name: usuarioCadastrado.name,
-    //       email: usuarioCadastrado.email,
-    //       password: usuarioCadastrado.password,
-    //     },
-    //     failOnStatusCode: false,
-    //   }).then((resposta) => {
-    //     expect(resposta.status).to.equal(409);
-    //     expect(resposta.body).to.deep.equal({
-    //       message: "Email already in use",
-    //       error: "Conflict",
-    //       statusCode: 409,
-    //     });
-    //   });
-    // });
+
+    it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
+      cy.fixture("usuarioCadastrado.json").as("usuario");
+      cy.get("@usuario").then((user) => {
+        cy.request({
+          method: "POST",
+          url: "/api/users",
+          body: {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+          },
+          failOnStatusCode: false,
+        }).then((resposta) => {
+          expect(resposta.status).to.equal(409);
+          expect(resposta.body).to.deep.equal({
+            message: "Email already in use",
+            error: "Conflict",
+            statusCode: 409,
+          });
+        });
+      });
+    });
   });
 
   describe("Cenários de teste de criação de usuário com sucesso", function () {
