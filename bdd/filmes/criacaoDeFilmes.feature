@@ -64,6 +64,11 @@ Funcionalidade: Criação de Filmes
         Quando tentar cadastrar outro filme com as mesmas informações do filme já cadastrado
         Então o cadastro deve ser realizado com sucesso
 
+    Cenário: Não deve ser possível cadastrar um filme sem passar nenhuma informação
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme sem passar nenhuma informação
+        Então o cadastro não deve ser realizado
+
     Cenário: Não deve ser possível cadastrar um filme sem um título
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme sem um título

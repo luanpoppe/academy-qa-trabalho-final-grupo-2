@@ -296,6 +296,24 @@ describe('Criação de Filmes', function () {
     })
 
 
+    it('Não deve ser possível cadastrar um filme sem passar nenhuma informação', function () {
+      cy.request({
+        method: "POST",
+        url: "/api/movies",
+        body: null,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(400)
+        expect(resposta.body.message).to.have.length(19)
+        cy.wrap(movieErrors.titleNonExistentErrors).each(function (error) {
+          expect(resposta.body.message).to.deep.equal(movieErrors.allNonExistentErrors)
+        })
+      })
+    })
+
     describe('Casos de falha do título do filme', function () {
       it('Não deve ser possível criar um filme sem um título', function () {
         const temporaryMovie = {
