@@ -8,7 +8,7 @@ export default class MoviesPage {
   buttonLogin = '[href="/login"]';
   buttonRegistre = '[href="/register"]';
 
-  labelImage = ".w-full h-auto rounded-lg";
+  labelImage = ".w-full";
   labelTitle = ".movie-details-title";
   labelDescription = ".movie-detail-description";
   labelYear = ":nth-child(4) > span";

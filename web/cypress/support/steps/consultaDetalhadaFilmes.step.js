@@ -94,6 +94,20 @@ Given(
   }
 );
 
+Given(
+  "que o usuário do tipo comum acessou a tela de consulta de filmes no Frontend Raromdb",
+  () => {}
+);
+Given(
+  "deverá visualizar o totalizador da média das avaliações da audiência realizadas do filme selecionado",
+  () => {}
+);
+Given(
+  "deverá visualizar o totalizador da média das avaliações da crítica realizadas do filme selecionado",
+  () => {}
+);
+Given("deverá visualizar um campo habilitado para avaliar o filme", () => {});
+
 When("inserir um Id de filme válido na url", () => {
   cy.visit("/movies/" + idMovie);
 });
@@ -166,4 +180,8 @@ Then("deverá visualizar o Id do filme selecionado na url", () => {
     "eq",
     "https://raromdb-frontend-c7d7dc3305a0.herokuapp.com/movies/" + idMovie
   );
+});
+
+Then("deverá visualizar a imagem de capa do filme selecionado", () => {
+  cy.get(paginaMovies.labelImage).should("be.visible");
 });

@@ -5,50 +5,45 @@ Como uma pessoa qualquer acessando o sistema
 Desejo poder consultar mais detalhes de um filme
 Para pode visualizar todas as informações registradas para aquele filme
 
-# Cenário: Deve ser possível visualizar a quantidade de avaliações de audiência realizadas ao consultar um filme 
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando inserir um Id de filme válido na url
-#     Então deverá visualizar a quantidade de avaliações da audiência realizadas
+Cenário: Deve ser possível visualizar a quantidade de avaliações de audiência realizadas ao consultar um filme 
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id de filme válido na url
+    Então deverá visualizar a quantidade de avaliações da audiência realizadas
 
-# Cenário: Deve ser possível visualizar a quantidade de avaliações da crítica realizadas ao consultar um filme 
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando inserir um Id de filme válido na url
-#     Então deverá visualizar a quantidade de avaliações da crítica realizadas
+Cenário: Deve ser possível visualizar a quantidade de avaliações da crítica realizadas ao consultar um filme 
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id de filme válido na url
+    Então deverá visualizar a quantidade de avaliações da crítica realizadas
 
 Cenário: Deve ser possível realizar uma consulta detalhada de filmes com Id válido
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
     Quando inserir um Id de filme válido na url
     Então deverá visualizar todas as informações do filme selecionado
 
-# Cenário: Não deve ser possível realizar uma consulta detalhada de filmes com Id inválido
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando inserir um Id inválido na url
-#     Então Então o sistema deverá exibir uma mensagem de erro
+Cenário: Não deve ser possível realizar uma consulta detalhada de filmes com Id inválido
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id inválido na url
+    Então Então o sistema deverá exibir uma mensagem de erro
 
-# Cenário: Deve ser possível visualizar o Id do filme na url ao realizar uma consulta detalhada de filmes
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando selecionar um filme na tela inicial
-#     Então deverá visualizar o Id do filme selecionado na url 
+Cenário: Deve ser possível visualizar o Id do filme na url ao realizar uma consulta detalhada de filmes
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando selecionar um filme na tela inicial
+    Então deverá visualizar o Id do filme selecionado na url 
+
+Cenário: Deve ser possível visualizar a imagem de capa do filme ao realizar uma consulta detalhada de filmes
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id de filme válido na url
+    Então deverá visualizar a imagem de capa do filme selecionado
 
 
 
 
-# Cenário: Deve ser possível visualizar o ano de lançamento do filme ao realizar uma consulta detalhada de filmes
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando inserir um Id de filme válido na url
-#     Então deverá visualizar o ano de lançamento do filme selecionado
-
-# Cenário: Deve ser possível visualizar a imagem de capa do filme ao realizar uma consulta detalhada de filmes
-#     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-#     Quando inserir um Id de filme válido na url
-#     Então deverá visualizar a imagem de capa do filme selecionado
-
-# Cenário: Deve ser possível visualizar o totalizador das avaliações realizadas por usuários comuns e admins ao realizar uma consulta detalhada de filmes
+# Cenário: Deve ser possível visualizar o totalizador da média das avaliações da audiência realizadas no filme ao consultá-lo detalhadamente
 #     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
 #     Quando inserir um Id de filme válido na url
 #     Então deverá visualizar o totalizador da média das avaliações da audiência realizadas do filme selecionado
 
-# Cenário: Deve ser possível visualizar totalizador das avaliações realizadas por usuários críticos ao realizar uma consulta detalhada de filmes
+# Cenário: Deve ser possível visualizar o totalizador da média das avaliações da crítica realizadas no filme ao consultá-lo detalhadamente
 #     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
 #     Quando inserir um Id de filme válido na url
 #     Então deverá visualizar o totalizador da média das avaliações da crítica realizadas do filme selecionado
