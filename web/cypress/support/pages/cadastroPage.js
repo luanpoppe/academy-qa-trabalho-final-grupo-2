@@ -38,17 +38,25 @@ export default class CadastroPage {
     cy.get(this.buttonOk).click();
   }
 
-  registrarUsuario() {
+  registrarUsuario(userParam) {
     let email = fakerPT_BR.internet.email();
     let nome = fakerPT_BR.person.fullName();
     let senha = fakerPT_BR.internet.password(6);
 
-    cy.get(this.inputNome).type(nome);
-    cy.get(this.inputEmail).type(email);
-    cy.get(this.inputSenha).type(senha);
-    cy.get(this.inputConfirmarSenha).type(senha);
+    const user = {
+      email: email,
+      name: nome,
+      password: senha,
+      ...userParam
+    }
+
+    cy.get(this.inputNome).type(user.name);
+    cy.get(this.inputEmail).type(user.email);
+    cy.get(this.inputSenha).type(user.password);
+    cy.get(this.inputConfirmarSenha).type(user.password);
     cy.get(this.buttonCadastrar).click();
     cy.intercept("POST", "/api/auth/login").as("auth");
+    return user
     // cy.get(this.buttonOk).click();
   }
 }

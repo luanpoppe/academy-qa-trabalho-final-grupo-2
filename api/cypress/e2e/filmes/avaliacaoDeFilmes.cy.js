@@ -290,7 +290,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
-    it.only('Em um filme que já possui uma review do usuário, novas reviews deste usuário deve atualizar a review prévia ao invés de criar uma nova', function () {
+    it('Em um filme que já possui uma review do usuário, novas reviews deste usuário deve atualizar a review prévia ao invés de criar uma nova', function () {
       const segundaReview = {
         movieId: movie.id,
         score: 5,
