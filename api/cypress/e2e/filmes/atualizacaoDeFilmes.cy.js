@@ -41,14 +41,14 @@ describe('Criação de Filmes', function () {
     cy.deleteUser(adminUser)
   })
 
+  afterEach(function () {
+    cy.promoteToAdminAndDeleteMovie(adminUser, movieInfo.id)
+  })
+
   describe('Usuário administrador', function () {
     const movieErrors = new MovieErrors()
 
-    describe('Casos de criação com sucesso', function () {
-      afterEach(function () {
-        cy.promoteToAdminAndDeleteMovie(adminUser, movieInfo.id)
-      })
-
+    describe('Casos de atualização com sucesso', function () {
       it('Usuário administrador deve poder atualizar um filme', function () {
         cy.request({
           method: "PUT",
@@ -427,6 +427,87 @@ describe('Criação de Filmes', function () {
         failOnStatusCode: false
       }).then(function (resposta) {
         expect(resposta.status).to.equal(404)
+      })
+    })
+
+    it('Não deve ser possível atualizar um filme sem passar um id do filme', function () {
+      cy.request({
+        method: "PUT",
+        url: "/api/movies/",
+        body: movieUpdated,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(404)
+        expect(resposta.body.error).to.equal("Not Found")
+      })
+    })
+
+    it('Não deve ser possível atualizar um filme passando um id não existente', function () {
+      let lastMovieId
+      cy.getAllMovies().then(function (resposta) {
+        lastMovieId = resposta.body[resposta.body.length - 1].id
+      }).then(function (resposta) {
+        cy.request({
+          method: "PUT",
+          url: "/api/movies/" + (lastMovieId + 100),
+          body: movieUpdated,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(404)
+          expect(resposta.body.error).to.equal("Not Found")
+        })
+      })
+
+    })
+
+    it('Não deve ser possível atualizar um filme passando um id como um texto', function () {
+      cy.request({
+        method: "PUT",
+        url: "/api/movies/" + "idDoFilme",
+        body: movieUpdated,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(400)
+        expect(resposta.body.message).to.equal("Validation failed (numeric string is expected)")
+      })
+    })
+
+    it('Não deve ser possível atualizar um filme passando um id como um número decimal', function () {
+      cy.request({
+        method: "PUT",
+        url: "/api/movies/" + (movieInfo.id + 0.5),
+        body: movieUpdated,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(400)
+        expect(resposta.body.message).to.equal("Validation failed (numeric string is expected)")
+      })
+    })
+
+    it('Não deve ser possível atualizar um filme passando um id como número negativo', function () {
+      cy.request({
+        method: "PUT",
+        url: "/api/movies/" + (movieInfo.id * -1),
+        body: movieUpdated,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(404)
+        expect(resposta.body.message).to.equal("Movie not found")
       })
     })
 
@@ -843,7 +924,7 @@ describe('Criação de Filmes', function () {
     })
   })
 
-  describe.only('Casos de falhar por conta da autorização', function () {
+  describe('Casos de falhar por conta da autorização', function () {
     let localUser
     let localToken
 

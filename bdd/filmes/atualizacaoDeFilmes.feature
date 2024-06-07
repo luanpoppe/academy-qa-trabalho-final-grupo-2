@@ -68,6 +68,31 @@ Funcionalidade: Atualização de Filmes
         Dado que um usuário é administrador
         Quando tentar atualizar um filme sem passar nenhuma informação
         Então a atualização não deve ser realizada
+    
+    Cenário: Não deve ser possível atualizar um filme sem passar um id do filme
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme sem passar um id do filme
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme passando um id não existente
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme passando um id não existente
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme passando um id como um texto
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme passando um id como um texto
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme passando um id como um número decimal
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme passando um id como um número decimal
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme passando um id como número negativo
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme passando um id como número negativo
+        Então a atualização não deve ser realizada
 
     Cenário: Deve ser possível atualizar um filme sem passar um título
         Dado que um usuário é administrador

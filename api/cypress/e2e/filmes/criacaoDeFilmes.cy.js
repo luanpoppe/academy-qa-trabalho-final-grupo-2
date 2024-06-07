@@ -46,6 +46,9 @@ describe('Criação de Filmes', function () {
           expect(resposta.status).to.equal(201)
           expect(resposta.body).to.deep.include(movie)
           expect(resposta.body.id).to.be.a("number")
+          cy.getMovie(movieInfo.id).then(function (resposta) {
+            expect(resposta.body).to.deep.include(movie)
+          })
         })
       })
 
