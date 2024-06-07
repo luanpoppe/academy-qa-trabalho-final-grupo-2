@@ -1,4 +1,4 @@
-import { MovieErrors } from "../support/utils/movieErrorsClass"
+import { MovieErrors } from "../../support/utils/movieErrorsClass"
 
 describe('Criação de Filmes', function () {
   const movie = {
