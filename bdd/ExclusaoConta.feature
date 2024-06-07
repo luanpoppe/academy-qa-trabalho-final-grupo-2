@@ -22,11 +22,18 @@ Funcionalidade: Exclusão da conta
         Quando acessar a funcionalidade "Delete User"
         Então não deve ser possível excluir a conta de um usuário
 
-    Cenário: Deve ser possível realizar exclusão de uma conta, sendo um usuário com perfil Administrador
+  Cenário: Deve ser possível que um usuário com perfil Administrador, exclua a conta de outro usuário
         E realizou Login
         E é um usuário com perfil Administrador
         Quando acessar a funcionalidade "Delete User"
-        Então deve ser possível excluir a conta de um usuário
+        Então deve ser possível excluir a conta de um outro usuário
+
+    Cenário: Deve ser possível que um usuário com perfil Administrador, exclua a própria conta
+        E realizou Login
+        E é um usuário com perfil Administrador
+        Quando acessar a funcionalidade "Delete User"
+        Então deve ser possível excluir a própria conta
+
 
 
 

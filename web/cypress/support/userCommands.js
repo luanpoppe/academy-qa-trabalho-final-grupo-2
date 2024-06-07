@@ -83,7 +83,7 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
 
   return cy.login(userObject).then((responseLogar) => {
     token = responseLogar.body.accessToken;
-    return cy.promoteAdmin(token).then(function () {
+    return cy.promoteAdmin(token).then(function (resposta) {
       return cy.request({
         method: "DELETE",
         url: apiUrl + "/api/users/" + userObject.id,
@@ -139,14 +139,3 @@ Cypress.Commands.add("getUserReviews", function (token) {
     },
   });
 });
-
-Cypress.Commands.add("InactivateUser", function (token) {
-  return cy.request({
-    method: "PATCH",
-    url: apiUrl + "/api/users/inactivate",
-    auth: {
-      bearer: token,
-    },
-  });
-});
-

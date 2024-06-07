@@ -1,4 +1,4 @@
-import { MovieErrors } from "../support/utils/movieErrorsClass"
+import { MovieErrors } from "../../support/utils/movieErrorsClass"
 
 describe('Criação de Filmes', function () {
   const movie = {
@@ -45,7 +45,7 @@ describe('Criação de Filmes', function () {
           movieInfo = resposta.body
           expect(resposta.status).to.equal(201)
           expect(resposta.body).to.deep.include(movie)
-          expect(resposta.body).to.have.property("id")
+          expect(resposta.body.id).to.be.a("number")
         })
       })
 
@@ -89,6 +89,210 @@ describe('Criação de Filmes', function () {
           expect(resposta.status).to.equal(201)
         })
       })
+
+      it('Deve ser possível criar um filme com o gênero contendo 1 caractere', function () {
+        const temporaryMovie = {
+          ...movie,
+          genre: "a"
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com o gênero contendo 100 caracteres', function () {
+        const temporaryMovie = {
+          ...movie,
+          genre: "a"
+        }
+        while (temporaryMovie.genre.length < 100) {
+          temporaryMovie.genre += "a"
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com a descrição contendo 1 caractere', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: "a"
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com a descrição contendo 500 caracteres', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: "a"
+        }
+        while (temporaryMovie.description.length < 500) {
+          temporaryMovie.description += "a"
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com o ano de lançamento de 1895', function () {
+        const temporaryMovie = {
+          ...movie,
+          releaseYear: 1895
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com o ano de lançamento sendo o ano atual', function () {
+        const temporaryMovie = {
+          ...movie,
+          releaseYear: new Date().getFullYear()
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com a duração de 1 minuto', function () {
+        const temporaryMovie = {
+          ...movie,
+          durationInMinutes: 1
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      it('Deve ser possível criar um filme com a duração de 720 horas', function () {
+        const temporaryMovie = {
+          ...movie,
+          durationInMinutes: 720 * 60
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+        }).then(function (resposta) {
+          movieInfo = resposta.body
+          expect(resposta.status).to.equal(201)
+          expect(resposta.body).to.deep.include(temporaryMovie)
+          expect(resposta.body.id).to.be.a("number")
+        })
+      })
+
+      describe('Cenário com criação de mais de um filme', function () {
+        let movieInfo2
+        beforeEach(function () {
+          cy.createMovie(movie, token).then(function (resposta) {
+            movieInfo2 = resposta.body
+          })
+        })
+
+        afterEach(function () {
+          cy.deleteMovie(movieInfo2.id, token)
+        })
+
+        it('Deve ser possível adicionar dois filmes com as exatas mesmas informações', function () {
+          cy.request({
+            method: "POST",
+            url: "/api/movies",
+            body: movie,
+            auth: {
+              bearer: token
+            },
+          }).then(function (resposta) {
+            movieInfo = resposta.body
+            expect(resposta.status).to.equal(201)
+            expect(resposta.body).to.deep.include(movie)
+            expect(resposta.body.id).to.be.a("number")
+          })
+        })
+      })
+
     })
 
 
@@ -488,11 +692,7 @@ describe('Criação de Filmes', function () {
       it('Não deve ser possível criar um filme com uma duração que seja maior do que 720 horas', function () {
         const temporaryMovie = {
           ...movie,
-          durationInMinutes: 0
-        }
-
-        while (temporaryMovie.durationInMinutes <= (720 * 60)) {
-          temporaryMovie.durationInMinutes += 1
+          durationInMinutes: (720 * 60) + 1
         }
 
         cy.request({
@@ -619,6 +819,69 @@ describe('Criação de Filmes', function () {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
           expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMaxNumber)
+        })
+      })
+    })
+  })
+
+  describe('Casos de falhar por conta da autorização', function () {
+    let user
+    let localToken
+
+    beforeEach(function () {
+      cy.createUser().then(function (resposta) {
+        user = resposta
+        cy.login(user).then(function (resposta) {
+          localToken = resposta.body.accessToken
+        })
+      })
+    })
+
+    afterEach(function () {
+      cy.deleteUser(user)
+    })
+
+    it('Usuário não logado não deve conseguir criar um filme', function () {
+      cy.request({
+        method: "POST",
+        url: "/api/movies",
+        body: movie,
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(401)
+        expect(resposta.body.message).to.equal("Access denied.")
+        expect(resposta.body.error).to.equal("Unauthorized")
+      })
+    })
+
+    it('Usuário comum não deve conseguir criar um filme', function () {
+      cy.request({
+        method: "POST",
+        url: "/api/movies",
+        body: movie,
+        auth: {
+          bearer: localToken
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(403)
+        expect(resposta.body.message).to.equal("Forbidden")
+      })
+    })
+
+    it('Usuário crítico não deve conseguir criar um filme', function () {
+      cy.promoteCritic(localToken).then(function (resposta) {
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: movie,
+          auth: {
+            bearer: localToken
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(403)
+          expect(resposta.body.message).to.equal("Forbidden")
         })
       })
     })
