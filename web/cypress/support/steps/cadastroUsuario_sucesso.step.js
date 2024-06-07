@@ -13,20 +13,19 @@ const regisUser = new CadastroPage();
 let senha;
 let email;
 let id;
-let password;
 
 beforeEach(() => {
   email = fakerPT_BR.internet.email().toLowerCase();
   senha = fakerPT_BR.internet.password(6);
 });
 
-// afterEach(() => {
-//   cy.deleteUser({
-//     email: email,
-//     id: id,
-//     password: password,
-//   });
-// });
+afterEach(() => {
+  cy.deleteUser({
+    email: email,
+    id: id,
+    password: senha,
+  });
+});
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
@@ -59,10 +58,6 @@ When(
   }
 );
 
-When("concluir o cadastro de usuário com sucesso", function () {
-  regisUser.registrarUsuario();
-});
-
 When(
   "preenche todos os campos do formulário utilizando nome com 100 caracteres",
   function () {
@@ -81,6 +76,7 @@ When(
 Then("o usuario deve ser registrado com sucesso", function () {
   cy.wait("@post").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(201);
+    id = intercept.response.body.id;
   });
 });
 
@@ -96,7 +92,7 @@ Then("o usuario deve ser registrado com conta do tipo comum", function () {
 });
 
 Then(
-  "deve retornar para o formulário de cadastro clicando no botão OK",
+  "o usuário deve retornar para o formulário de cadastro clicando no botão OK",
   function () {
     regisUser.clickOK();
 
@@ -108,6 +104,7 @@ Then(
 );
 
 Then("o usuário deve está automaticamente logado no site", function () {
+  cy.intercept("POST", "/api/auth/login").as("auth");
   regisUser.clickOK();
   cy.wait("@auth").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(200);

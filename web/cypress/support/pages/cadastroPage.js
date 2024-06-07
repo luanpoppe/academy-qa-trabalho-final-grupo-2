@@ -37,18 +37,4 @@ export default class CadastroPage {
   clickOK() {
     cy.get(this.buttonOk).click();
   }
-
-  registrarUsuario() {
-    let email = fakerPT_BR.internet.email();
-    let nome = fakerPT_BR.person.fullName();
-    let senha = fakerPT_BR.internet.password(6);
-
-    cy.get(this.inputNome).type(nome);
-    cy.get(this.inputEmail).type(email);
-    cy.get(this.inputSenha).type(senha);
-    cy.get(this.inputConfirmarSenha).type(senha);
-    cy.get(this.buttonCadastrar).click();
-    cy.intercept("POST", "/api/auth/login").as("auth");
-    // cy.get(this.buttonOk).click();
-  }
 }

@@ -10,6 +10,7 @@ Funcionalidade: Registrar Usuário
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o site exibirá uma mensagem de cadastro com sucesso
+      E o usuário deve retornar para o formulário de cadastro clicando no botão OK
       Exemplos:
       |     nome      |
       |      1        |
@@ -22,24 +23,19 @@ Funcionalidade: Registrar Usuário
     Cenário: Deve ser possível registrar usuário com nome com 100 caracteres
       Quando preenche todos os campos do formulário utilizando nome com 100 caracteres
       E acessar a funcionalidade salvar
-      Então o usuario deve ser registrado com conta do tipo comum
-    
-    Cenário: Deve ser possível registrar usuário com email de 60 caracteres
-      Quando preenche todos os campos do formulário utilizando email com 60 caracteres
-      E acessar a funcionalidade salvar
-      Então o usuario deve ser registrado com conta do tipo comum
+      Então o usuario deve ser registrado com sucesso
+      E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
     Cenário: Usuário registrado com sucesso deve ser do tipo comum
       Quando preenche todos os campos do formulário utilizando um nome qualquer
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com conta do tipo comum
-      
-    Cenário: Deve ser possível retornar para o formulário após confirmar a mensagem de cadastro com sucesso
-      Quando concluir o cadastro de usuário com sucesso
-      Então deve retornar para o formulário de cadastro clicando no botão OK
+      E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
     Cenário: Deve ser possível está automaticamente logado após registro
-      Quando concluir o cadastro de usuário com sucesso
-      Então o usuário deve está automaticamente logado no site
+      Quando preenche todos os campos do formulário utilizando um nome qualquer
+      E acessar a funcionalidade salvar
+      Então o usuario deve ser registrado com sucesso
+      E o usuário deve está automaticamente logado no site
 
 

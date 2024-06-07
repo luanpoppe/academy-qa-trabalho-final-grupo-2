@@ -5,8 +5,6 @@ describe("Cenários de testes de criação de usuário", function () {
   let name = fakerPT_BR.person.fullName();
   let password = fakerPT_BR.internet.password(6);
   let id;
-  let token;
-  let usuarioCriado;
 
   describe("Cenários de testes de criação de usuário com falhas", function () {
     email = fakerPT_BR.internet.email();
@@ -82,7 +80,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário um senha menor que 6 caracteres", () => {
+    it("Não deve ser possível cadastrar usuário utilizando uma senha menor que 6 caracteres", () => {
       cy.request({
         method: "POST",
         url: "/api/users/",
@@ -102,7 +100,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário um senha maior que 12 caracteres", () => {
+    it("Não deve ser possível cadastrar usuário utilizando uma senha maior que 12 caracteres", () => {
       cy.request({
         method: "POST",
         url: "/api/users/",
@@ -250,7 +248,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Deve ser possível criar usuários com dados válidos", function () {
+    it("Deve ser possível cadastrar usuário com dados válidos", function () {
       cy.request({
         method: "POST",
         url: "/api/users/",
@@ -272,7 +270,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Deve ser possivel criar usuário com nome de 100 caracteres", function () {
+    it("Deve ser possível cadastrar usuário com nome de 100 caracteres", function () {
       let nomeCaractere = "";
       for (let i = 0; i < 100; i++) {
         nomeCaractere += "C";
@@ -297,7 +295,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Deve ser possivel criar usuário com nome de 99 caracteres", function () {
+    it("Deve ser possível cadastrar usuário com nome de 99 caracteres", function () {
       let nomeCaractere = "";
       for (let i = 0; i < 99; i++) {
         nomeCaractere += "C";
@@ -323,7 +321,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Deve ser possivel criar usuário com nome de 1 caractere", function () {
+    it("Deve ser possível cadastrar usuário com nome de 1 caractere", function () {
       cy.request({
         method: "POST",
         url: "/api/users/",

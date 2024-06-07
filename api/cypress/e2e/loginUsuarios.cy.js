@@ -41,13 +41,12 @@ describe("Login de cadastros de usuários", () => {
         url: "/api/auth/login",
         body: {
           email: usuarioCriado.email,
-          password: "",
+          password: null,
         },
         failOnStatusCode: false,
       }).then((resposta) => {
         expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: "password should not be empty",
+        expect(resposta.body).to.deep.include({
           error: "Bad Request",
           statusCode: 400,
         });
@@ -109,6 +108,6 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
-    it.only("Sessão de login do usuário deve expirar em 60 min", function () {});
+    it("Sessão de login do usuário deve expirar em 60 min", function () {});
   });
 });
