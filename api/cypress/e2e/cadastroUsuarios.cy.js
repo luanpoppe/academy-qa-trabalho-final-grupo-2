@@ -6,8 +6,10 @@ describe("Cenários de testes de criação de usuário", function () {
   let password = fakerPT_BR.internet.password(6);
   let id;
   let token;
+  let usuarioCriado;
 
   describe("Cenários de testes de criação de usuário com falhas", function () {
+    email = fakerPT_BR.internet.email();
     it("Não deve ser possível cadastrar usuário sem informar campo nome", function () {
       cy.request({
         method: "POST",
@@ -193,7 +195,7 @@ describe("Cenários de testes de criação de usuário", function () {
         method: "POST",
         url: "/api/users/",
         body: {
-          name: 1234567,
+          name: 123456,
           email: email,
           password: password,
         },
@@ -210,29 +212,44 @@ describe("Cenários de testes de criação de usuário", function () {
         });
       });
     });
-    // it.only("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
-    //   cy.request({
-    //     method: "POST",
-    //     url: "/api/users",
-    //     body: {
-    //       name: usuarioCadastrado.name,
-    //       email: usuarioCadastrado.email,
-    //       password: usuarioCadastrado.password,
-    //     },
-    //     failOnStatusCode: false,
-    //   }).then((resposta) => {
-    //     expect(resposta.status).to.equal(409);
-    //     expect(resposta.body).to.deep.equal({
-    //       message: "Email already in use",
-    //       error: "Conflict",
-    //       statusCode: 409,
-    //     });
-    //   });
-    // });
+
+    it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
+      cy.fixture("usuarioCadastrado.json").as("usuario");
+      cy.get("@usuario").then((user) => {
+        cy.request({
+          method: "POST",
+          url: "/api/users",
+          body: {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+          },
+          failOnStatusCode: false,
+        }).then((resposta) => {
+          expect(resposta.status).to.equal(409);
+          expect(resposta.body).to.deep.equal({
+            message: "Email already in use",
+            error: "Conflict",
+            statusCode: 409,
+          });
+        });
+      });
+    });
   });
 
   describe("Cenários de teste de criação de usuário com sucesso", function () {
-    email = fakerPT_BR.internet.email();
+    beforeEach(() => {
+      email = fakerPT_BR.internet.email().toLowerCase();
+    });
+
+    afterEach(() => {
+      cy.deleteUser({
+        email: email,
+        id: id,
+        password: password,
+      });
+    });
+
     it("Deve ser possível criar usuários com dados válidos", function () {
       cy.request({
         method: "POST",
@@ -246,16 +263,16 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.status).to.equal(201);
         expect(resposta.body).to.deep.include({
           name: name,
-          email: email, //teste quebrando pois a api converte letra maiuscula em minuscula
+          email: email,
         });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
         expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
       });
     });
 
     it("Deve ser possivel criar usuário com nome de 100 caracteres", function () {
-      email = fakerPT_BR.internet.email();
       let nomeCaractere = "";
       for (let i = 0; i < 100; i++) {
         nomeCaractere += "C";
@@ -276,6 +293,54 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
         expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possivel criar usuário com nome de 99 caracteres", function () {
+      let nomeCaractere = "";
+      for (let i = 0; i < 99; i++) {
+        nomeCaractere += "C";
+      }
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: nomeCaractere,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.include({
+          email: email,
+          name: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        });
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body.type).to.be.equal(0);
+        expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possivel criar usuário com nome de 1 caractere", function () {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: "C",
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.include({
+          name: "C",
+        });
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body.type).to.be.equal(0);
+        expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
       });
     });
   });

@@ -19,11 +19,21 @@ Funcionalidade: Registrar Usuário
       |     cAr01     | 
       |     🫂       |
 
+    Cenário: Deve ser possível registrar usuário com nome com 100 caracteres
+      Quando preenche todos os campos do formulário utilizando nome com 100 caracteres
+      E acessar a funcionalidade salvar
+      Então o usuario deve ser registrado com conta do tipo comum
+    
+    Cenário: Deve ser possível registrar usuário com email de 60 caracteres
+      Quando preenche todos os campos do formulário utilizando email com 60 caracteres
+      E acessar a funcionalidade salvar
+      Então o usuario deve ser registrado com conta do tipo comum
+
     Cenário: Usuário registrado com sucesso deve ser do tipo comum
       Quando preenche todos os campos do formulário utilizando um nome qualquer
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com conta do tipo comum
-    
+      
     Cenário: Deve ser possível retornar para o formulário após confirmar a mensagem de cadastro com sucesso
       Quando concluir o cadastro de usuário com sucesso
       Então deve retornar para o formulário de cadastro clicando no botão OK
