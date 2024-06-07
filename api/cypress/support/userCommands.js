@@ -139,3 +139,14 @@ Cypress.Commands.add("getUserReviews", function (token) {
     },
   });
 });
+
+Cypress.Commands.add("InactivateUser", function (token) {
+  return cy.request({
+    method: "PATCH",
+    url: apiUrl + "/api/users/inactivate",
+    auth: {
+      bearer: token,
+    },
+  });
+});
+

@@ -1,7 +1,7 @@
 ///  <reference types="cypress" />
 ///  <reference path="../support/index.d.ts" />
 
-describe('Evolução para perfil crítico', function () {
+describe('Evolução de usuário para perfil crítico', function () {
     var usuarioCriado;
     var token;
 
@@ -13,7 +13,7 @@ describe('Evolução para perfil crítico', function () {
 
     afterEach(function () {
         cy.deleteUser(usuarioCriado);
-      })
+    })
 
     it('Não deve ser possível evoluir usuário para perfil crítico sem realizar Login', function () {
         cy.request({
