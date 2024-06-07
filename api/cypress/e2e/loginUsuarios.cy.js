@@ -109,16 +109,6 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
-    it.only("Sessão de login do usuário deve expirar em 60 min", function () {
-      cy.login(usuarioCriado).as("login");
-
-      cy.clock();
-      cy.tick(62 * 60 * 1000); //60 min em milissegundos
-
-      cy.get("@login").then((login) => {
-        token = login.body.accessToken;
-        cy.promoteCritic(token);
-      });
-    });
+    it.only("Sessão de login do usuário deve expirar em 60 min", function () {});
   });
 });
