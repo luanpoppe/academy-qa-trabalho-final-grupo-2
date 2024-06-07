@@ -168,8 +168,7 @@ describe('Evolução de usuário para perfil Administrador', function () {
                                     expect(response.status).to.equal(200);
                                     expect(response.body).to.be.an("array");
                                     expect(response.body[0].reviewType).to.equal(0);
-                                    expect(response.body[1].reviewType).to.equal("1");
-
+                                    expect(response.body[1].reviewType).to.equal(1);
                                 })
                             })
                         })
