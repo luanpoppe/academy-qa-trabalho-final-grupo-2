@@ -4,14 +4,13 @@ describe('Criação de Filmes', function () {
   let movieInfo
   let adminUser
   let token
+  let movie
 
-  const movie = {
-    title: "Nome do Filme",
-    genre: "Gênero do filme",
-    description: "Descrição do filme",
-    durationInMinutes: 90,
-    releaseYear: 2017
-  }
+  before(function () {
+    cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
+      movie = resposta
+    })
+  })
 
   const movieUpdated = {
     title: "Nome do Filme Atualizado",

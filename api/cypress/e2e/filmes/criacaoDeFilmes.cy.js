@@ -1,13 +1,12 @@
 import { MovieErrors } from "../../support/utils/movieErrorsClass"
 
 describe('Criação de Filmes', function () {
-  const movie = {
-    title: "Nome do Filme",
-    genre: "Gênero do filme",
-    description: "Descrição do filme",
-    durationInMinutes: 90,
-    releaseYear: 2017
-  }
+  let movie
+  before(function () {
+    cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
+      movie = resposta
+    })
+  })
 
   describe('Usuário administrador', function () {
     let movieInfo
