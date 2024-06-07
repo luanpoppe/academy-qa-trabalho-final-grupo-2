@@ -18,6 +18,52 @@ Funcionalidade: Criação de Filmes
         Quando tentar adicionar um novo filme com o título contendo 100 caracteres
         Então o cadastro do filme deve ser realizado com sucesso
 
+    Cenário: Usuário administrador deve poder criar um filme com o gênero contendo 1 caractere
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com o gênero contendo 1 caractere
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com o gênero contendo 100 caracteres
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com o gênero contendo 100 caracteres
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com a descrição contendo 1 caractere
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com a descrição contendo 1 caractere
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com a descrição contendo 500 caracteres
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com a descrição contendo 500 caracteres
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com o ano de lançamento de 1895
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com o ano de lançamento de 1895
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com o ano de lançamento sendo o ano atual
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com o ano de lançamento sendo o ano atual
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com a duração de 1 minuto
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com a duração de 1 minuto
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Usuário administrador deve poder criar um filme com a duração de 720 horas
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com a duração de 720 horas
+        Então o cadastro do filme deve ser realizado com sucesso
+
+    Cenário: Deve ser possível adicionar dois filmes com as exatas mesmas informações
+        Dado que um usuário é administrador
+        E tem as informações de um filme já cadastrado
+        Quando tentar cadastrar outro filme com as mesmas informações do filme já cadastrado
+        Então o cadastro deve ser realizado com sucesso
+
     Cenário: Não deve ser possível cadastrar um filme sem um título
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme sem um título
@@ -132,6 +178,18 @@ Funcionalidade: Criação de Filmes
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme com um ano de lançamento que que seja maior do que o ano atual
         Então o cadastro não deve ser realizado
+    
+    Cenário: Não deve ser possível um usuário não logado criar um filme
+        Dado que um usuário não está logado
+        Quando tentar criar um filme
+        Então o cadastro não deve ser realizado
 
+    Cenário: Não deve ser possível um usuário comum criar um filme
+        Dado que um usuário é comum
+        Quando tentar criar um filme
+        Então o cadastro não deve ser realizado
 
-    # Cenário: Deve ser possível adicionar dois filmes com as exatas mesmas informações
+    Cenário: Não deve ser possível um usuário crítico criar um filme
+        Dado que um usuário é crítico
+        Quando tentar criar um filme
+        Então o cadastro não deve ser realizado
