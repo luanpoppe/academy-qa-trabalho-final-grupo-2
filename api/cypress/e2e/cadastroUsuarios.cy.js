@@ -32,6 +32,29 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
+    it("Não deve ser possível cadastrar usuário preenchendo campo name com string vazia", function () {
+      cy.request({
+        method: "POST",
+        url: "/api/users",
+        body: {
+          name: "",
+          email: email,
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          error: "Bad Request",
+          message: [
+            "name must be longer than or equal to 1 characters",
+            "name should not be empty",
+          ],
+          statusCode: 400,
+        });
+      });
+    });
+
     it("Não deve ser possível cadastrar usuário sem informar campo email", function () {
       cy.request({
         method: "POST",
@@ -49,6 +72,53 @@ describe("Cenários de testes de criação de usuário", function () {
             "email must be longer than or equal to 5 characters",
             "email must be an email",
             "email should not be empty",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário preenchendo campo email com string vazia", function () {
+      cy.request({
+        method: "POST",
+        url: "/api/users",
+        body: {
+          name: name,
+          email: "",
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "email must be longer than or equal to 5 characters",
+            "email must be an email",
+            "email should not be empty",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário preenchendo campo email diferente de string", function () {
+      cy.request({
+        method: "POST",
+        url: "/api/users",
+        body: {
+          name: name,
+          email: 123456,
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "email must be longer than or equal to 5 and shorter than or equal to 60 characters",
+            "email must be an email",
           ],
           error: "Bad Request",
           statusCode: 400,
@@ -114,6 +184,54 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.status).to.equal(400);
         expect(resposta.body).to.deep.equal({
           message: ["password must be shorter than or equal to 12 characters"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário preenchendo campo senha diferente de string", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: 123456,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário sem passar nenhuma informações no Request Body", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "name must be longer than or equal to 1 characters",
+            "name must be a string",
+            "name should not be empty",
+            "email must be longer than or equal to 5 characters",
+            "email must be an email",
+            "email should not be empty",
+            "password must be longer than or equal to 6 characters",
+            "password must be a string",
+            "password should not be empty",
+          ],
           error: "Bad Request",
           statusCode: 400,
         });
@@ -287,6 +405,7 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.status).to.equal(201);
         expect(resposta.body).to.include({
           name: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+          email: email,
         });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);

@@ -35,6 +35,44 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
+    it("Não deve ser possível usuário autenticar-se informando email diferente de string", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: 123456,
+          password: "123456",
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["email must be an email"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível usuário autenticar-se informando email com string vazia", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: "",
+          password: "123456",
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["email should not be empty", "email must be an email"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
     it("Não deve ser possível usuário autenticar-se sem informar senha", () => {
       cy.request({
         method: "POST",
@@ -46,7 +84,49 @@ describe("Login de cadastros de usuários", () => {
         failOnStatusCode: false,
       }).then((resposta) => {
         expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.include({
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "password must be a string",
+            "password should not be empty",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível usuário autenticar-se informando senha diferente de string", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: usuarioCriado.email,
+          password: 123456,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["password must be a string"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível usuário autenticar-se informando senha com string vazia", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: usuarioCriado.email,
+          password: "",
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["password should not be empty"],
           error: "Bad Request",
           statusCode: 400,
         });
