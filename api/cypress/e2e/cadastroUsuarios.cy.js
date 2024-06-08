@@ -408,7 +408,7 @@ describe("Cenários de testes de criação de usuário", function () {
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
         expect(resposta.body).to.include({
-          name: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+          name: nomeCaractere,
           email: email,
         });
         expect(resposta.body.id).to.be.a("number");
@@ -461,6 +461,56 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
         expect(resposta.body.active).to.be.equal(true);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com email de 60 caracteres", function () {
+      while (email.length < 60) {
+        email += "m"
+      }
+
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body).to.deep.include({
+          email: email,
+          name: name,
+          type: 0,
+          active: true
+        })
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com email de 6 caracteres", function () {
+      email = "l@g.en"
+
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body.id).to.be.a("number");
+        expect(resposta.body).to.deep.include({
+          email: email,
+          name: name,
+          type: 0,
+          active: true
+        })
         id = resposta.body.id;
       });
     });
