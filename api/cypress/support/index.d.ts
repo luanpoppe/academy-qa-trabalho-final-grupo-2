@@ -72,5 +72,7 @@ declare namespace Cypress {
         promoteToAdminAndDeleteMovie(userInfo: { email: string, password: string }, movieId: number): Chainable<any>
 
         createAdminUser(): Chainable<any>
+
+        createCriticUser(): Chainable<any>
     }
 }
