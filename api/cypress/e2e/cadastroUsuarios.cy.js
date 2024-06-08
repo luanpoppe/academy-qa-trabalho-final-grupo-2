@@ -8,6 +8,32 @@ describe("Cenários de testes de criação de usuário", function () {
 
   describe("Cenários de testes de criação de usuário com falhas", function () {
     email = fakerPT_BR.internet.email();
+
+    it("Não deve ser possível cadastrar usuário sem passar nenhuma informações no Request Body", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "name must be longer than or equal to 1 characters",
+            "name must be a string",
+            "name should not be empty",
+            "email must be longer than or equal to 5 characters",
+            "email must be an email",
+            "email should not be empty",
+            "password must be longer than or equal to 6 characters",
+            "password must be a string",
+            "password should not be empty",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
     it("Não deve ser possível cadastrar usuário sem informar campo nome", function () {
       cy.request({
         method: "POST",
@@ -32,7 +58,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário preenchendo campo name com string vazia", function () {
+    it("Não deve ser possível cadastrar usuário preenchendo campo nome com string vazia", function () {
       cy.request({
         method: "POST",
         url: "/api/users",
@@ -50,6 +76,53 @@ describe("Cenários de testes de criação de usuário", function () {
             "name must be longer than or equal to 1 characters",
             "name should not be empty",
           ],
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário preenchendo campo nome diferente de string", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: 123456,
+          email: email,
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: [
+            "name must be longer than or equal to 1 and shorter than or equal to 100 characters",
+            "name must be a string",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    })
+
+    it("Não deve ser possível cadastrar usuário com nome com mais de 100 caracteres", () => {
+      let nomeCaractere = "";
+      for (let i = 0; i < 101; i++) {
+        nomeCaractere += "C";
+      }
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: nomeCaractere,
+          email: email,
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["name must be shorter than or equal to 100 characters"],
+          error: "Bad Request",
           statusCode: 400,
         });
       });
@@ -124,6 +197,76 @@ describe("Cenários de testes de criação de usuário", function () {
           statusCode: 400,
         });
       });
+    });
+
+    it("Não deve ser possível cadastrar usuário com email inválido", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: "@raro.com.br",
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["email must be an email"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possível cadastrar usuário com email com mais de 60 caracteres", () => {
+      let emailCaractere = "";
+      for (let i = 0; i < 52; i++) {
+        emailCaractere += "c";
+      }
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: emailCaractere + "@raro.com",
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.equal({
+          message: ["email must be shorter than or equal to 60 characters"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
+    it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
+      let localUser
+      cy.createUser().then(function (resposta) {
+        localUser = resposta
+      }).then(function (resposta) {
+        cy.request({
+          method: "POST",
+          url: "/api/users",
+          body: {
+            name: localUser.name,
+            email: localUser.email,
+            password: localUser.password,
+          },
+          failOnStatusCode: false,
+        }).then((resposta) => {
+          expect(resposta.status).to.equal(409);
+          expect(resposta.body).to.deep.equal({
+            message: "Email already in use",
+            error: "Conflict",
+            statusCode: 409,
+          });
+        });
+      })
+
     });
 
     it("Não deve ser possível cadastrar usuário sem informar campo senha", function () {
@@ -209,145 +352,6 @@ describe("Cenários de testes de criação de usuário", function () {
           ],
           error: "Bad Request",
           statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possível cadastrar usuário sem passar nenhuma informações no Request Body", () => {
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: [
-            "name must be longer than or equal to 1 characters",
-            "name must be a string",
-            "name should not be empty",
-            "email must be longer than or equal to 5 characters",
-            "email must be an email",
-            "email should not be empty",
-            "password must be longer than or equal to 6 characters",
-            "password must be a string",
-            "password should not be empty",
-          ],
-          error: "Bad Request",
-          statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possível cadastrar usuário com email inválido", () => {
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: name,
-          email: "@raro.com.br",
-          password: password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: ["email must be an email"],
-          error: "Bad Request",
-          statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possível cadastrar usuário com nome com mais de 100 caracteres", () => {
-      let nomeCaractere = "";
-      for (let i = 0; i < 101; i++) {
-        nomeCaractere += "C";
-      }
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: nomeCaractere,
-          email: email,
-          password: password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: ["name must be shorter than or equal to 100 characters"],
-          error: "Bad Request",
-          statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possível cadastrar usuário com email com mais de 60 caracteres", () => {
-      let emailCaractere = "";
-      for (let i = 0; i < 52; i++) {
-        emailCaractere += "c";
-      }
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: name,
-          email: emailCaractere + "@raro.com",
-          password: password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: ["email must be shorter than or equal to 60 characters"],
-          error: "Bad Request",
-          statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possível cadastrar usuário preenchendo campo 'name' diferente de string", () => {
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: 123456,
-          email: email,
-          password: password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: [
-            "name must be longer than or equal to 1 and shorter than or equal to 100 characters",
-            "name must be a string",
-          ],
-          error: "Bad Request",
-          statusCode: 400,
-        });
-      });
-    });
-
-    it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
-      cy.fixture("usuarioCadastrado.json").as("usuario");
-      cy.get("@usuario").then((user) => {
-        cy.request({
-          method: "POST",
-          url: "/api/users",
-          body: {
-            name: user.name,
-            email: user.email,
-            password: user.password,
-          },
-          failOnStatusCode: false,
-        }).then((resposta) => {
-          expect(resposta.status).to.equal(409);
-          expect(resposta.body).to.deep.equal({
-            message: "Email already in use",
-            error: "Conflict",
-            statusCode: 409,
-          });
         });
       });
     });
