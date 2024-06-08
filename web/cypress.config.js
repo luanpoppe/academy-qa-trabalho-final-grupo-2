@@ -13,7 +13,7 @@ module.exports = defineConfig({
     specPattern: "**/*.feature",
     env: {
       apiUrl: "https://raromdb-3c39614e42d4.herokuapp.com",
-      // TAGS: "not @ignore",
+      TAGS: "not @ignore",
       // TAGS: "@only",
     },
     async setupNodeEvents(on, config) {

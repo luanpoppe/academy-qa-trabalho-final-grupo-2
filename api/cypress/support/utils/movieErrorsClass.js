@@ -9,6 +9,14 @@ export class MovieErrors {
 
     titleNonExistentErrors = [this.titleErrors.titleMustBeLonger, this.titleErrors.titleMustBeString, this.titleErrors.titleMustNotBeEmpty]
 
+    allTitleErrors = [
+        this.titleErrors.titleMustBeLonger,
+        this.titleErrors.titleMustBeShorter,
+        this.titleErrors.titleMustBeString,
+        this.titleErrors.titleMustNotBeEmpty,
+        this.titleErrors.titleMustBeShortherAndLonger
+    ]
+
     genreErrors = {
         genreMustBeLonger: "genre must be longer than or equal to 1 characters",
         genreMustBeString: "genre must be a string",
@@ -61,4 +69,25 @@ export class MovieErrors {
         this.releaseYearErrors.releaseYearMustNotBeEmpty
     ]
 
+    allNonExistentErrors = [
+        "title must be longer than or equal to 1 characters",
+        "title must be a string",
+        "title should not be empty",
+        "genre must be longer than or equal to 1 characters",
+        "genre must be a string",
+        "genre should not be empty",
+        "description must be longer than or equal to 1 characters",
+        "description must be a string",
+        "description should not be empty",
+        "durationInMinutes must not be greater than 43200",
+        "durationInMinutes must not be less than 1",
+        "durationInMinutes must be an integer number",
+        "durationInMinutes must be a number conforming to the specified constraints",
+        "durationInMinutes should not be empty",
+        "releaseYear must not be greater than 2024",
+        "releaseYear must not be less than 1895",
+        "releaseYear must be an integer number",
+        "releaseYear must be a number conforming to the specified constraints",
+        "releaseYear should not be empty"
+    ]
 }

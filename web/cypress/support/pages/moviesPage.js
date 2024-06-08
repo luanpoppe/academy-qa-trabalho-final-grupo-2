@@ -16,25 +16,30 @@ export default class MoviesPage {
   labelGenre = ":nth-child(6) > span";
   labelAudience = ".movie-score-info > :nth-child(1) > :nth-child(1)";
   labelQtdAudience = ".movie-score-info > :nth-child(1) > :nth-child(3)";
+
   starAudience1 = ".movie-score-info > :nth-child(1) > div > :nth-child(1)";
   starAudience2 = ".movie-score-info > :nth-child(1) > div > :nth-child(2)";
   starAudience3 = ".movie-score-info > :nth-child(1) > div > :nth-child(3)";
   starAudience4 = ".movie-score-info > :nth-child(1) > div > :nth-child(4)";
   starAudience5 = ".movie-score-info > :nth-child(1) > div > :nth-child(5)";
+
   labelCritic = ".movie-score-info > :nth-child(2) > :nth-child(1)";
   labelQtdCritic = ".movie-score-info > :nth-child(2) > :nth-child(3)";
+
   starCritic1 = ".movie-score-info > :nth-child(2) > div > :nth-child(1)";
   starCritic2 = ".movie-score-info > :nth-child(2) > div > :nth-child(2)";
   starCritic3 = ".movie-score-info > :nth-child(2) > div > :nth-child(3)";
   starCritic4 = ".movie-score-info > :nth-child(2) > div > :nth-child(4)";
   starCritic5 = ".movie-score-info > :nth-child(2) > div > :nth-child(5)";
+
   labelReview = ".movie-details-container > :nth-child(2)";
   labelStarReview = ".stars";
   inputTextReview = "[placeholder='O que você acha deste filme ?']";
-  buttonEntre = '[href="/login"]';
+  buttonEntre = '.rate-movie [href="/login"]';
+  buttonEnviarReview = ".rate-movie [type='submit']"
   labelAllReviews = ".user-reviews-section > h2";
   cardUserReview = ".user-review-card";
-  nameUserReview = "h3";
+  nameUserReview = ".user-review-card h3";
   avatarUserReview = ".avatar-img";
   starUserReview = ".user-review-info";
   textUserReview = ".user-review-card > p";
@@ -42,6 +47,17 @@ export default class MoviesPage {
   labelMovie = ".movie-card-footer";
   erroIdinválido = "h2";
   statusIdInválido = "h3";
+
+  modalError = {
+    divModal: ".modal-content",
+    titleModal: ".modal-content h3",
+    textModal: ".modal-content p",
+    buttonModal: ".modal-content button",
+  }
+
+  allReviewStars = () => {
+    return cy.get(".review-form-star")
+  }
 
   typeMovie(title) {
     cy.get(this.inputBusca).type(title);
@@ -51,5 +67,11 @@ export default class MoviesPage {
   }
   clickMovieTelaInicial() {
     cy.get(this.labelMovie).click();
+  }
+
+  visitMoviePage(movieId) {
+    cy.wait('@getUser')
+    cy.visit("/movies/" + movieId)
+    cy.wait('@getMovie')
   }
 }

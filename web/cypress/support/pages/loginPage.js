@@ -1,30 +1,38 @@
 import { fakerPT_BR } from "@faker-js/faker";
 
 export default class LoginPage {
-  inputEmail = "[placeholder='E-mail']";
-  inputSenha = "[placeholder='Password']";
+    inputEmail = "[placeholder='E-mail']";
+    inputSenha = "[placeholder='Password']";
 
-  buttonLogin = ".login-button";
-  buttonOk = ".modal-actions";
-  linkAuth = ".movies-page-link";
-  erroFormulario = ".input-error";
-  msgErro = ".error-message";
+    buttonLogin = ".login-button";
+    buttonOk = ".modal-actions";
+    linkAuth = ".movies-page-link";
+    erroFormulario = ".input-error";
+    msgErro = ".error-message";
 
-  campoForm = ".input-container";
+    campoForm = ".input-container";
 
-  typeEmail(email) {
-    cy.get(this.inputEmail).type(email);
-  }
+    typeEmail(email) {
+        cy.get(this.inputEmail).type(email);
+    }
 
-  typeSenha(senha) {
-    cy.get(this.inputSenha).type(senha);
-  }
+    typeSenha(senha) {
+        cy.get(this.inputSenha).type(senha);
+    }
 
-  clickLogin() {
-    cy.get(this.buttonLogin).click();
-  }
+    clickLogin() {
+        cy.get(this.buttonLogin).click();
+    }
 
-  clickOK() {
-    cy.get(this.buttonOk).click();
-  }
+    clickOK() {
+        cy.get(this.buttonOk).click();
+    }
+
+    login(userInfo) {
+        cy.intercept("POST", "/api/auth/login").as("login");
+        this.typeEmail(userInfo.email)
+        this.typeSenha(userInfo.password)
+        this.clickLogin()
+        // this.clickOK()
+    }
 }

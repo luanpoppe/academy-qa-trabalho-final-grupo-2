@@ -31,5 +31,20 @@ Funcionalidade: Evolução para perfil crítico
         Quando acessar a funcionalidade "List reviews"
         Então deve ser possível ver que a review foi realizada por um usuário com perfil Crítico
 
+    Cenário: Deve ser possível verificar que as reviews criadas por um usuário crítico impactam nas métricas de avaliação da crítica 
+        E se cadastrou no sistema         
+        E realizou Login
+        E se tornou um usuário Crítico
+        E criou uma review de um filme 
+        Quando acessar a funcionalidade "Find Movie"
+        Então deve ser possível visualizar que a review criada impactou nas métricas de avaliação da crítica
 
+    Cenário: Deve ser possível diferenciar os tipos de reviews feitas por um usuário, tendo ele perfil Comum e depois Crítico
+        E se cadastrou no sistema         
+        E realizou Login
+        E criou uma review de um filme 
+        E se tornou um usuário Crítico
+        E criou outra review de um filme 
+        Quando acessar a funcionalidade "List reviews"
+        Então deve ser possível ver os diferentes perfis que criaram a review
     

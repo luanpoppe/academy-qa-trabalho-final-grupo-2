@@ -1,13 +1,12 @@
 import { MovieErrors } from "../../support/utils/movieErrorsClass"
 
 describe('Criação de Filmes', function () {
-  const movie = {
-    title: "Nome do Filme",
-    genre: "Gênero do filme",
-    description: "Descrição do filme",
-    durationInMinutes: 90,
-    releaseYear: 2017
-  }
+  let movie
+  before(function () {
+    cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
+      movie = resposta
+    })
+  })
 
   describe('Usuário administrador', function () {
     let movieInfo
@@ -46,6 +45,9 @@ describe('Criação de Filmes', function () {
           expect(resposta.status).to.equal(201)
           expect(resposta.body).to.deep.include(movie)
           expect(resposta.body.id).to.be.a("number")
+          cy.getMovie(movieInfo.id).then(function (resposta) {
+            expect(resposta.body).to.deep.include(movie)
+          })
         })
       })
 
@@ -295,6 +297,24 @@ describe('Criação de Filmes', function () {
 
     })
 
+
+    it('Não deve ser possível cadastrar um filme sem passar nenhuma informação', function () {
+      cy.request({
+        method: "POST",
+        url: "/api/movies",
+        body: null,
+        auth: {
+          bearer: token
+        },
+        failOnStatusCode: false
+      }).then(function (resposta) {
+        expect(resposta.status).to.equal(400)
+        expect(resposta.body.message).to.have.length(19)
+        cy.wrap(movieErrors.titleNonExistentErrors).each(function (error) {
+          expect(resposta.body.message).to.deep.equal(movieErrors.allNonExistentErrors)
+        })
+      })
+    })
 
     describe('Casos de falha do título do filme', function () {
       it('Não deve ser possível criar um filme sem um título', function () {
