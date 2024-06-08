@@ -32,4 +32,28 @@ Funcionalidade: Evolução para perfil administrador
         Quando acessar a funcionalidade "List reviews"
         Então deve ser possível ver que a review foi realizada por um usuário com perfil Administrador
 
-   
+    Cenário: Deve ser possível verificar que as reviews criadas por um usuário administrador não impactam nas métricas de avaliação da crítica 
+        E se cadastrou no sistema         
+        E realizou Login
+        E se tornou um usuário Administrador
+        E criou uma review de um filme 
+        Quando acessar a funcionalidade "Find Movie"
+        Então deve ser possível visualizar que a review criada não impactou nas métricas de avaliação da crítica
+
+    Cenário: Deve ser possível verificar que as reviews criadas por um usuário administrador não impactam nas métricas de audiência 
+        E se cadastrou no sistema         
+        E realizou Login
+        E se tornou um usuário Administrador
+        E criou uma review de um filme 
+        Quando acessar a funcionalidade "Find Movie"
+        Então deve ser possível visualizar que a review criada não impactou nas métricas de avaliação da audiência
+
+    Cenário: Deve ser possível diferenciar os tipos de reviews feitas por um usuário, tendo ele perfil comum e depois administrador 
+        E se cadastrou no sistema         
+        E realizou Login
+        E criou uma review de um filme 
+        E se tornou um usuário Administrador
+        E criou outra review de um filme 
+        Quando acessar a funcionalidade "List reviews"
+        Então deve ser possível ver os diferentes perfis que criaram a review
+
