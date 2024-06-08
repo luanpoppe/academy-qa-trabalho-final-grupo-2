@@ -14,7 +14,8 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+// import './userCommands.js'
+// import './movieCommands.js'
 import '../../../api/cypress/support/userCommands'
 import '../../../api/cypress/support/movieCommands'
 

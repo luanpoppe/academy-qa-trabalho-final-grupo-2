@@ -39,7 +39,7 @@ export default class CadastroPage {
   }
 
   registrarUsuario(userParam) {
-    let email = fakerPT_BR.internet.email();
+    let email = fakerPT_BR.internet.email()
     let nome = fakerPT_BR.person.fullName();
     let senha = fakerPT_BR.internet.password(6);
 

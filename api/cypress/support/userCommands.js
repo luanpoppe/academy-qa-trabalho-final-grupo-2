@@ -152,9 +152,15 @@ Cypress.Commands.add("InactivateUser", function (token) {
 
 Cypress.Commands.add("createAdminUser", function () {
   cy.createUser().then(function (resposta) {
-    const user = resposta
+    let user = resposta
     cy.login(user).then(function (resposta) {
-      cy.promoteAdmin(resposta.body.accessToken)
+      user = {
+        ...user,
+        ...resposta.body
+      }
+      cy.promoteAdmin(resposta.body.accessToken).then(function () {
+        return cy.wrap(user)
+      })
     })
   })
 })
