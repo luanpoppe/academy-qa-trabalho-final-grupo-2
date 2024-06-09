@@ -128,6 +128,27 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
+    it("Não deve ser possível cadastrar usuário com nome preenchido com espaços", () => {
+      let nomeEspaco = "     ";
+
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: nomeEspaco,
+          email: email,
+          password: password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body).to.deep.include({
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+
     it("Não deve ser possível cadastrar usuário sem informar campo email", function () {
       cy.request({
         method: "POST",
@@ -199,15 +220,15 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it.only("Não deve ser possível cadastrar usuário com email inválido", () => {
+    it("Não deve ser possível cadastrar usuário com email inválido", function () {
       const listEmails = [
-        "luanpoppe",
-        "luanpoppe@",
-        "luanpoppe@gmail",
+        "carolinemaia",
+        "carolineMaia@",
+        "carole@gmail",
         "@gmail.com",
-        "luanpoppegmail.com",
-        "luanpoppe@com",
-        "luanpoppe.com",
+        "carolhotmail.com",
+        "carol@br",
+        "carolll.com",
         "     @gmail.com",
       ];
       listEmails.forEach(function (email) {
@@ -231,7 +252,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário com email com mais de 60 caracteres", () => {
+    it("Não deve ser possível cadastrar usuário com email com mais de 60 caracteres", function () {
       let emailCaractere = "";
       for (let i = 0; i < 52; i++) {
         emailCaractere += "c";
@@ -255,7 +276,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
+    it("Não deve ser possivel cadastrar usuário com email já cadastrado", function () {
       let localUser;
       cy.createUser()
         .then(function (resposta) {
@@ -268,6 +289,62 @@ describe("Cenários de testes de criação de usuário", function () {
             body: {
               name: localUser.name,
               email: localUser.email,
+              password: localUser.password,
+            },
+            failOnStatusCode: false,
+          }).then((resposta) => {
+            expect(resposta.status).to.equal(409);
+            expect(resposta.body).to.deep.equal({
+              message: "Email already in use",
+              error: "Conflict",
+              statusCode: 409,
+            });
+          });
+        });
+    });
+
+    it.only("Não deve ser possivel cadastrar usuário com email em letra minuscula utilizando email já cadastrado com letra maiuscula", function () {
+      let emailMaiusc = fakerPT_BR.internet.email().toUpperCase();
+      let localUser;
+      cy.createUser({ email: emailMaiusc })
+        .then(function (resposta) {
+          localUser = resposta;
+        })
+        .then(function () {
+          cy.request({
+            method: "POST",
+            url: "/api/users",
+            body: {
+              name: localUser.name,
+              email: emailMaiusc.toLowerCase(),
+              password: localUser.password,
+            },
+            failOnStatusCode: false,
+          }).then((resposta) => {
+            expect(resposta.status).to.equal(409);
+            expect(resposta.body).to.deep.equal({
+              message: "Email already in use",
+              error: "Conflict",
+              statusCode: 409,
+            });
+          });
+        });
+    });
+
+    it.only("Não deve ser possivel cadastrar usuário com email em letra maiuscula utilizando email já cadastrado com letra minuscula", function () {
+      let emailMinusc = fakerPT_BR.internet.email().toLowerCase();
+      let localUser;
+      cy.createUser({ email: emailMinusc })
+        .then(function (resposta) {
+          localUser = resposta;
+        })
+        .then(function () {
+          cy.request({
+            method: "POST",
+            url: "/api/users",
+            body: {
+              name: localUser.name,
+              email: emailMinusc.toUpperCase(),
               password: localUser.password,
             },
             failOnStatusCode: false,
@@ -397,8 +474,6 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body).to.deep.include({
           name: name,
           email: email,
-          type: 0,
-          active: true,
         });
         expect(resposta.body.id).to.be.a("number");
         id = resposta.body.id;
@@ -420,13 +495,13 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
-        expect(resposta.body).to.include({
-          email: email,
+        expect(resposta.body).to.deep.include({
           name: nomeCaractere,
+          email: email,
+          type: 0,
+          active: true,
         });
         expect(resposta.body.id).to.be.a("number");
-        expect(resposta.body.type).to.be.equal(0);
-        expect(resposta.body.active).to.be.equal(true);
         id = resposta.body.id;
       });
     });
@@ -453,8 +528,6 @@ describe("Cenários de testes de criação de usuário", function () {
           active: true,
         });
         expect(resposta.body.id).to.be.a("number");
-        expect(resposta.body.type).to.be.equal(0);
-        expect(resposta.body.active).to.be.equal(true);
         id = resposta.body.id;
       });
     });
@@ -472,10 +545,11 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.status).to.equal(201);
         expect(resposta.body).to.include({
           name: "C",
+          email: email,
+          type: 0,
+          active: true,
         });
         expect(resposta.body.id).to.be.a("number");
-        expect(resposta.body.type).to.be.equal(0);
-        expect(resposta.body.active).to.be.equal(true);
         id = resposta.body.id;
       });
     });
@@ -495,13 +569,13 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
-        expect(resposta.body.id).to.be.a("number");
         expect(resposta.body).to.deep.include({
           email: email,
           name: name,
           type: 0,
           active: true,
         });
+        expect(resposta.body.id).to.be.a("number");
         id = resposta.body.id;
       });
     });
@@ -519,13 +593,13 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
-        expect(resposta.body.id).to.be.a("number");
         expect(resposta.body).to.deep.include({
           email: email,
           name: name,
           type: 0,
           active: true,
         });
+        expect(resposta.body.id).to.be.a("number");
         id = resposta.body.id;
       });
     });
@@ -543,6 +617,12 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.deep.include({
+          email: email,
+          name: name,
+          type: 0,
+          active: true,
+        });
         id = resposta.body.id;
       });
     });
@@ -560,6 +640,12 @@ describe("Cenários de testes de criação de usuário", function () {
         },
       }).then((resposta) => {
         expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.deep.include({
+          email: email,
+          name: name,
+          type: 0,
+          active: true,
+        });
         id = resposta.body.id;
       });
     });
