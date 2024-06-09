@@ -90,14 +90,13 @@ When(
   }
 );
 
-//verificar como pegar esse email do user no Page
 When(
   "preenche todos os campos do formulário utilizando email com 60 caracteres",
   function () {
+    email = fakerPT_BR.internet.email();
     while (email.length < 60) {
       email += "m";
     }
-
     regisUser.registrarUsuario({ email: email }).then(function (resposta) {
       user = resposta;
     });

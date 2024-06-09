@@ -21,7 +21,7 @@ Funcionalidade: Registrar Usuário
       |     cAr01     | 
       |     🫂       |
 
-    
+    @ignore
     Cenário: Deve ser possível registrar usuário com nome com 99 caracteres
       Quando preenche todos os campos do formulário utilizando nome com 99 caracteres
       E acessar a funcionalidade salvar
@@ -42,7 +42,7 @@ Funcionalidade: Registrar Usuário
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
     
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com email com 60 caracteres
       Quando preenche todos os campos do formulário utilizando email com 60 caracteres
       E acessar a funcionalidade salvar

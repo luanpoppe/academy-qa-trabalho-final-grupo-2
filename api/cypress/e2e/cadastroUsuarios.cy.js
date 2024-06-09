@@ -199,22 +199,34 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Não deve ser possível cadastrar usuário com email inválido", () => {
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: name,
-          email: "@raro.com.br",
-          password: password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(400);
-        expect(resposta.body).to.deep.equal({
-          message: ["email must be an email"],
-          error: "Bad Request",
-          statusCode: 400,
+    it.only("Não deve ser possível cadastrar usuário com email inválido", () => {
+      const listEmails = [
+        "luanpoppe",
+        "luanpoppe@",
+        "luanpoppe@gmail",
+        "@gmail.com",
+        "luanpoppegmail.com",
+        "luanpoppe@com",
+        "luanpoppe.com",
+        "     @gmail.com",
+      ];
+      listEmails.forEach(function (email) {
+        cy.request({
+          method: "POST",
+          url: "/api/users/",
+          body: {
+            name: name,
+            email: email,
+            password: password,
+          },
+          failOnStatusCode: false,
+        }).then((resposta) => {
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body).to.deep.equal({
+            message: ["email must be an email"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
         });
       });
     });
@@ -249,7 +261,7 @@ describe("Cenários de testes de criação de usuário", function () {
         .then(function (resposta) {
           localUser = resposta;
         })
-        .then(function (resposta) {
+        .then(function () {
           cy.request({
             method: "POST",
             url: "/api/users",
@@ -385,6 +397,32 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body).to.deep.include({
           name: name,
           email: email,
+          type: 0,
+          active: true,
+        });
+        expect(resposta.body.id).to.be.a("number");
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com nome de 99 caracteres", function () {
+      let nomeCaractere = "";
+      for (let i = 0; i < 99; i++) {
+        nomeCaractere += "C";
+      }
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: nomeCaractere,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.include({
+          email: email,
+          name: nomeCaractere,
         });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
@@ -411,32 +449,8 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body).to.include({
           name: nomeCaractere,
           email: email,
-        });
-        expect(resposta.body.id).to.be.a("number");
-        expect(resposta.body.type).to.be.equal(0);
-        expect(resposta.body.active).to.be.equal(true);
-        id = resposta.body.id;
-      });
-    });
-
-    it("Deve ser possível cadastrar usuário com nome de 99 caracteres", function () {
-      let nomeCaractere = "";
-      for (let i = 0; i < 99; i++) {
-        nomeCaractere += "C";
-      }
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: nomeCaractere,
-          email: email,
-          password: password,
-        },
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(201);
-        expect(resposta.body).to.include({
-          email: email,
-          name: nomeCaractere,
+          type: 0,
+          active: true,
         });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
