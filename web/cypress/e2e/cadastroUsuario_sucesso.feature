@@ -5,7 +5,7 @@ Funcionalidade: Registrar Usuário
     Contexto: Acessar a página de cadastro de usuários
       Dado que o usuário acessou a página de cadastrar usuários
 
-    @ignore
+    
      Esquema do Cenário: Deve ser possível registrar usuário com sucesso
       Quando preenche todos os campos do formulário utilizando um nome qualquer "<nome>"
       E acessar a funcionalidade salvar
@@ -21,21 +21,21 @@ Funcionalidade: Registrar Usuário
       |     cAr01     | 
       |     🫂       |
 
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com nome com 99 caracteres
       Quando preenche todos os campos do formulário utilizando nome com 99 caracteres
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com nome com 100 caracteres
       Quando preenche todos os campos do formulário utilizando nome com 100 caracteres
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
     
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com email com 6 caracteres
       Quando preenche todos os campos do formulário utilizando email com 6 caracteres
       E acessar a funcionalidade salvar
@@ -49,28 +49,28 @@ Funcionalidade: Registrar Usuário
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com senha com 6 caracteres
       Quando preenche todos os campos do formulário utilizando senha com 6 caracteres
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
-    @ignore
+    
     Cenário: Deve ser possível registrar usuário com senha com 12 caracteres
       Quando preenche todos os campos do formulário utilizando senha com 12 caracteres
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
   
-    @ignore
+    
     Cenário: Usuário registrado com sucesso deve ser do tipo comum
       Quando preenche todos os campos do formulário utilizando um nome qualquer
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com conta do tipo comum
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
-    @ignore
+    
     Cenário: Deve ser possível está automaticamente logado após registro
       Quando preenche todos os campos do formulário utilizando um nome qualquer
       E acessar a funcionalidade salvar

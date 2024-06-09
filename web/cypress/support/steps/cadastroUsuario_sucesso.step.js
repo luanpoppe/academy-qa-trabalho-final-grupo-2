@@ -157,7 +157,9 @@ Then(
 
 Then("o usuário deve está automaticamente logado no site", function () {
   cy.intercept("POST", "/api/auth/login").as("auth");
+
   regisUser.clickOK();
+
   cy.wait("@auth").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(200);
   });
