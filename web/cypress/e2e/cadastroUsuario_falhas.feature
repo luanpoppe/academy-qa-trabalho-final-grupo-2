@@ -14,11 +14,29 @@ Funcionalidade: Registrar Usuário
         Quando preenche todos os campos do formulário exceto o campo nome
         E acessar a funcionalidade salvar
         Então o site exibe alerta de nome no formulário "Informe o nome."
+
+    Cenário: Não deve ser possível registrar usuário com nome com mais de 100 caracteres
+        Quando preenche nome com mais de 100 caracteres
+        E preencher todos os campos restante do formulário com dados válidos
+        E acessar a funcionalidade salvar
+        Então o site exibe alerta de nome no formulário "O nome deve ter no máximo 100 dígitos."
     
     Cenário: Não deve ser possível registrar usuário sem informar o e-mail
         Quando preenche todos os campos do formulário exceto o campo email
         E acessar a funcionalidade salvar
         Então o site exibe alerta de email no formulário "Informe o e-mail."
+    
+    Esquema do Cenário: Nao deve ser possível registrar um usuário com e-mail inválido
+        Quando preenche todos os campos dos formulários e utiliza email inválido "<emailinvalido>"
+        E acessar a funcionalidade salvar
+        Então o site exibe alerta de email no formulário "<alerta>"
+        Exemplos: 
+        |                      emailinvalido                           |                    alerta                     |    
+        |                          ca@b                                | Informe pelo menos 5 dígitos para o e-mail    |                                  
+        |                         123@.com                             |            Informe um e-mail válido.          |                  
+        |                        carolail.com                          |            Informe um e-mail válido.          |
+        |                      caromaia#gmail.com                      |            Informe um e-mail válido.          |
+        |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@h.com |   O e-mail deve ter no máximo 60 dígitos.     |
     
     Cenário: Não deve ser possível registrar usuário sem informar senha
         Quando preenche todos os campos do formulário exceto o campo senha
@@ -29,12 +47,6 @@ Funcionalidade: Registrar Usuário
         Quando preenche todos os campos dos formulário exceto o campo de confirmação de senha
         E acessar a funcionalidade salvar
         Então o site exibe alerta no campo de confirmação de senha no formulário "Informe a senha"
-    
-     Cenário: Não deve ser possível registrar usuário com nome com mais de 100 caracteres
-        Quando preenche nome com mais de 100 caracteres
-        E preencher todos os campos restante do formulário com dados válidos
-        E acessar a funcionalidade salvar
-        Então o site exibe alerta de nome no formulário "O nome deve ter no máximo 100 dígitos."
 
     Esquema do Cenário: Não deve ser possivel registrar um usuário com senha principal diferente do campo confirmar senha
         Quando preenche todos os campos dos formulários
@@ -69,19 +81,7 @@ Funcionalidade: Registrar Usuário
         |      1234567890111  |    1234567890111   |                               
         |     abcdefghjkltrwe |   abcdefghjkltrwe  |  
     
-     Esquema do Cenário: Nao deve ser possível registrar um usuário com e-mail inválido
-        Quando preenche todos os campos dos formulários e utiliza email inválido "<emailinvalido>"
-        E acessar a funcionalidade salvar
-        Então o site exibe alerta de email no formulário "<alerta>"
-        Exemplos: 
-        |                      emailinvalido                           |                    alerta                     |    
-        |                          ca@b                                | Informe pelo menos 5 dígitos para o e-mail    |                                  
-        |                         123@.com                             |            Informe um e-mail válido.          |                  
-        |                        carolail.com                          |            Informe um e-mail válido.          |
-        |                      caromaia#gmail.com                      |            Informe um e-mail válido.          |
-        |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@h.com |   O e-mail deve ter no máximo 60 dígitos.     |
-
-
+     
     Cenário: Não deve ser possível registrar um usuario com email ja cadastrado
         Quando preenche todos os campos do formulário e utiliza um email ja cadastrado
         E acessar a funcionalidade salvar
