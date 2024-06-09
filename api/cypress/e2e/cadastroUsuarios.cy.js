@@ -515,5 +515,39 @@ describe("Cenários de testes de criação de usuário", function () {
         id = resposta.body.id;
       });
     });
+
+    it("Deve ser possível cadastrar usuário com senha de 6 caracteres", function () {
+      password = "123456";
+
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com senha de 12 caracteres", function () {
+      password = "123456789123";
+
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        id = resposta.body.id;
+      });
+    });
   });
 });
