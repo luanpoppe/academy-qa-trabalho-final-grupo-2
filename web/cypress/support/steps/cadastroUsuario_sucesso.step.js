@@ -13,18 +13,15 @@ const regisUser = new CadastroPage();
 let senha;
 let email;
 let id;
+let user;
 
-beforeEach(() => {
-  email = fakerPT_BR.internet.email().toLowerCase();
-  senha = fakerPT_BR.internet.password(6);
-});
+// beforeEach(() => {
+//   email = fakerPT_BR.internet.email().toLowerCase();
+//   senha = fakerPT_BR.internet.password(6);
+// });
 
 afterEach(() => {
-  cy.deleteUser({
-    email: email,
-    id: id,
-    password: senha,
-  });
+  cy.deleteUser(user);
 });
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
@@ -34,10 +31,9 @@ Given("que o usuário acessou a página de cadastrar usuários", function () {
 When(
   "preenche todos os campos do formulário utilizando um nome qualquer {string}",
   function (nome) {
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(senha);
-    regisUser.typeConfSenha(senha);
+    regisUser.registrarUsuario({ name: nome }).then(function (resposta) {
+      user = resposta;
+    });
   }
 );
 
@@ -47,14 +43,35 @@ When("acessar a funcionalidade salvar", function () {
 });
 
 When(
+  "preenche todos os campos do formulário utilizando email com 6 caracteres",
+  function () {
+    regisUser.registrarUsuario({ email: "c@t.br" }).then(function (resposta) {
+      user = resposta;
+    });
+  }
+);
+
+When(
   "preenche todos os campos do formulário utilizando um nome qualquer",
   function () {
-    let nome = fakerPT_BR.person.fullName();
+    regisUser.registrarUsuario().then(function (resposta) {
+      user = resposta;
+    });
+  }
+);
 
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(senha);
-    regisUser.typeConfSenha(senha);
+When(
+  "preenche todos os campos do formulário utilizando nome com 99 caracteres",
+  function () {
+    let nomeCaractere = "";
+    for (let i = 0; i < 99; i++) {
+      nomeCaractere += "C";
+    }
+    regisUser
+      .registrarUsuario({ name: nomeCaractere })
+      .then(function (resposta) {
+        user = resposta;
+      });
   }
 );
 
@@ -65,18 +82,54 @@ When(
     for (let i = 0; i < 100; i++) {
       nomeCaractere += "C";
     }
+    regisUser
+      .registrarUsuario({ name: nomeCaractere })
+      .then(function (resposta) {
+        user = resposta;
+      });
+  }
+);
 
-    regisUser.typeNome(nomeCaractere);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(senha);
-    regisUser.typeConfSenha(senha);
+//verificar como pegar esse email do user no Page
+When(
+  "preenche todos os campos do formulário utilizando email com 60 caracteres",
+  function () {
+    while (email.length < 60) {
+      email += "m";
+    }
+
+    regisUser.registrarUsuario({ email: email }).then(function (resposta) {
+      user = resposta;
+    });
+  }
+);
+
+When(
+  "preenche todos os campos do formulário utilizando senha com 6 caracteres",
+  function () {
+    regisUser
+      .registrarUsuario({ password: "123456" })
+      .then(function (resposta) {
+        user = resposta;
+      });
+  }
+);
+
+When(
+  "preenche todos os campos do formulário utilizando senha com 12 caracteres",
+  function () {
+    regisUser
+      .registrarUsuario({ password: "123456789123" })
+      .then(function (resposta) {
+        user = resposta;
+      });
   }
 );
 
 Then("o usuario deve ser registrado com sucesso", function () {
   cy.wait("@post").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(201);
-    id = intercept.response.body.id;
+    user.id = intercept.response.body.id;
   });
 });
 

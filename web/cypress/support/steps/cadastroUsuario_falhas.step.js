@@ -9,9 +9,14 @@ import { fakerPT_BR } from "@faker-js/faker";
 import CadastroPage from "../pages/cadastroPage";
 
 const regisUser = new CadastroPage();
-let email = fakerPT_BR.internet.email();
-let nome = fakerPT_BR.person.fullName();
+let email;
+let nome;
 let senha = fakerPT_BR.internet.password(6);
+
+beforeEach(() => {
+  email = fakerPT_BR.internet.email().toLowerCase();
+  nome = fakerPT_BR.person.fullName();
+});
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");

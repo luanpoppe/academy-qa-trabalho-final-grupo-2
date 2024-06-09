@@ -102,7 +102,7 @@ describe("Cenários de testes de criação de usuário", function () {
           statusCode: 400,
         });
       });
-    })
+    });
 
     it("Não deve ser possível cadastrar usuário com nome com mais de 100 caracteres", () => {
       let nomeCaractere = "";
@@ -244,29 +244,30 @@ describe("Cenários de testes de criação de usuário", function () {
     });
 
     it("Não deve ser possivel cadastrar usuário com email já cadastrado", () => {
-      let localUser
-      cy.createUser().then(function (resposta) {
-        localUser = resposta
-      }).then(function (resposta) {
-        cy.request({
-          method: "POST",
-          url: "/api/users",
-          body: {
-            name: localUser.name,
-            email: localUser.email,
-            password: localUser.password,
-          },
-          failOnStatusCode: false,
-        }).then((resposta) => {
-          expect(resposta.status).to.equal(409);
-          expect(resposta.body).to.deep.equal({
-            message: "Email already in use",
-            error: "Conflict",
-            statusCode: 409,
+      let localUser;
+      cy.createUser()
+        .then(function (resposta) {
+          localUser = resposta;
+        })
+        .then(function (resposta) {
+          cy.request({
+            method: "POST",
+            url: "/api/users",
+            body: {
+              name: localUser.name,
+              email: localUser.email,
+              password: localUser.password,
+            },
+            failOnStatusCode: false,
+          }).then((resposta) => {
+            expect(resposta.status).to.equal(409);
+            expect(resposta.body).to.deep.equal({
+              message: "Email already in use",
+              error: "Conflict",
+              statusCode: 409,
+            });
           });
         });
-      })
-
     });
 
     it("Não deve ser possível cadastrar usuário sem informar campo senha", function () {
@@ -435,7 +436,7 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.status).to.equal(201);
         expect(resposta.body).to.include({
           email: email,
-          name: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+          name: nomeCaractere,
         });
         expect(resposta.body.id).to.be.a("number");
         expect(resposta.body.type).to.be.equal(0);
@@ -467,7 +468,7 @@ describe("Cenários de testes de criação de usuário", function () {
 
     it("Deve ser possível cadastrar usuário com email de 60 caracteres", function () {
       while (email.length < 60) {
-        email += "m"
+        email += "m";
       }
 
       cy.request({
@@ -485,14 +486,14 @@ describe("Cenários de testes de criação de usuário", function () {
           email: email,
           name: name,
           type: 0,
-          active: true
-        })
+          active: true,
+        });
         id = resposta.body.id;
       });
     });
 
     it("Deve ser possível cadastrar usuário com email de 6 caracteres", function () {
-      email = "l@g.en"
+      email = "l@g.en";
 
       cy.request({
         method: "POST",
@@ -509,8 +510,8 @@ describe("Cenários de testes de criação de usuário", function () {
           email: email,
           name: name,
           type: 0,
-          active: true
-        })
+          active: true,
+        });
         id = resposta.body.id;
       });
     });
