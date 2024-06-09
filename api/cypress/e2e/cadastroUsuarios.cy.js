@@ -303,7 +303,7 @@ describe("Cenários de testes de criação de usuário", function () {
         });
     });
 
-    it.only("Não deve ser possivel cadastrar usuário com email em letra minuscula utilizando email já cadastrado com letra maiuscula", function () {
+    it("Não deve ser possivel cadastrar usuário com email em letra minuscula utilizando email já cadastrado com letra maiuscula", function () {
       let emailMaiusc = fakerPT_BR.internet.email().toUpperCase();
       let localUser;
       cy.createUser({ email: emailMaiusc })
@@ -331,7 +331,7 @@ describe("Cenários de testes de criação de usuário", function () {
         });
     });
 
-    it.only("Não deve ser possivel cadastrar usuário com email em letra maiuscula utilizando email já cadastrado com letra minuscula", function () {
+    it("Não deve ser possivel cadastrar usuário com email em letra maiuscula utilizando email já cadastrado com letra minuscula", function () {
       let emailMinusc = fakerPT_BR.internet.email().toLowerCase();
       let localUser;
       cy.createUser({ email: emailMinusc })
