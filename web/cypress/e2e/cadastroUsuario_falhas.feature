@@ -5,7 +5,7 @@ Funcionalidade: Registrar Usuário
     Contexto: Acessar a página de cadastro de usuários
         Dado que o usuário acessou a página de cadastrar usuários
    
-    Cenário: Não deve ser possível registrar usuários sem informar nenhum campo
+    Cenário: Não deve ser possível registrar usuário sem inserir os dados no formulário
         Quando não preencher nenhum campo
         E acessar a funcionalidade salvar
         Então deve alertar no formulário os campos obrigatórios
