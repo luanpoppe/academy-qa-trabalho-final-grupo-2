@@ -9,6 +9,7 @@ Resource    ../utils/commons.robot
 ${HOME}                 xpath=//android.view.View[@content-desc="Home"]
 ${MENU}                 xpath=//android.widget.Button[@content-desc="Open navigation menu"]
 ${REGISTRO}             xpath=//android.view.View[@content-desc="Registre-se"]
+${LOGIN}             xpath=//android.view.View[@content-desc="Login"]
 ${CADASTRO}             xpath=//android.view.View[@content-desc="Cadastro"]
 ${NOME}                 xpath=//android.widget.ImageView/android.widget.EditText[1]
 ${EMAIL}                xpath=//android.widget.ImageView/android.widget.EditText[2]

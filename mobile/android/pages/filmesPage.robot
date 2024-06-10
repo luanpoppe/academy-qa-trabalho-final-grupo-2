@@ -7,5 +7,4 @@ ${primeiroFilmeDaLista}    xpath=//android.widget.FrameLayout[@resource-id="andr
 
 *** Keywords ***
 Acessar primeiro filme da lista
-    Log    ${primeiroFilmeDaLista}
     Espera elemento e clica    ${primeiroFilmeDaLista}

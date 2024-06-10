@@ -1,8 +1,15 @@
 *** Settings ***
+Library    DateTime
 
 Resource    ../../base.robot
 
 *** Keywords ***
+Clicar para voltar no celular
+    Press Keycode    4
+
+Clicar enter no celular
+    Press Keycode    66
+
 Espera elemento está visivel
     [Arguments]    ${elemento}
     Wait Until Element Is Visible    ${elemento}    10
@@ -13,8 +20,23 @@ Espera elemento e clica
     Wait Until Element Is Visible    ${elemento}    10
     Wait Until Keyword Succeeds    5    1    Click Element                    ${elemento}    
 
+Swipe para cima
+    [Arguments]    ${yInicial}=75    ${yFinal}=15    ${x}=50
+    Swipe By Percent    ${x}    ${yInicial}    ${x}    ${yFinal}
+
+Swipe para cima múltiplas vezes
+    [Arguments]    ${qtasVezesRodar}    ${yInicial}=75    ${yFinal}=15    ${x}=50
+    Set Local Variable    ${qtasVezesRodarCorreto}    ${qtasVezesRodar}+1
+    FOR    ${counter}    IN RANGE    1    ${qtasVezesRodarCorreto}
+        Swipe By Percent    ${x}    ${yInicial}    ${x}    ${yFinal}
+    END
+
 Acessa menu
     Espera elemento e clica    ${MENU}
+
+Acessa login
+    Acessa menu
+    Espera elemento e clica    ${LOGIN}
 
 Inserir dados
     [Arguments]    ${campo}    ${dado}
@@ -81,4 +103,5 @@ Preencher formulário cadastro sem senha principal e sem confirmar senha
     Inserir dados    ${NOME}          ${nomefake}
     Inserir dados    ${EMAIL}         ${emailfake}            
 
-
+Pegar e formatar data atual
+    Run Keyword And Return    Get Current Date    result_format=%d/%m/%Y
