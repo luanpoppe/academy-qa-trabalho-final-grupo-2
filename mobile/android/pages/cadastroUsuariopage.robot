@@ -10,6 +10,7 @@ ${HOME}                     xpath=//android.view.View[@content-desc="Home"]
 ${MENU}                     xpath=//android.widget.Button[@content-desc="Open navigation menu"]
 ${REGISTRO}                 xpath=//android.view.View[@content-desc="Registre-se"]
 ${CADASTRO}                 xpath=//android.view.View[@content-desc="Cadastro"]
+${LOGIN}                    xpath=//android.view.View[@content-desc="Login"]
 
 #formulário
 ${NOME}                     xpath=//android.widget.ImageView/android.widget.EditText[1]
