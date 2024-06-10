@@ -1,9 +1,6 @@
 *** Settings ***
 
 Resource    ../../base.robot
-Resource    ../utils/config.robot
-Resource    ../utils/commons.robot
-
 
 *** Variables ***
 ${HOME}                     xpath=//android.view.View[@content-desc="Home"]
@@ -31,9 +28,6 @@ ${ALERTA_EMAIL_INVALIDO}    xpath=//android.view.View[@content-desc="Informe um 
 ${ALERTA_SENHA}             xpath=//android.view.View[@content-desc="Informe uma senha."]
 ${ALERTA_CONF_SENHA}        xpath=//android.view.View[@content-desc="Confirme a senha."]
 ${ALERTA_SENHA_DIF}         xpath=//android.view.View[@content-desc="As senhas não coincidem."]
-
-
-
 
 *** Keywords ***
 Dado que o usuário acessou o aplicativo
