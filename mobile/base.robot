@@ -1,7 +1,8 @@
 *** Settings ***
 
 Library    AppiumLibrary
-Library    FakerLibrary  
+Library    FakerLibrary 
+Library    RequestsLibrary 
 
      
 

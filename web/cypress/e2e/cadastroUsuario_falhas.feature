@@ -31,7 +31,7 @@ Funcionalidade: Registrar Usuário
         E acessar a funcionalidade salvar
         Então o site exibe alerta de email no formulário "Informe o e-mail."
    
-    Cenário: Não deve ser possível registrar usuário informando email com espaços
+    Cenário: Não deve ser possível registrar usuário utilizando email informando espaços entre os caracteres
         Quando preenche todos os campos do formulário utilizando espaços no email "c   a@gmail.com"
         E acessar a funcionalidade salvar
         Então a operação de registro não poderá ser concluída exibindo o alerta "Não foi possível cadastrar o usuário."
