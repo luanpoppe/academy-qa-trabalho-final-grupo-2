@@ -9,9 +9,14 @@ import { fakerPT_BR } from "@faker-js/faker";
 import CadastroPage from "../pages/cadastroPage";
 
 const regisUser = new CadastroPage();
-let email = fakerPT_BR.internet.email();
-let nome = fakerPT_BR.person.fullName();
+let email;
+let nome;
 let senha = fakerPT_BR.internet.password(6);
+
+beforeEach(() => {
+  email = fakerPT_BR.internet.email().toLowerCase();
+  nome = fakerPT_BR.person.fullName();
+});
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
@@ -36,11 +41,28 @@ When("preenche todos os campos do formulário exceto o campo nome", function () 
 });
 
 When(
+  "preenche todos os campos do formulário utilizando espaços no nome",
+  function () {
+    regisUser.registrarUsuario({ name: "     " });
+  }
+);
+
+When(
   "preenche todos os campos do formulário exceto o campo email",
   function () {
     regisUser.typeNome(nome);
     regisUser.typeSenha(senha);
     regisUser.typeConfSenha(senha);
+  }
+);
+
+When(
+  "preenche todos os campos do formulário utilizando espaços no email {string}",
+  function (mensagem) {
+    cy.intercept("POST", "/api/users", {
+      statusCode: 400,
+    }).as("post3");
+    regisUser.registrarUsuario({ email: mensagem });
   }
 );
 
@@ -81,22 +103,14 @@ When(
 When(
   "preenche todos os campos do formulário e utiliza um email ja cadastrado",
   function () {
-    cy.intercept(
-      "POST",
-      "https://raromdb-3c39614e42d4.herokuapp.com/api/users",
-      {
-        statusCode: 409,
-        body: {
-          message: "Email already in use",
-          error: "Conflict",
-        },
-      }
-    ).as("post2");
-
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(senha);
-    regisUser.typeConfSenha(senha);
+    cy.intercept("POST", "/api/users", {
+      statusCode: 409,
+      body: {
+        message: "Email already in use",
+        error: "Conflict",
+      },
+    }).as("post2");
+    regisUser.registrarUsuario();
   }
 );
 
@@ -116,45 +130,34 @@ When(
 When(
   "preenche todos os campos dos formulários e utiliza senha menor que 6 digitos {string} {string}",
   function (mensagem) {
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(mensagem);
-    regisUser.typeConfSenha(mensagem);
+    regisUser.registrarUsuario({ password: mensagem });
   }
 );
 
 When(
   "preenche todos os campos dos formulários e utiliza senha maior que 12 digitos {string} {string}",
   function (mensagem) {
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(email);
-    regisUser.typeSenha(mensagem);
-    regisUser.typeConfSenha(mensagem);
+    regisUser.registrarUsuario({ password: mensagem });
   }
 );
 
 When(
   "preenche todos os campos dos formulários e utiliza email inválido {string}",
   function (mensagem) {
-    regisUser.typeNome(nome);
-    regisUser.typeEmail(mensagem);
-    regisUser.typeSenha(senha);
-    regisUser.typeConfSenha(senha);
+    regisUser.registrarUsuario({ email: mensagem });
   }
 );
 
 When("realiza o cadastro de usuário com sucesso", function () {
   regisUser.registrarUsuario();
+  regisUser.clickCadastrar();
   regisUser.clickOK();
 });
 
 When(
   "acessa funcionalidade salvar com os dados do usuario recém cadastrado preenchido no formulário",
   function () {
-    cy.intercept(
-      "POST",
-      "https://raromdb-3c39614e42d4.herokuapp.com/api/users"
-    ).as("post2");
+    cy.intercept("POST", "/api/users").as("post2");
     regisUser.clickCadastrar();
   }
 );
@@ -203,6 +206,16 @@ Then(
   "o site exibe alerta no campo de Confirmação de senha no formulário {string}",
   function (alerta) {
     cy.get(regisUser.erroFormulario).contains(alerta);
+  }
+);
+
+Then(
+  "a operação de registro não poderá ser concluída exibindo o alerta {string}",
+  function (alerta) {
+    cy.wait("@post3").then(function (intercept) {
+      expect(intercept.response.statusCode).to.equal(400);
+    });
+    cy.get(regisUser.mensagemCadastro).contains(alerta);
   }
 );
 

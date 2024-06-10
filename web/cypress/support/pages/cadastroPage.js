@@ -39,7 +39,7 @@ export default class CadastroPage {
   }
 
   registrarUsuario(userParam) {
-    let email = fakerPT_BR.internet.email()
+    let email = fakerPT_BR.internet.email();
     let nome = fakerPT_BR.person.fullName();
     let senha = fakerPT_BR.internet.password(6);
 
@@ -47,16 +47,15 @@ export default class CadastroPage {
       email: email,
       name: nome,
       password: senha,
-      ...userParam
-    }
+      ...userParam,
+    };
 
     cy.get(this.inputNome).type(user.name);
     cy.get(this.inputEmail).type(user.email);
     cy.get(this.inputSenha).type(user.password);
     cy.get(this.inputConfirmarSenha).type(user.password);
-    cy.get(this.buttonCadastrar).click();
+    // cy.get(this.buttonCadastrar).click();
     cy.intercept("POST", "/api/auth/login").as("auth");
-    return user
-    // cy.get(this.buttonOk).click();
+    return cy.wrap(user);
   }
 }
