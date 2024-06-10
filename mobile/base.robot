@@ -10,6 +10,7 @@ Library    RequestsLibrary
 Resource    android/utils/config.robot
 Resource    android/utils/commons.robot
 Resource    android/utils/requestsApi.robot
+Resource    android/utils/requests.robot
 
 #Pages
 Resource    android/pages/cadastroUsuariopage.robot
