@@ -37,5 +37,4 @@ Funcionalidade: Inativação da conta
         E realizou Login
         Quando acessar a funcionalidade "Find movie"
         E consultar um filme que tenha sido avaliado por um usuário já inativo
-        Então deve ser possível consultar as informações da review feita por esse usuário
-    
+        Então deve ser possível consultar as informações da review feita por esse usuário   
