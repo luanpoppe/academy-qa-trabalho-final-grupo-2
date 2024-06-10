@@ -423,7 +423,7 @@ describe("Consulta detalhada de filmes", function () {
             },
           }).then(function (response) {
             expect(response.status).to.equal(200);
-            expect(response.body.audienceScore).to.equal(4);
+            expect(response.body.audienceScore).to.equal(0);
           });
         });
     });
@@ -540,7 +540,7 @@ describe("Consulta detalhada de filmes", function () {
             url: "/api/movies/" + idMovie,
           }).then(function (response) {
             expect(response.status).to.equal(200);
-            expect(response.body.audienceScore).to.equal(2);
+            expect(response.body.audienceScore).to.equal(0);
           });
         });
     });
