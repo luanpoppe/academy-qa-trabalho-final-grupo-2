@@ -34,7 +34,11 @@ Funcionalidade: Exclusão da conta
         Quando acessar a funcionalidade "Delete User"
         Então deve ser possível excluir a própria conta
 
-
+    Cenário: Não deve ser possível visualizar as informações de uma review feita por um usuário em determinado filme, após a exclusão do usuário
+        E realizou Login
+        Quando acessar a funcionalidade "Find movie"
+        E consultar um filme que tenha sido avaliado por um usuário excluído
+        Então não deve ser possível consultar essas informações, uma vez que as reviews também são deletadas
 
 
     

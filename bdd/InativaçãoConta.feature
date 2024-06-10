@@ -33,4 +33,8 @@ Funcionalidade: Inativação da conta
         E utilizar um e-mail já utilizado por um usuário inativo
         Então o perfil do usuário será cadastrado com sucesso
 
-    
+    Cenário: Deve ser possível visualizar as informações de uma review feita por um usuário em determinado filme, mesmo depois da inativação da sua conta
+        E realizou Login
+        Quando acessar a funcionalidade "Find movie"
+        E consultar um filme que tenha sido avaliado por um usuário já inativo
+        Então deve ser possível consultar as informações da review feita por esse usuário   
