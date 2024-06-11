@@ -533,6 +533,26 @@ describe('Criação de Filmes', function () {
         })
       })
 
+      // Teste com bug --> Está sendo permitido atualizar o filme
+      it.skip('Não deve ser possível atualizar um filme com um título contendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movieUpdated,
+          title: " "
+        }
+
+        cy.request({
+          method: "PUT",
+          url: "/api/movies/" + movieInfo.id,
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+        })
+      })
+
       it('Não deve ser possível atualizar um filme com um título sendo um número', function () {
         const temporaryMovie = {
           ...movieUpdated,
@@ -586,6 +606,29 @@ describe('Criação de Filmes', function () {
         const temporaryMovie = {
           ...movieUpdated,
           genre: ""
+        }
+
+        cy.request({
+          method: "PUT",
+          url: "/api/movies/" + movieInfo.id,
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(1)
+          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustBeLonger)
+          // expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido atualizar o filme
+      it.skip('Não deve ser possível atualizar um filme contendo espaços em branco', function () {
+        const temporaryMovie = {
+          ...movieUpdated,
+          genre: " "
         }
 
         cy.request({
@@ -672,6 +715,26 @@ describe('Criação de Filmes', function () {
           // expect(resposta.body.message).to.have.length(2)
           expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeLonger)
           // expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido atualizar o filme
+      it.skip('Não deve ser possível atualizar um filme com uma descrição vazia', function () {
+        const temporaryMovie = {
+          ...movieUpdated,
+          description: " "
+        }
+
+        cy.request({
+          method: "PUT",
+          url: "/api/movies/" + movieInfo.id,
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
         })
       })
 

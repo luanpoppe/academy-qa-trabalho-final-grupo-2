@@ -297,7 +297,6 @@ describe('Criação de Filmes', function () {
 
     })
 
-
     it('Não deve ser possível cadastrar um filme sem passar nenhuma informação', function () {
       cy.request({
         method: "POST",
@@ -359,6 +358,26 @@ describe('Criação de Filmes', function () {
           expect(resposta.body.message).to.have.length(2)
           expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustBeLonger)
           expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme com um título tendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          title: " "
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
         })
       })
 
@@ -456,6 +475,26 @@ describe('Criação de Filmes', function () {
         })
       })
 
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme com gênero contendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          genre: " "
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+        })
+      })
+
       it('Não deve ser possível criar um filme com gênero sendo um número', function () {
         const temporaryMovie = {
           ...movie,
@@ -532,6 +571,29 @@ describe('Criação de Filmes', function () {
         const temporaryMovie = {
           ...movie,
           description: ""
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(2)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeLonger)
+          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme contendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: " "
         }
 
         cy.request({
