@@ -37,6 +37,7 @@ export default class MoviesPage {
   erroIdinválido = "h2";
   statusIdInválido = "h3";
 
+
   modalError = {
     divModal: ".modal-content",
     titleModal: ".modal-content h3",
@@ -128,6 +129,7 @@ export default class MoviesPage {
   clickMovieTelaInicial() {
     cy.get(this.labelMovie).click();
   }
+
 
   visitMoviePage(movieId) {
     cy.wait('@getUser')
