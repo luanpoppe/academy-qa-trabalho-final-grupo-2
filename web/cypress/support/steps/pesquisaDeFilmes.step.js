@@ -66,6 +66,10 @@ When('acessar a função de pesquisa', function () {
     paginaMovies.clickButtonBusca();
 })
 
+When('preencher o campo de pesquisa de pesquisa com um filme não cadastrado na base de dados', function () {
+    paginaMovies.typeMovie("Take back your life");
+})
+
 When('clicar no card do filme', function () {
     paginaMovies.clickLabelMovie();
 })
@@ -84,4 +88,8 @@ Then('o usuário deve ver os detalhes do filme selecionado', function () {
     cy.contains(filmeCriado.description);
     cy.contains(filmeCriado.releaseYear);
     cy.contains(filmeCriado.genre);
+})
+
+Then('o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado', function () {
+    cy.contains('p', 'Nenhum filme encontrado').should('be.visible');
 })
