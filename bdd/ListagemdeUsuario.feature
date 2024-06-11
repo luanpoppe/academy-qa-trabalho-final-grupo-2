@@ -1,4 +1,4 @@
-Funcionalidade: Listagem
+Funcionalidade: Listagem de usuários
     Como um usuário da aplicação
     Desejo poder consultar dados de todos os usuários
     Para ser capaz de melhor gerenciar o sistema
