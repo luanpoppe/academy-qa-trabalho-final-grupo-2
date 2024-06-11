@@ -55,14 +55,26 @@ When("informo as credenciais com email válido e senha incorreta", function () {
   loginUser.typeSenha("12345");
 });
 
-When("a sessão passa de 60 minutos", function () {
-  loginUser.clickLogin();
+When(
+  "realiza tentativa de atualizar dados após 60 minutos de sessão de Login",
+  function () {
+    cy.intercept("PUT", "/api/users/" + usuarioCriado.id, {
+      statusCode: 401,
+      body: {
+        message: "Access denied.",
+        error: "Unauthorized",
+        statusCode: 401,
+      },
+    });
+    loginUser.clickPerfil();
+    loginUser.clickConta();
+    loginUser.typeNome(" Carol");
+    loginUser.clickSalvar();
+  }
+);
 
-  const time = new Date().getTime(); //pegando o momento exato do login e amarezenando nessa constante time
-  cy.window().then((timeLogin) => {
-    //no then recebo esse objeto (?) com a informações do navegador pra conseguir pegar o local Storage do navegador que armazena os dados
-    timeLogin.localStorage.setItem("time", time - (60 * 60 * 1000 + 1)); //atualizo o momento do login pra maior que 60 min utilizando esse metdódo setItem
-  });
+Then("o site exibe alerta de falha na atualização", function () {
+  cy.get(loginUser.msgErro).contains("Não foi possível atualizar os dados.");
 });
 
 Then("usuário deve autenticar-se com sucesso", function () {
@@ -91,12 +103,3 @@ Then("ao clicar no botão OK deve retornar para o formulário", function () {
   cy.get(loginUser.campoForm).eq(0).should("be.visible");
   cy.get(loginUser.campoForm).eq(1).should("be.visible");
 });
-
-Then(
-  "usuário deverá ser deslogado do site retornando para a tela de login",
-  function () {
-    cy.visit("/profile");
-    cy.get(loginUser.campoForm).eq(0).should("be.visible");
-    cy.get(loginUser.campoForm).eq(1).should("be.visible");
-  }
-);

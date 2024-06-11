@@ -1,38 +1,59 @@
 import { fakerPT_BR } from "@faker-js/faker";
 
 export default class LoginPage {
-    inputEmail = "[placeholder='E-mail']";
-    inputSenha = "[placeholder='Password']";
+  inputEmail = "[placeholder='E-mail']";
+  inputSenha = "[placeholder='Password']";
+  inputName = "[placeholder='Nome']";
 
-    buttonLogin = ".login-button";
-    buttonOk = ".modal-actions";
-    linkAuth = ".movies-page-link";
-    erroFormulario = ".input-error";
-    msgErro = ".error-message";
+  buttonLogin = ".login-button";
+  buttonOk = ".modal-actions";
+  buttonSalvar = ".account-save-button";
+  linkAuth = ".movies-page-link";
+  erroFormulario = ".input-error";
+  msgErro = ".error-message";
 
-    campoForm = ".input-container";
+  perfil = "[href='/profile']";
+  conta = "[href='/account']";
 
-    typeEmail(email) {
-        cy.get(this.inputEmail).type(email);
-    }
+  campoForm = ".input-container";
 
-    typeSenha(senha) {
-        cy.get(this.inputSenha).type(senha);
-    }
+  typeEmail(email) {
+    cy.get(this.inputEmail).type(email);
+  }
 
-    clickLogin() {
-        cy.get(this.buttonLogin).click();
-    }
+  typeSenha(senha) {
+    cy.get(this.inputSenha).type(senha);
+  }
 
-    clickOK() {
-        cy.get(this.buttonOk).click();
-    }
+  typeNome(nome) {
+    cy.get(this.inputName).type(nome);
+  }
 
-    login(userInfo) {
-        cy.intercept("POST", "/api/auth/login").as("login");
-        this.typeEmail(userInfo.email)
-        this.typeSenha(userInfo.password)
-        this.clickLogin()
-        // this.clickOK()
-    }
+  clickLogin() {
+    cy.get(this.buttonLogin).click();
+  }
+
+  clickOK() {
+    cy.get(this.buttonOk).click();
+  }
+
+  clickSalvar() {
+    cy.get(this.buttonSalvar).click();
+  }
+
+  clickPerfil() {
+    cy.get(this.perfil).click();
+  }
+
+  clickConta() {
+    cy.get(this.conta).click();
+  }
+
+  login(userInfo) {
+    cy.intercept("POST", "/api/auth/login").as("login");
+    this.typeEmail(userInfo.email);
+    this.typeSenha(userInfo.password);
+    this.clickLogin();
+    // this.clickOK()
+  }
 }

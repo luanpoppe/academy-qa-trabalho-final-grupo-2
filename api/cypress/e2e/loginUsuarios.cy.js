@@ -188,6 +188,26 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
-    it("Sessão de login do usuário deve expirar em 60 min", function () {});
+    //utilizando token  que não está mais válido para tentar realizar a promoção a perfil crítico, ação que só pode ser realizada se o token ainda estiver válido
+    it("Sessão de login do usuário deve expirar em 60 min", function () {
+      const token =
+        "ayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAyNiwiZW1haWwiOiJjYXJvbEBnZ2cuY29tIiwiaWF0IjoxNzE4MTEwNTQ2LCJleHAiOjE3MTgxMTQxNDZ9.O6Q6ZAS16gdyNJgwsnr7tbgp0faRXttlqUii3b4v-00";
+
+      cy.request({
+        method: "PATCH",
+        url: "/api/users/apply",
+        auth: {
+          bearer: token,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(401);
+        expect(resposta.body).to.deep.equal({
+          error: "Unauthorized",
+          message: "Access denied.",
+          statusCode: 401,
+        });
+      });
+    });
   });
 });
