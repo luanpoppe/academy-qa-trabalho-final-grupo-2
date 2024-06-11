@@ -63,6 +63,20 @@ Quando tentar adicionar uma review em um filme pelo aplicativo
     Clicar para voltar no celular
     Espera elemento e clica    ${buttonSalvarReview}
 
+Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
+    Set Test Variable    ${localDescricaoReview}    a
+    FOR    ${counter}    IN RANGE    1    502
+        Set Test Variable    ${localDescricaoReview}    ${localDescricaoReview}a
+    END
+    Log    ${localDescricaoReview}
+    Acessar primeiro filme da lista
+    Espera elemento e clica    ${buttonAdicionarReview}
+    Dar nota a filme    3
+    Espera elemento e clica    ${inputReviewFilme}
+    Inserir dados    ${inputReviewFilme}    ${localDescricaoReview}
+    Clicar para voltar no celular
+    Espera elemento e clica    ${buttonSalvarReview}
+
 E já realizou uma review em um filme
     Quando tentar adicionar uma review em um filme pelo aplicativo
 
@@ -74,21 +88,15 @@ Quando tentar realizar uma nova review no mesmo filme
     Clicar para voltar no celular
     Espera elemento e clica    ${buttonSalvarReview}
 
-Então o filme deverá continuar com apenas uma review do usuário
+Então a review do usuário deve ser atualizada
     Clicar para voltar no celular
     Swipe para cima múltiplas vezes    4
-    # Page Should Contain Text    ${textoReviewPadrao}
     ${dataHoje}=    Pegar e formatar data atual
     Set Local Variable    ${tituloReview}    Por "${usuarioLogado}[name]" em ${dataHoje}
-    # Should Contain X Times    ${telaDetalhesFilme}    ${tituloReview}    1
-    Set Local Variable    ${local}    ${tituloReview}\nReview Atualizada
-    # Page Should Contain Element    xpath=${listaDeAvaliacoesContainer}/android.view.View[contains(@content-desc, "${local}")]
-    # Page Should Not Contain Element    xpath=${listaDeAvaliacoesContainer}/android.view.View[contains(@content-desc, "${tituloReview}\n${textoReviewPadrao}")]
-    ${listaAvaliacoesLocal}=    Get Elements    android.widget.FrameLayout    ${listaDeAvaliacoesContainer}
-    FOR    ${element}    IN    @{listaDeAvaliacoesContainer}
-        Log    ${element}
-        
-    END
+    Set Local Variable    ${localTemp}    ${tituloReview}\nReview Atualizada
+    Page Should Contain Text    ${tituloReview}
+    Page Should Contain Text    Review Atualizada
+    Page Should Not Contain Text    ${textoReviewPadrao}
 
 Então deve aparecer mensagem informando a necessidade do usuário estar logado
     Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgFacaLoginReview}
@@ -123,6 +131,9 @@ Quando tentar adicionar uma review em um filme apenas dando uma nota
     # Inserir dados    ${inputReviewFilme}    ${textoReviewPadrao}
     # Clicar para voltar no celular
     Espera elemento e clica    ${buttonSalvarReview}
+
+Então não deverá conseguir digitar mais de 500 caracteres
+    Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgNaoFoiPossivelAdicionarReview}
 
 Iniciar o teste com criação de usuário admin e filme
     Log    ${listaDeAvaliacoesContainer}

@@ -42,9 +42,19 @@ Cenário: Usuário deve poder realizar a avaliação de um filme apenas dando um
     Quando tentar adicionar uma review em um filme apenas dando uma nota
     Então a review não deve ser adicionada
 
-Cenário: Deve existir apenas uma review de um usuário em um filme
+Cenário: Deve ser possível atualizar review de um usuário em um filme
     Dado que um usuário está autenticado
     E já realizou uma review em um filme
     Quando tentar realizar uma nova review no mesmo filme
-    Então o filme deverá continuar com apenas uma review do usuário
-    # E a review do usuário deve ser atualizada
+    Então a review do usuário deve ser atualizada
+
+# Teste quebrando por estar com bug --> Ele dá mensagem de sucesso ao adicionar com 501 caracteres
+Cenário: Usuário não deve poder digitar uma avaliação contendo mais de 500 caracteres
+        Dado que um usuário está autenticado
+        Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
+        Então não deverá conseguir digitar mais de 500 caracteres
+
+teste
+    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
+    Set To Dictionary    ${filmeCriado}    id=30
+    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
