@@ -26,9 +26,12 @@ ${ALERTA_FALHA_CADASTRO}    xpath=//android.view.View[@content-desc="Ocorreu um 
 ${ALERTA_NOME}              xpath=//android.view.View[@content-desc="Informe o nome."]
 ${ALERTA_EMAIL}             xpath=//android.view.View[@content-desc="Informe o e-mail."]
 ${ALERTA_EMAIL_INVALIDO}    xpath=//android.view.View[@content-desc="Informe um e-mail válido."]
+${ALERTA_EMAIL_CAD}         xpath=//android.view.View[@content-desc="E-mail já cadastrado. Utilize outro e-mail."]
 ${ALERTA_SENHA}             xpath=//android.view.View[@content-desc="Informe uma senha."]
 ${ALERTA_CONF_SENHA}        xpath=//android.view.View[@content-desc="Confirme a senha."]
 ${ALERTA_SENHA_DIF}         xpath=//android.view.View[@content-desc="As senhas não coincidem."]
+
+${CENARIO_100_CARACT}       ${None}    
 
 *** Keywords ***
 Dado que o usuário acessou o aplicativo
@@ -55,13 +58,16 @@ Quando preenche todos os campos do formulário com dados válidos
 
 E acessa a funcionalidade salvar
     Hide Keyboard
-    Click Element    ${BUTTON_REGISTRAR}
+    Espera elemento e clica    ${BUTTON_REGISTRAR}
 
 Então usuário é registrado com mensagem de cadastro com sucesso
     Espera elemento está visivel    ${CADASTRO_SUCESSO}
+    Terminar o teste com deleção de usuário
 
 Quando preenche todos os campos do formulário utilizando email de 60 caracteres
-    Preencher formulário cadastro sem gerar email aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCB@raro.com
+    ${emailCaractere}=    Generate Random String    51
+    Preencher formulário cadastro sem gerar email aleatório    ${emailCaractere}@raro.com
+    Set Global Variable    ${CENARIO_100_CARACT}    ${True}
 
 Quando preenche todos os campos do formulário utilizando email de 6 caracteres
     Preencher formulário cadastro sem gerar email aleatório    c@r.br
@@ -85,7 +91,7 @@ Quando preenche todos os campos do formulário utilizando senha de 12 caracteres
 Quando acessa a funcionalidade salvar
     Espera elemento e clica    ${BUTTON_REGISTRAR}
 
-Então deve alertar no formulário os campos obrigatórios
+Então deve alertar no formulário os campos obrigatórios de cadastro
     Espera elemento está visivel    ${ALERTA_NOME}
     Espera elemento está visivel    ${ALERTA_EMAIL}
     Espera elemento está visivel    ${ALERTA_SENHA}
@@ -160,4 +166,21 @@ Então deve alertar no formulário que a confirmação de senha está divergente
     Espera elemento está visivel    ${ALERTA_SENHA_DIF}
 
 Quando preenche todos os campos do formulário utlizando um email já cadastrado
-    Preencher formulário cadastro sem gerar email aleatório    $ema
+    ${usuarioCadastrado}=    Criar usuário API    
+    Preencher formulário cadastro sem gerar email aleatório    ${usuarioCadastrado}[email]
+
+Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
+    Espera elemento está visivel    ${ALERTA_EMAIL_CAD}
+
+TESTE 
+    ${usuarioLocal}=    Criar usuário API
+    ${token}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${token}
+    
+    Iniciar sessão com token da API    ${token}
+    ${resposta}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta2}    ${resposta.json()}    
+    Log    ${resposta2}
+    ${result}=    Evaluate    [item for item in ${resposta2} if item["email"]=="cccccccccccccccccccccccccccccccccccccccccccccccccct@raro.com"][0]["id"]
+    Log    ${result}
+    Deletar usuário por ID    ${result}    ${token}

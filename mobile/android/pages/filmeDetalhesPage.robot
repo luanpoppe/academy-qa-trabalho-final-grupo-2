@@ -96,7 +96,23 @@ Terminar o teste com deleção de usuário e de filme
         Promover usuário para administrador    ${localToken}
         Deletar usuário    ${usuarioLogado}    ${localToken}
         Set Global Variable    ${usuarioLogado}    ${None}
+    
     END
     Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
     Deletar usuário    ${usuarioRaiz}[userInfo]    ${usuarioRaiz}[token]
     Teardown
+    
+Terminar o teste com deleção de usuário
+    ${usuarioLocal}=    Create Dictionary    email=${emailfake}    password=${senhafake}
+    ${localToken}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${localToken}
+    
+    Iniciar sessão com token da API    ${localToken}
+    ${request}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}    
+    
+    ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="${emailfake}".lower()][0]["id"]
+    Promover usuário para administrador    ${localToken}
+    Deletar usuário por ID    ${userId}    ${localToken}
+
+    

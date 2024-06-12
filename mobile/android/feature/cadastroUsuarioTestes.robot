@@ -24,6 +24,7 @@ CT003 - Deve ser possível registrar usuário com email de 60 caracteres
     Quando preenche todos os campos do formulário utilizando email de 60 caracteres
     E acessa a funcionalidade salvar
     Então usuário é registrado com mensagem de cadastro com sucesso
+    
 
 CT0 - Deve ser possível registrar usuário com email de 6 caracteres
     Dado que o usuário acessou a tela de registro de usuário
@@ -58,7 +59,7 @@ CT006 - Deve ser possível registrar usuário com senha de 12 caracteres
 CT007 - Não deve ser possível registrar usuário sem inserir os dados no formulário
     Dado que o usuário acessou a tela de registro de usuário
     Quando acessa a funcionalidade salvar
-    Então deve alertar no formulário os campos obrigatórios
+    Então deve alertar no formulário os campos obrigatórios de cadastro
 
 CT008 - Não deve ser possível registrar usuário sem informar nome
     Dado que o usuário acessou a tela de registro de usuário
@@ -103,14 +104,14 @@ CT0 - Não deve ser possível registrar usuário sem informar confirmação de s
     E acessa a funcionalidade salvar
     Então deve alertar no formulário a confirmação de senha como obrigatória
 
-#verificar esse cenário com iury
+#BUG
 CT0 - Não deve ser possível registrar usuário utilizando senha menor que 6
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha menor que 6 caracteres
     E acessa a funcionalidade salvar
     Então operação de cadastro não pode ser concluida
 
-#verificar esse cenário com iury
+#BUG
 CT0 - Não deve ser possível registrar usuário utilizando senha maior que 12
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha maior que 12 caracteres
@@ -128,7 +129,4 @@ CT0 - Não deve ser possível registrar usuário utilizando email ja cadastrado
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utlizando um email já cadastrado
     E acessa a funcionalidade salvar
-    Então operação de cadastro não pode ser concluida
-
-
-
+    Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
