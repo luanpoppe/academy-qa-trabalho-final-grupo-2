@@ -1,4 +1,4 @@
-import { ReviewErrors } from "../../support/utils/reviewErrorsClass"
+import * as re from "../../support/utils/reviewErrors"
 import { createDefaultReviewBody } from "../../support/utils/utilitaryMethods"
 
 describe('Avaliação de filmes', function () {
@@ -6,7 +6,6 @@ describe('Avaliação de filmes', function () {
   let movie
   let token
   let defaultReviewBody
-  const reviewErrors = new ReviewErrors()
 
   before(function () {
     cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
@@ -328,12 +327,12 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(6)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustNotBeEmpty)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustNotBeEmpty)
       })
     })
 
@@ -354,8 +353,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustNotBeEmpty)
       })
     })
 
@@ -375,7 +374,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -395,7 +394,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -415,7 +414,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -436,7 +435,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
       })
     })
 
@@ -456,7 +455,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -477,8 +476,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
       })
     })
 
@@ -499,8 +498,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeShorterAndLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeShorterAndLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
       })
     })
 
@@ -525,7 +524,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeShorter)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeShorter)
       })
     })
 
@@ -546,8 +545,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustNotBeEmpty)
       })
     })
 
@@ -593,7 +592,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
       })
     })
 
@@ -614,7 +613,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
       })
     })
   })
