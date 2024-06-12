@@ -145,7 +145,7 @@ Cenário: Não deve ser possível como usuário não logado atualizar os dados u
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo comum autenticado no sistema
     Dado que possuo um usuário comum cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário poderá atualizar suas informações
 
 Cenário: Deve ser possível como usuário do tipo comum alterar apenas suas próprias informações 
@@ -180,10 +180,10 @@ Cenário: Não deve ser possível como usuário do tipo comum alterar a senha do
     E acessar a função salvar
     Então o sistema exibirá a mensagem de erro "As senhas devem ser iguais."
 
-Cenário: O usuário do tipo comum deve vizualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
+Cenário: O usuário do tipo comum deve visualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
     Dado que possuo um usuário comum cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário terá acesso aos dados de nome e e-mail da sua conta
 
 Cenário: Não deve ser possível como usuário do tipo comum atualizar a senha do usuário para uma senha com < 6 dígitos
@@ -241,7 +241,7 @@ Cenário: Deve ser possível como usuário do tipo comum atualizar somente a sen
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo crítico autenticado no sistema
     Dado que possuo um usuário crítico cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário poderá atualizar suas informações
 
 Cenário: Deve ser possível como usuário do tipo crítico alterar apenas suas próprias informações 
@@ -276,10 +276,10 @@ Cenário: Não deve ser possível como usuário do tipo crítico alterar a senha
     E acessar a função salvar
     Então o sistema exibirá a mensagem de erro "As senhas devem ser iguais."
 
-Cenário: O usuário do tipo crítico deve vizualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
+Cenário: O usuário do tipo crítico deve visualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
     Dado que possuo um usuário crítico cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário terá acesso aos dados de nome e e-mail da sua conta
 
 Cenário: Não deve ser possível como usuário do tipo crítico atualizar a senha do usuário para uma senha com < 6 dígitos
@@ -336,7 +336,7 @@ Cenário: Deve ser possível como usuário do tipo crítico atualizar somente a 
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo administrador autenticado no sistema
     Dado que possuo um usuário administrador cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário poderá atualizar suas informações
 
 Cenário: Deve ser possível como usuário do tipo administrador alterar apenas suas próprias informações 
@@ -371,10 +371,10 @@ Cenário: Não deve ser possível como usuário do tipo administrador alterar a 
     E acessar a função salvar
     Então o sistema exibirá a mensagem de erro "As senhas devem ser iguais."
 
-Cenário: O usuário do tipo administrador deve vizualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
+Cenário: O usuário do tipo administrador deve visualizar os seus dados relevantes quando acessar a funcionalidade de gerenciar conta
     Dado que possuo um usuário administrador cadastrado e logado no sistema
     E que acessei a funcionalidade de gerencimaneto de conta
-    Quando vizualizar o texto "Atualize informações da sua conta."
+    Quando visualizar o texto "Atualize informações da sua conta."
     Então o usuário terá acesso aos dados de nome e e-mail da sua conta
 
 Cenário: Não deve ser possível como usuário do tipo administrador atualizar a senha do usuário para uma senha com < 6 dígitos
