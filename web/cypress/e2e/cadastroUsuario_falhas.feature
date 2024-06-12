@@ -36,6 +36,7 @@ Funcionalidade: Registrar Usuário
         E acessar a funcionalidade salvar
         Então a operação de registro não poderá ser concluída exibindo o alerta "Não foi possível cadastrar o usuário."
     
+    #BUG DA API
     Esquema do Cenário: Nao deve ser possível registrar um usuário com e-mail inválido
         Quando preenche todos os campos dos formulários e utiliza email inválido "<emailinvalido>"
         E acessar a funcionalidade salvar
@@ -46,6 +47,7 @@ Funcionalidade: Registrar Usuário
         |                         123@.com                             |            Informe um e-mail válido.          |                  
         |                        carolail.com                          |            Informe um e-mail válido.          |
         |                      caromaia#gmail.com                      |            Informe um e-mail válido.          |
+        |                      caromaia@gmai🫢l.com                    |            Informe um e-mail válido.          |
         |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@h.com |   O e-mail deve ter no máximo 60 dígitos.     |
         
     Cenário: Não deve ser possível registrar usuário sem informar senha

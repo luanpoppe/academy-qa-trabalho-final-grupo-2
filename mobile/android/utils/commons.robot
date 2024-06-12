@@ -77,7 +77,6 @@ Preencher formulário cadastro sem gerar email aleatório
     [Arguments]    ${ema}
     Log    ${ema}
     Gerar informaçoes de registro de usuario
-    Set Local Variable    ${senhafake}    123456
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
     Inserir dados    ${NOME}          ${nomefake}
@@ -110,3 +109,55 @@ Preencher formulário cadastro sem senha principal e sem confirmar senha
 
 Pegar e formatar data atual
     Run Keyword And Return    Get Current Date    result_format=%d/%m/%Y
+
+Terminar o teste com deleção de usuário quando email igual 60 caractere
+    ${usuarioLocal}=    Create Dictionary    email=${emailDelete}    password=${senhafake}
+    ${localToken}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${localToken}
+    
+    Iniciar sessão com token da API    ${localToken}
+    ${request}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}    
+    
+    ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="${emailDelete}".lower()][0]["id"]
+    Promover usuário para administrador    ${localToken}
+    Deletar usuário por ID    ${userId}    ${localToken}
+
+Terminar o teste com deleção de usuário quando email igual 6 caractere
+    ${usuarioLocal}=    Create Dictionary    email=c@b.br    password=${senhafake}
+    ${localToken}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${localToken}
+    
+    Iniciar sessão com token da API    ${localToken}
+    ${request}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}    
+    
+    ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="c@b.br".lower()][0]["id"]
+    Promover usuário para administrador    ${localToken}
+    Deletar usuário por ID    ${userId}    ${localToken}
+
+Terminar o teste com deleção de usuário quando senha igual 6 caractere
+    ${usuarioLocal}=    Create Dictionary    email=${emailfake}    password=123456
+    ${localToken}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${localToken}
+    
+    Iniciar sessão com token da API    ${localToken}
+    ${request}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}    
+    
+    ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="${emailfake}".lower()][0]["id"]
+    Promover usuário para administrador    ${localToken}
+    Deletar usuário por ID    ${userId}    ${localToken}
+
+Terminar o teste com deleção de usuário quando senha igual 12 caractere
+    ${usuarioLocal}=    Create Dictionary    email=${emailfake}    password=123456789123
+    ${localToken}=    Logar usuário API    ${usuarioLocal}
+    Promover usuário para administrador    ${localToken}
+    
+    Iniciar sessão com token da API    ${localToken}
+    ${request}    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}    
+    
+    ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="${emailfake}".lower()][0]["id"]
+    Promover usuário para administrador    ${localToken}
+    Deletar usuário por ID    ${userId}    ${localToken}

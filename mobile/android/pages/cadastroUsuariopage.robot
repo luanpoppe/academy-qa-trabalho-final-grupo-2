@@ -64,19 +64,38 @@ Então usuário é registrado com mensagem de cadastro com sucesso
     Espera elemento está visivel    ${CADASTRO_SUCESSO}
     Terminar o teste com deleção de usuário
 
-Quando preenche todos os campos do formulário utilizando email de 60 caracteres
-    ${emailCaractere}=    Generate Random String    51
-    Preencher formulário cadastro sem gerar email aleatório    ${emailCaractere}@raro.com
-    Set Global Variable    ${CENARIO_100_CARACT}    ${True}
+Então usuário é registrado com mensagem de cadastro com sucesso teste1
+    Espera elemento está visivel    ${CADASTRO_SUCESSO}
+    Terminar o teste com deleção de usuário quando email igual 60 caractere
 
-Quando preenche todos os campos do formulário utilizando email de 6 caracteres
-    Preencher formulário cadastro sem gerar email aleatório    c@r.br
+Então usuário é registrado com mensagem de cadastro com sucesso teste2
+    Espera elemento está visivel    ${CADASTRO_SUCESSO}
+    Terminar o teste com deleção de usuário quando email igual 6 caractere
 
-Quando preenche todos os campos do formulário utilizando nome de 100 caracteres
-    Preencher formulário cadastro sem nome aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+Então usuário é registrado com mensagem de cadastro com sucesso teste3
+    Espera elemento está visivel    ${CADASTRO_SUCESSO}
+    Terminar o teste com deleção de usuário quando senha igual 6 caractere
+
+Então usuário é registrado com mensagem de cadastro com sucesso teste4
+    Espera elemento está visivel    ${CADASTRO_SUCESSO}
+    Terminar o teste com deleção de usuário quando senha igual 12 caractere
 
 Quando preenche todos os campos do formulário utilizando nome de 99 caracteres
-    Preencher formulário cadastro sem nome aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+    ${nomeCaractere}=    Generate Random String    99
+    Preencher formulário cadastro sem nome aleatório    ${nomeCaractere}
+
+Quando preenche todos os campos do formulário utilizando nome de 100 caracteres
+    ${nomeCaractere}=    Generate Random String    100
+    Preencher formulário cadastro sem nome aleatório    ${nomeCaractere}
+
+Quando preenche todos os campos do formulário utilizando email de 60 caracteres
+    ${emailCaractere}=    Generate Random String    51
+    Set Global Variable    ${emailDelete}    ${emailCaractere}@raro.com
+    Preencher formulário cadastro sem gerar email aleatório    ${emailCaractere}@raro.com
+
+Quando preenche todos os campos do formulário utilizando email de 6 caracteres
+    Preencher formulário cadastro sem gerar email aleatório    c@b.br
 
 Quando preenche todos os campos do formulário utilizando senha de 6 caracteres
     Preencher formulário cadastro sem senha principal e sem confirmar senha
@@ -172,6 +191,19 @@ Quando preenche todos os campos do formulário utlizando um email já cadastrado
 Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
     Espera elemento está visivel    ${ALERTA_EMAIL_CAD}
 
+Quando preenche todos os campos do formulário utilizando espaços no campo email
+    Preencher formulário cadastro sem gerar email aleatório    carol@gmail
+    Espera elemento e clica    ${EMAIL}
+    Press Keycode    62
+    Press Keycode    62
+    Inserir dados    ${EMAIL}    .com
+    
+Então deve alertar no formulário quantidade mínima de senha
+    Espera elemento está visivel    A senha deve ter pelo menos 6 dígitos.
+
+Então deve alertar no formulário quantidade máxima de senha
+    Espera elemento está visivel    A senha deve ter no máximo 12 dígitos.
+
 TESTE 
     ${usuarioLocal}=    Criar usuário API
     ${token}=    Logar usuário API    ${usuarioLocal}
@@ -184,3 +216,4 @@ TESTE
     ${result}=    Evaluate    [item for item in ${resposta2} if item["email"]=="cccccccccccccccccccccccccccccccccccccccccccccccccct@raro.com"][0]["id"]
     Log    ${result}
     Deletar usuário por ID    ${result}    ${token}
+

@@ -128,6 +128,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
+    //BUG
     it("Não deve ser possível cadastrar usuário com nome preenchido com espaços", () => {
       let nomeEspaco = "     ";
 
@@ -220,6 +221,7 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
+    //BUG
     it("Não deve ser possível cadastrar usuário com email inválido", function () {
       const listEmails = [
         "carolinemaia",
@@ -230,6 +232,7 @@ describe("Cenários de testes de criação de usuário", function () {
         "carol@br",
         "carolll.com",
         "     @gmail.com",
+        "carol@g😅mail.com",
       ];
       listEmails.forEach(function (email) {
         cy.request({

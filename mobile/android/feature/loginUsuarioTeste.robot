@@ -23,26 +23,26 @@ CT003 - Usuário não deve conseguir autenticar-se sem informar e-mail
     E acessa funcionalidade login
     Então deve alertar no formulário o campo Email como obrigatório
 
-CT004 - Usuário não deve conseguir autenticar-se sem informar senha
-    Dado que o usuário acessa a tela de login
-    Quando informa as credenciais exceto campo Senha
-    E acessa funcionalidade login
-    Então deve alertar no formulário o campo Senha como obrigatória
-
-CT005 - Usuário não deve conseguir autenticar-se sem informar os campos obrigatórios
-    Dado que o usuário acessa a tela de login
-    Quando não informa Email e Senha
-    E acessa funcionalidade login
-    Então deve alertar no formulário os campos obrigatórios de login
-
-CT006 - Usuário não deve conseguir autenticar-se com e-mail não cadastrado
+CT004 - Usuário não deve conseguir autenticar-se com e-mail não cadastrado
     Dado que o usuário acessa a tela de login
     Quando informa as credenciais utilizando email não cadastrado
     E acessa funcionalidade login
     Então o site deve exibir alerta de usuário ou senha inválidos
 
-CT007 - Usuário não deve conseguir autenticar-se com senha incorreta
+CT005 - Usuário não deve conseguir autenticar-se sem informar senha
+    Dado que o usuário acessa a tela de login
+    Quando informa as credenciais exceto campo Senha
+    E acessa funcionalidade login
+    Então deve alertar no formulário o campo Senha como obrigatória
+
+CT006 - Usuário não deve conseguir autenticar-se com senha incorreta
     Dado que o usuário acessa a tela de login
     Quando informa as credenciais utilizando senha incorreta
     E acessa funcionalidade login
     Então o site deve exibir alerta de usuário ou senha inválidos
+
+CT007 - Usuário não deve conseguir autenticar-se sem informar os campos obrigatórios
+    Dado que o usuário acessa a tela de login
+    Quando não informa Email e Senha
+    E acessa funcionalidade login
+    Então deve alertar no formulário os campos obrigatórios de login
