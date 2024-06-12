@@ -16,16 +16,13 @@ var usuarioCriado;
 var token;
 
 before(function () {
-    cy.createUserAndMovie({
-        title: "Os 101 Dálmatas",
-        genre: "Animação",
-        description: "A estilista Anita e Roger, um escritor de jogos de computadores, se encontram, se apaixonam e se casam, juntamente com seus dálmatas Pongo e Perdita. Esta versão é explorada do ponto de vista de Timão (Nathan Lane) e Pumba (Ernie Sabella) e mostra como os dois se tornaram amigos.",
-        durationInMinutes: 103,
-        releaseYear: 1996
-    }).then((response) => {
-        filmeCriado = response.movie.body;
-        usuarioCriado = response.user;
-    });
+    cy.fixture("./requests/bodyNewMovie3").then(function (filme) {
+        cy.createUserAndMovie(filme).then((response) => {
+            filmeCriado = response.movie.body;
+            usuarioCriado = response.user;
+        });
+    })
+
 });
 
 after(function () {
@@ -59,8 +56,13 @@ When('preencher o campo de pesquisa de filmes com o título completo do filme ca
 })
 
 When('preencher o campo de pesquisa de filmes com parte do título de um filme cadastrado', function () {
+    const tituloFilme = filmeCriado.title
+    if (tituloFilme.length > 4) {
+        paginaMovies.typeMovie(tituloFilme.slice(0, 4));
+    } else {
+        paginaMovies.typeMovie(tituloFilme.slice(0, 2));
+    }
 
-    paginaMovies.typeMovie("101");
 })
 
 When('acessar a função de pesquisa', function () {

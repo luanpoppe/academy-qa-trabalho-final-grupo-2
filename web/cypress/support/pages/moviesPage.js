@@ -113,7 +113,7 @@ export default class MoviesPage {
   }
 
   clickLabelMovie() {
-    cy.get(this.labelMovie).click();
+    cy.get(this.labelMovie).eq(0).click();
   }
 
   clickButtonLogo() {
