@@ -5,6 +5,8 @@ Como uma pessoa qualquer acessando o sistema
 Desejo poder consultar mais detalhes de um filme
 Para pode visualizar todas as informações registradas para aquele filme
 
+#API
+
 Cenário: Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido
     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
     E acessou o método GET /api/movies/{id}
@@ -60,7 +62,6 @@ Cenário: Não deve retornar dados do filme quando um usuário do tipo administr
     Quando preencher um Id de filme inexistente
     E enviar a requisição
     Então a API deverá retornar o status code 200 e não retorna as informações detalhadas do filme
-
 
 Cenário: Deve ser possível um usuário do tipo comum retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente
     Dado que o usuário do tipo comum esta logado e autenticado na API Raromdb
@@ -166,7 +167,7 @@ Cenário: Deve ser possível um usuário do tipo não logado retornar um totaliz
 
 
 
-
+#FRONT
 
 Cenário: Deve ser possível visualizar a quantidade de avaliações realizadas por usuários comuns ao consultar um filme detalhadamente
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
