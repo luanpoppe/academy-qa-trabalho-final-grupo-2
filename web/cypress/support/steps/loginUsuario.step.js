@@ -25,35 +25,38 @@ Given("que o usuário acessou a página de Login", function () {
   cy.visit("login");
 });
 
-When("informo as credenciais cadastradas", function () {
+When("o usuário informa as credenciais cadastradas", function () {
   loginUser.typeEmail(usuarioCriado.email);
   loginUser.typeSenha(usuarioCriado.password);
 });
 
-When("acesso a funcionalidade salvar", function () {
+When("acessa a funcionalidade salvar", function () {
   cy.intercept("POST", "/api/auth/login").as("auth");
   loginUser.clickLogin();
 });
 
-When("informo as credenciais exceto campo email", function () {
+When("o usuário informa as credenciais exceto campo email", function () {
   cy.get(loginUser.inputEmail).invoke("val").should("be.empty");
   loginUser.typeSenha(usuarioCriado.password);
 });
 
-When("informo as credenciais exceto campo senha", function () {
+When("o usuário informa as credenciais exceto campo senha", function () {
   loginUser.typeEmail(usuarioCriado.email);
   cy.get(loginUser.inputSenha).invoke("val").should("be.empty");
 });
 
-When("informo as credenciais com email não cadastrado", function () {
+When("o usuário informa as credenciais com email não cadastrado", function () {
   loginUser.typeEmail("essesemailnaoexiste@g234.com");
   loginUser.typeSenha(usuarioCriado.password);
 });
 
-When("informo as credenciais com email válido e senha incorreta", function () {
-  loginUser.typeEmail(usuarioCriado.email);
-  loginUser.typeSenha("12345");
-});
+When(
+  "o usuário informa as credenciais com email válido e senha incorreta",
+  function () {
+    loginUser.typeEmail(usuarioCriado.email);
+    loginUser.typeSenha("12345");
+  }
+);
 
 When(
   "realiza tentativa de atualizar dados após 60 minutos de sessão de Login",
