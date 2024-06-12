@@ -3,8 +3,9 @@
 import { faker } from "@faker-js/faker";
 
 var user;
-var token;
 var userCriado;
+var newName = faker.person.firstName() + " teste";
+var newPassword = faker.internet.password(8);
 
 describe("Gerenciar conta", () => {
   before(() => {
@@ -26,7 +27,148 @@ describe("Gerenciar conta", () => {
     after(() => {
       cy.deleteUser(userCriado);
     });
-    it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido", () => {});
+    it("Deve ser possível como usuário do tipo comum atualizar apenas as próprias informações de nome e senha", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+        }).then(function (response) {
+          userCriado.password = newPassword;
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.eq({
+            id: userCriado.id,
+            name: newName,
+            email: userCriado.email,
+            type: 0,
+            active: true,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo comum atualizar as informações de outro usuário", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + user.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          userCriado.password = newPassword;
+          expect(response.status).to.equal(403);
+          expect(response.body).to.deep.eq({
+            message: "Forbidden",
+            statusCode: 403,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo comum atualizar sua senha para uma senha com < 6 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "12345",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["password must be longer than or equal to 6 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo comum atualizar sua senha para uma senha com > 12 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "1234567891011",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: [
+              "password must be shorter than or equal to 12 characters",
+            ],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo comum atualizar seu nome para um nome com < 1 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "",
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be longer than or equal to 1 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo comum atualizar seu nome para um nome com > 100 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "T".repeat(101),
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be shorter than or equal to 100 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
   });
 
   describe("Usuario crítico", () => {
@@ -44,7 +186,148 @@ describe("Gerenciar conta", () => {
     after(function () {
       cy.deleteUser(userCriado);
     });
-    it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido", () => {});
+    it("Deve ser possível como usuário do tipo crítico atualizar apenas as próprias informações de nome e senha", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+        }).then(function (response) {
+          userCriado.password = newPassword;
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.eq({
+            id: userCriado.id,
+            name: newName,
+            email: userCriado.email,
+            type: 2,
+            active: true,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo crítico atualizar as informações de outro usuário", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + user.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          userCriado.password = newPassword;
+          expect(response.status).to.equal(403);
+          expect(response.body).to.deep.eq({
+            message: "Forbidden",
+            statusCode: 403,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo crítico atualizar sua senha para uma senha com < 6 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "12345",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["password must be longer than or equal to 6 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo crítico atualizar sua senha para uma senha com > 12 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "1234567891011",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: [
+              "password must be shorter than or equal to 12 characters",
+            ],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo crítico atualizar seu nome para um nome com < 1 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "",
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be longer than or equal to 1 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo crítico atualizar seu nome para um nome com > 100 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "T".repeat(101),
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be shorter than or equal to 100 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
   });
   describe("Usuario administrador", () => {
     before(() => {
@@ -61,10 +344,170 @@ describe("Gerenciar conta", () => {
     after(function () {
       cy.deleteUser(userCriado);
     });
-    it("Deve ser possível um usuário do tipo comum realizar uma consulta detalhada de filmes com Id válido", () => {});
+    it("Deve ser possível como usuário do tipo administrador atualizar as próprias informações de nome e senha", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+        }).then(function (response) {
+          userCriado.password = newPassword;
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.eq({
+            id: userCriado.id,
+            name: newName,
+            email: userCriado.email,
+            type: 1,
+            active: true,
+          });
+        });
+      });
+    });
+    it("Deve ser possível como usuário do tipo administrador atualizar as informações de outro usuário", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + user.id,
+          body: {
+            name: newName,
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+        }).then(function (response) {
+          user.password = newPassword;
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.eq({
+            id: user.id,
+            name: newName,
+            email: user.email,
+            type: 1,
+            active: true,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo administrador atualizar sua senha para uma senha com < 6 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "12345",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["password must be longer than or equal to 6 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo administrador atualizar sua senha para uma senha com > 12 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: newName,
+            password: "1234567891011",
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: [
+              "password must be shorter than or equal to 12 characters",
+            ],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo administrador atualizar seu nome para um nome com < 1 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "",
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be longer than or equal to 1 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo administrador atualizar seu nome para um nome com > 100 dígitos", () => {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "PUT",
+          url: "/api/users/" + userCriado.id,
+          body: {
+            name: "T".repeat(101),
+            password: newPassword,
+          },
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.eq({
+            message: ["name must be shorter than or equal to 100 characters"],
+            error: "Bad Request",
+            statusCode: 400,
+          });
+        });
+      });
+    });
   });
 
   describe("Usuario não logado", function () {
-    it("Deve ser possível um usuário não logado realizar uma consulta detalhada de filmes com Id válido", () => {});
+    it("Não deve ser possível como usuário não logado atualizar os dados um usuário cadastrado", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: {
+          name: newName,
+          password: newPassword,
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(401);
+        expect(response.body).to.deep.eq({
+          message: "Access denied.",
+          error: "Unauthorized",
+          statusCode: 401,
+        });
+      });
+    });
   });
 });
