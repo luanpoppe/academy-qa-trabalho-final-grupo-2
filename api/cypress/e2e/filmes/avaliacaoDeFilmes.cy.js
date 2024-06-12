@@ -158,6 +158,7 @@ describe('Avaliação de filmes', function () {
         })
       })
 
+      // Teste com bug --> Está criando uma review como se fosse do tipo administrador, sendo que deveria ser do tipo crítico
       it.skip('A review feita por um usuário crítico deve ser do tipo crítico', function () {
         cy.promoteCritic(localToken)
 
@@ -181,6 +182,7 @@ describe('Avaliação de filmes', function () {
         })
       })
 
+      // Teste com bug --> Está criando uma review como se fosse do tipo comum, sendo que deveria ser do tipo administrador
       it.skip('A review feita por um usuário administrador deve ser do tipo administrador', function () {
         cy.promoteAdmin(localToken)
 
