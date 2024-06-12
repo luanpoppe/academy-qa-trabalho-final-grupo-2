@@ -37,10 +37,11 @@ Cenário: Usuário não deve poder realizar a avaliação de um filme sem defini
     Quando tentar adicionar uma review em um filme sem definir uma nota
     Então a review não deve ser adicionada
 
+#Teste quebrando por estar com bug --> A review devia ser cadastrada, mas não está sendo (problema raiz é na API)
 Cenário: Usuário deve poder realizar a avaliação de um filme apenas dando uma nota para o filme
     Dado que um usuário está autenticado
     Quando tentar adicionar uma review em um filme apenas dando uma nota
-    Então a review não deve ser adicionada
+    Então a review deve ser cadastrada com sucesso
 
 Cenário: Deve ser possível atualizar review de um usuário em um filme
     Dado que um usuário está autenticado
