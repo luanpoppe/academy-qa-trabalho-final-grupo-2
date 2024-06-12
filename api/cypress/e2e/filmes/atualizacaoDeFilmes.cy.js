@@ -302,8 +302,7 @@ describe('Criação de Filmes', function () {
           body: temporaryMovie,
           auth: {
             bearer: token
-          },
-          failOnStatusCode: false
+          }
         }).then(function (resposta) {
           expect(resposta.status).to.equal(204)
         })
@@ -321,8 +320,7 @@ describe('Criação de Filmes', function () {
           body: temporaryMovie,
           auth: {
             bearer: token
-          },
-          failOnStatusCode: false
+          }
         }).then(function (resposta) {
           expect(resposta.status).to.equal(204)
         })
@@ -340,8 +338,7 @@ describe('Criação de Filmes', function () {
           body: temporaryMovie,
           auth: {
             bearer: token
-          },
-          failOnStatusCode: false
+          }
         }).then(function (resposta) {
           expect(resposta.status).to.equal(204)
         })
@@ -359,8 +356,7 @@ describe('Criação de Filmes', function () {
           body: temporaryMovie,
           auth: {
             bearer: token
-          },
-          failOnStatusCode: false
+          }
         }).then(function (resposta) {
           expect(resposta.status).to.equal(204)
         })
@@ -378,8 +374,7 @@ describe('Criação de Filmes', function () {
           body: temporaryMovie,
           auth: {
             bearer: token
-          },
-          failOnStatusCode: false
+          }
         }).then(function (resposta) {
           expect(resposta.status).to.equal(204)
         })

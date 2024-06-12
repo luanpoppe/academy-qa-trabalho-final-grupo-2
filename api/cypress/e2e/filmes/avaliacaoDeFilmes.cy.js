@@ -100,8 +100,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: localToken
         },
-        body: defaultReviewBody,
-        failOnStatusCode: false,
+        body: defaultReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
         cy.getMovie(movie.id).then(function (resposta) {
@@ -124,8 +123,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: localToken
         },
-        body: defaultReviewBody,
-        failOnStatusCode: false,
+        body: defaultReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
         cy.getMovie(movie.id).then(function (resposta) {
@@ -222,8 +220,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
@@ -241,8 +238,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
@@ -260,8 +256,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
@@ -283,8 +278,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
