@@ -3,7 +3,7 @@
 Funcionalidade: Gerenciar conta
 Como um usuário do sistema
 Desejo poder gerenciar minha conta
-Para ter controle sobreminhas informações
+Para ter controle sobre minhas informações
 
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo comum autenticado no sistema
 Dado que possuo um usuário comum cadastrado e logado no sistema
