@@ -64,48 +64,26 @@ Então usuário é registrado com mensagem de cadastro com sucesso
     Espera elemento está visivel    ${CADASTRO_SUCESSO}
     Terminar o teste com deleção de usuário
 
-Então usuário é registrado com mensagem de cadastro com sucesso teste1
-    Espera elemento está visivel    ${CADASTRO_SUCESSO}
-    Terminar o teste com deleção de usuário quando email igual 60 caractere
-
-Então usuário é registrado com mensagem de cadastro com sucesso teste2
-    Espera elemento está visivel    ${CADASTRO_SUCESSO}
-    Terminar o teste com deleção de usuário quando email igual 6 caractere
-
-
-Então usuário é registrado com mensagem de cadastro com sucesso teste3
-    Espera elemento está visivel    ${CADASTRO_SUCESSO}
-    Terminar o teste com deleção de usuário quando senha igual 6 caractere
-
-Então usuário é registrado com mensagem de cadastro com sucesso teste4
-    Espera elemento está visivel    ${CADASTRO_SUCESSO}
-    Terminar o teste com deleção de usuário quando senha igual 12 caractere
-
 Quando preenche todos os campos do formulário utilizando nome de 99 caracteres
     ${nomeCaractere}=    Generate Random String    99
-    Preencher formulário cadastro sem nome aleatório    ${nomeCaractere}
+    Preencher formulário cadastro    nomeLocal=${nomeCaractere}
 
 Quando preenche todos os campos do formulário utilizando nome de 100 caracteres
     ${nomeCaractere}=    Generate Random String    100
-    Preencher formulário cadastro sem nome aleatório    ${nomeCaractere}
+    Preencher formulário cadastro    nomeLocal=${nomeCaractere}    
 
 Quando preenche todos os campos do formulário utilizando email de 60 caracteres
     ${emailCaractere}=    Generate Random String    51
-    Set Global Variable    ${emailDelete}    ${emailCaractere}@raro.com
-    Preencher formulário cadastro sem gerar email aleatório    ${emailCaractere}@raro.com
+    Preencher formulário cadastro    emailLocal=${emailCaractere}@raro.com
 
 Quando preenche todos os campos do formulário utilizando email de 6 caracteres
-    Preencher formulário cadastro sem gerar email aleatório    c@b.br
+    Preencher formulário cadastro    emailLocal=c@t.br  
 
 Quando preenche todos os campos do formulário utilizando senha de 6 caracteres
-    Preencher formulário cadastro sem senha principal e sem confirmar senha
-    Inserir dados    ${SENHA}         123456
-    Inserir dados    ${CONF_SENHA}    123456
+    Preencher formulário cadastro    senhaLocal=123456
 
 Quando preenche todos os campos do formulário utilizando senha de 12 caracteres
-    Preencher formulário cadastro sem senha principal e sem confirmar senha
-    Inserir dados    ${SENHA}         123456789123
-    Inserir dados    ${CONF_SENHA}    123456789123
+    Preencher formulário cadastro    senhaLocal=123456789123
 
 Quando acessa a funcionalidade salvar
     Espera elemento e clica    ${BUTTON_REGISTRAR}
@@ -141,16 +119,17 @@ Então deve alertar no formulário o campo Email como obrigatório
     Espera elemento está visivel    ${ALERTA_EMAIL}
 
  Quando preenche todos os campos do formulário utilizando email inválido
-    Preencher formulário cadastro sem gerar email aleatório    carol@.com
+    Preencher formulário cadastro    emailLocal=carol@.com
 
 Quando preenche todos os campos do formulário utilizando email com espaços entre os caracteres
-    Preencher formulário cadastro sem gerar email aleatório    c${SPACE}a@gmail.com
+    Preencher formulário cadastro    emailLocal=c${SPACE}a@gmail.com
 
 Então deve alertar no formulário o campo Email como inválido
     Espera elemento está visivel    ${ALERTA_EMAIL_INVALIDO}
 
 Quando preenche todos os campos do formulário exceto campo senha principal
     Preencher formulário cadastro sem senha principal e sem confirmar senha
+    Hide Keyboard   
     Inserir dados    ${CONF_SENHA}    123456
 
 Então deve alertar no formulário o campo Senha como obrigatório
@@ -186,17 +165,10 @@ Então deve alertar no formulário que a confirmação de senha está divergente
 
 Quando preenche todos os campos do formulário utlizando um email já cadastrado
     ${usuarioCadastrado}=    Criar usuário API    
-    Preencher formulário cadastro sem gerar email aleatório    ${usuarioCadastrado}[email]
+    Preencher formulário cadastro    emailLocal=${usuarioCadastrado}[email]
 
 Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
     Espera elemento está visivel    ${ALERTA_EMAIL_CAD}
-
-Quando preenche todos os campos do formulário utilizando espaços no campo email
-    Preencher formulário cadastro sem gerar email aleatório    carol@gmail
-    Espera elemento e clica    ${EMAIL}
-    Press Keycode    62
-    Press Keycode    62
-    Inserir dados    ${EMAIL}    .com
     
 Então deve alertar no formulário quantidade mínima de senha
     Espera elemento está visivel    A senha deve ter pelo menos 6 dígitos.
@@ -204,16 +176,4 @@ Então deve alertar no formulário quantidade mínima de senha
 Então deve alertar no formulário quantidade máxima de senha
     Espera elemento está visivel    A senha deve ter no máximo 12 dígitos.
 
-TESTE 
-    ${usuarioLocal}=    Criar usuário API
-    ${token}=    Logar usuário API    ${usuarioLocal}
-    Promover usuário para administrador    ${token}
-    
-    Iniciar sessão com token da API    ${token}
-    ${resposta}    GET On Session    alias=api    url=/api/users
-    Set Local Variable    ${resposta2}    ${resposta.json()}    
-    Log    ${resposta2}
-    ${result}=    Evaluate    [item for item in ${resposta2} if item["email"]=="cccccccccccccccccccccccccccccccccccccccccccccccccct@raro.com"][0]["id"]
-    Log    ${result}
-    Deletar usuário por ID    ${result}    ${token}
 

@@ -31,34 +31,29 @@ CT004 - Deve ser possível registrar usuário com nome de 100 caracteres
     E acessa a funcionalidade salvar
     Então usuário é registrado com mensagem de cadastro com sucesso
 
-#Verificar como melhorar
 CT005 - Deve ser possível registrar usuário com email de 6 caracteres
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando email de 6 caracteres
     E acessa a funcionalidade salvar
-    Então usuário é registrado com mensagem de cadastro com sucesso teste2
+    Então usuário é registrado com mensagem de cadastro com sucesso
 
-#Verificar como melhorar
 CT006 - Deve ser possível registrar usuário com email de 60 caracteres
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando email de 60 caracteres
     E acessa a funcionalidade salvar
-    Então usuário é registrado com mensagem de cadastro com sucesso teste1
+    Então usuário é registrado com mensagem de cadastro com sucesso
 
-#Verificar como melhorar
 CT007 - Deve ser possível registrar usuário com senha de 6 caracteres
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha de 6 caracteres
     E acessa a funcionalidade salvar
-    Então usuário é registrado com mensagem de cadastro com sucesso teste3
+    Então usuário é registrado com mensagem de cadastro com sucesso
 
-#Verificar como melhorar
 CT008 - Deve ser possível registrar usuário com senha de 12 caracteres
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha de 12 caracteres
     E acessa a funcionalidade salvar
-    Então usuário é registrado com mensagem de cadastro com sucesso teste4
-
+    Então usuário é registrado com mensagem de cadastro com sucesso
 
 CT007 - Não deve ser possível registrar usuário sem inserir os dados no formulário
     Dado que o usuário acessou a tela de registro de usuário
