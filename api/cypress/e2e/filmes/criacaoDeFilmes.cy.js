@@ -380,7 +380,7 @@ describe('Criação de Filmes', function () {
         })
       })
 
-      it('Não deve ser possível criar um filme com um título sendo um número', function () {
+      it('Não deve ser possível criar um filme com um título sem ser uma string', function () {
         const temporaryMovie = {
           ...movie,
           title: 1234
@@ -494,7 +494,7 @@ describe('Criação de Filmes', function () {
         })
       })
 
-      it('Não deve ser possível criar um filme com gênero sendo um número', function () {
+      it('Não deve ser possível criar um filme com gênero sem ser uma string', function () {
         const temporaryMovie = {
           ...movie,
           genre: 1234
@@ -611,7 +611,7 @@ describe('Criação de Filmes', function () {
         })
       })
 
-      it('Não deve ser possível criar um filme com a descrição sendo um número', function () {
+      it('Não deve ser possível criar um filme com a descrição sem ser uma string', function () {
         const temporaryMovie = {
           ...movie,
           description: 1234
