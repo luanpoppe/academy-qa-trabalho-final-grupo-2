@@ -68,7 +68,19 @@ Quando tentar realizar uma nova review com um texto contendo mais de 500 caracte
     FOR    ${counter}    IN RANGE    1    502
         Set Test Variable    ${localDescricaoReview}    ${localDescricaoReview}a
     END
-    Log    ${localDescricaoReview}
+    Acessar primeiro filme da lista
+    Espera elemento e clica    ${buttonAdicionarReview}
+    Dar nota a filme    3
+    Espera elemento e clica    ${inputReviewFilme}
+    Inserir dados    ${inputReviewFilme}    ${localDescricaoReview}
+    Clicar para voltar no celular
+    Espera elemento e clica    ${buttonSalvarReview}
+
+Quando tentar realizar uma nova review com um texto contendo 500 caracteres
+    Set Test Variable    ${localDescricaoReview}    a
+    FOR    ${counter}    IN RANGE    1    501
+        Set Test Variable    ${localDescricaoReview}    ${localDescricaoReview}a
+    END
     Acessar primeiro filme da lista
     Espera elemento e clica    ${buttonAdicionarReview}
     Dar nota a filme    3
@@ -104,6 +116,13 @@ Então deve aparecer mensagem informando a necessidade do usuário estar logado
 Então a review deve ser cadastrada com sucesso
     Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgReviewAdicionada}
 
+Então a review deve ser cadastrada com sucesso contendo 500 caracteres
+    Então a review deve ser cadastrada com sucesso
+    ${textoReview}=    Get Text    ${inputReviewFilme}
+    ${qtdCaracteresReview}=    Get Length    ${textoReview}
+    ${resultado}    Evaluate    ${qtdCaracteresReview} == 500
+    Should Be True    ${resultado}
+
 E deve ser possível de ser vista na seção de reviews do filme
     Clicar para voltar no celular
     Swipe para cima múltiplas vezes    4
@@ -133,7 +152,10 @@ Quando tentar adicionar uma review em um filme apenas dando uma nota
     Espera elemento e clica    ${buttonSalvarReview}
 
 Então não deverá conseguir digitar mais de 500 caracteres
-    Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgNaoFoiPossivelAdicionarReview}
+    ${textoReview}=    Get Text    ${inputReviewFilme}
+    ${qtdCaracteresReview}=    Get Length    ${textoReview}
+    ${resultado}    Evaluate    ${qtdCaracteresReview} < 501
+    Should Be True    ${resultado}
 
 Iniciar o teste com criação de usuário admin e filme
     Log    ${listaDeAvaliacoesContainer}

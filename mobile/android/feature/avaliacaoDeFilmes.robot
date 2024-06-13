@@ -49,13 +49,13 @@ Cenário: Deve ser possível atualizar review de um usuário em um filme
     Quando tentar realizar uma nova review no mesmo filme
     Então a review do usuário deve ser atualizada
 
-# Teste quebrando por estar com bug --> Ele dá mensagem de sucesso ao adicionar com 501 caracteres
 Cenário: Usuário não deve poder digitar uma avaliação contendo mais de 500 caracteres
         Dado que um usuário está autenticado
         Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
         Então não deverá conseguir digitar mais de 500 caracteres
 
-teste
-    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
-    Set To Dictionary    ${filmeCriado}    id=30
-    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
+# Teste quebrando por estar com bug --> Ele não consegue escrever 500 caracteres no campo de texto
+Cenário: Usuário deve poder digitar uma avaliação contendo 500 caracteres
+        Dado que um usuário está autenticado
+        Quando tentar realizar uma nova review com um texto contendo 500 caracteres
+        Então a review deve ser cadastrada com sucesso contendo 500 caracteres
