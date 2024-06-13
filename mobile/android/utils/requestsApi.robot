@@ -22,7 +22,7 @@ Criar usuário API
     ${localEmail}=    Fakerlibrary.Email
     Set Local Variable    ${localPassword}    senha123
     ${fakerName}=    FakerLibrary.Name
-    ${body}=    Create Dictionary    name=Nome Teste    email=${localEmail}    password=${localPassword}
+    ${body}=    Create Dictionary    name=${fakerName}    email=${localEmail}    password=${localPassword}
     Iniciar sessão padrão da API
     ${resposta}    POST On Session    alias=api    url=/api/users    json=${body}
     Set Local Variable    ${usuarioCriado}    ${resposta.json()}
@@ -34,7 +34,6 @@ Logar usuário API
     ${body}=    Create Dictionary    email=${userParam}[email]    password=${userParam}[password]
     Iniciar sessão padrão da API
     ${resposta}    POST On Session    alias=api    url=/api/auth/login    json=${body}
-    # Set Global Variable    ${tokenUsuario}    ${resposta.json()}[accessToken]
     RETURN    ${resposta.json()}[accessToken]
 
 Promover usuário para administrador
@@ -49,7 +48,6 @@ Promover usuário para crítico
 
 Criar usuário admin
     ${localUser}=    Criar usuário API
-    Log    ${localUser}
     ${localToken}=    Logar usuário API    ${localUser}
     Promover usuário para administrador    ${localToken}
     Set Local Variable    &{dicionarioUsuario}    userInfo=${localUser}    token=${localToken}
@@ -59,7 +57,7 @@ Deletar usuário
     [Arguments]    ${usuarioParam}    ${tokenParam}
     Promover usuário para administrador    ${tokenParam}
     Iniciar sessão com token da API    ${tokenParam}
-    ${resposta}    DELETE On Session    alias=api    url=/api/movies/${usuarioParam}[id]
+    ${resposta}    DELETE On Session    alias=api    url=/api/users/${usuarioParam}[id]
 
 Cadastrar um filme
     [Arguments]    ${dicionarioFilme}    ${tokenParam}

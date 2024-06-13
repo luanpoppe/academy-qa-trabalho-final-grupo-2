@@ -33,6 +33,29 @@ Cenário: Usuário administrador deve poder realizar a avaliação de um filme
     E deve ser possível de ser vista na seção de reviews do filme
 
 Cenário: Usuário não deve poder realizar a avaliação de um filme sem definir uma nota
+    Dado que um usuário está autenticado
+    Quando tentar adicionar uma review em um filme sem definir uma nota
+    Então a review não deve ser adicionada
+
+#Teste quebrando por estar com bug --> A review devia ser cadastrada, mas não está sendo (problema raiz é na API)
+Cenário: Usuário deve poder realizar a avaliação de um filme apenas dando uma nota para o filme
+    Dado que um usuário está autenticado
+    Quando tentar adicionar uma review em um filme apenas dando uma nota
+    Então a review deve ser cadastrada com sucesso
+
+Cenário: Deve ser possível atualizar review de um usuário em um filme
+    Dado que um usuário está autenticado
+    E já realizou uma review em um filme
+    Quando tentar realizar uma nova review no mesmo filme
+    Então a review do usuário deve ser atualizada
+
+# Teste quebrando por estar com bug --> Ele dá mensagem de sucesso ao adicionar com 501 caracteres
+Cenário: Usuário não deve poder digitar uma avaliação contendo mais de 500 caracteres
         Dado que um usuário está autenticado
-        Quando tentar adicionar uma review em um filme sem definir uma nota
-        Então a review não deve ser adicionada
+        Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
+        Então não deverá conseguir digitar mais de 500 caracteres
+
+teste
+    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
+    Set To Dictionary    ${filmeCriado}    id=30
+    Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]

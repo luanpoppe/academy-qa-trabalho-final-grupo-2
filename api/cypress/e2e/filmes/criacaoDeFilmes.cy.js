@@ -1,4 +1,4 @@
-import { MovieErrors } from "../../support/utils/movieErrorsClass"
+import * as me from "../../support/utils/movieErrors"
 
 describe('Criação de Filmes', function () {
   let movie
@@ -12,7 +12,6 @@ describe('Criação de Filmes', function () {
     let movieInfo
     let adminUser
     let token
-    const movieErrors = new MovieErrors()
 
     before(function () {
       cy.createUser().then(function (userInfo) {
@@ -297,7 +296,6 @@ describe('Criação de Filmes', function () {
 
     })
 
-
     it('Não deve ser possível cadastrar um filme sem passar nenhuma informação', function () {
       cy.request({
         method: "POST",
@@ -310,8 +308,8 @@ describe('Criação de Filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(19)
-        cy.wrap(movieErrors.titleNonExistentErrors).each(function (error) {
-          expect(resposta.body.message).to.deep.equal(movieErrors.allNonExistentErrors)
+        cy.wrap(me.allNonExistentErrors).each(function (error) {
+          expect(resposta.body.message).to.deep.include(error)
         })
       })
     })
@@ -334,7 +332,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(3)
-          cy.wrap(movieErrors.titleNonExistentErrors).each(function (error) {
+          cy.wrap(me.allTitleErrors).each(function (error) {
             expect(resposta.body.message).to.deep.include(error)
           })
         })
@@ -357,8 +355,28 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustBeLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustNotBeEmpty)
+          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeLonger)
+          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme com um título tendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          title: " "
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
         })
       })
 
@@ -379,8 +397,8 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustBeString)
+          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeShortherAndLonger)
+          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeString)
         })
       })
 
@@ -405,7 +423,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.titleErrors.titleMustBeShorter)
+          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeShorter)
         })
       })
     })
@@ -428,7 +446,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(3)
-          cy.wrap(movieErrors.allGenreErrors).each(function (error) {
+          cy.wrap(me.allGenreErrors).each(function (error) {
             expect(resposta.body.message).to.deep.include(error)
           })
         })
@@ -451,8 +469,28 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustBeLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustNotBeEmpty)
+          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeLonger)
+          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme com gênero contendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          genre: " "
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
         })
       })
 
@@ -473,8 +511,8 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustBeString)
+          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeShortherAndLonger)
+          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeString)
         })
       })
 
@@ -499,7 +537,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.genreErrors.genreMustBeShorter)
+          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeShorter)
         })
       })
     })
@@ -522,7 +560,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(3)
-          cy.wrap(movieErrors.allDescriptionErrors).each(function (error) {
+          cy.wrap(me.allDescriptionErrors).each(function (error) {
             expect(resposta.body.message).to.deep.include(error)
           })
         })
@@ -545,8 +583,31 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustNotBeEmpty)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeLonger)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustNotBeEmpty)
+        })
+      })
+
+      // Teste com bug --> Está sendo permitido criar o filme
+      it.skip('Não deve ser possível criar um filme contendo apenas espaços em branco', function () {
+        const temporaryMovie = {
+          ...movie,
+          description: " "
+        }
+
+        cy.request({
+          method: "POST",
+          url: "/api/movies",
+          body: temporaryMovie,
+          auth: {
+            bearer: token
+          },
+          failOnStatusCode: false
+        }).then(function (resposta) {
+          expect(resposta.status).to.equal(400)
+          expect(resposta.body.message).to.have.length(2)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeLonger)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustNotBeEmpty)
         })
       })
 
@@ -567,8 +628,8 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeString)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeShortherAndLonger)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeString)
         })
       })
 
@@ -593,7 +654,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.descriptionErrors.descriptionMustBeShorter)
+          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeShorter)
         })
       })
     })
@@ -616,7 +677,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(5)
-          cy.wrap(movieErrors.allDurationErrors).each(function (error) {
+          cy.wrap(me.allDurationErrors).each(function (error) {
             expect(resposta.body.message).to.deep.include(error)
           })
         })
@@ -639,10 +700,10 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(4)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMaxNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMinNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMustBeNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMustBeInteger)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMaxNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeInteger)
         })
       })
 
@@ -663,7 +724,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMustBeInteger)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeInteger)
         })
       })
 
@@ -684,7 +745,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMinNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
         })
       })
 
@@ -705,7 +766,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMinNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
         })
       })
 
@@ -726,7 +787,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.durationErrors.durationMaxNumber)
+          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMaxNumber)
         })
       })
     })
@@ -749,7 +810,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(5)
-          cy.wrap(movieErrors.allReleaseYearErrors).each(function (error) {
+          cy.wrap(me.allReleaseYearErrors).each(function (error) {
             expect(resposta.body.message).to.deep.include(error)
           })
         })
@@ -772,10 +833,10 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(4)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMaxNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMinNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMustBeNumber)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMustBeInteger)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMaxNumber)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMinNumber)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeNumber)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeInteger)
         })
       })
 
@@ -796,7 +857,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMustBeInteger)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeInteger)
         })
       })
 
@@ -817,7 +878,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMinNumber)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMinNumber)
         })
       })
 
@@ -838,7 +899,7 @@ describe('Criação de Filmes', function () {
         }).then(function (resposta) {
           expect(resposta.status).to.equal(400)
           expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(movieErrors.releaseYearErrors.releaseYearMaxNumber)
+          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMaxNumber)
         })
       })
     })

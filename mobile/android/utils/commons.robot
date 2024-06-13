@@ -41,6 +41,7 @@ Acessa login
 Inserir dados
     [Arguments]    ${campo}    ${dado}
     Espera elemento e clica    ${campo}
+    Espera elemento está visivel    ${campo}
     Wait Until Keyword Succeeds    8    1    Input Text     ${campo}    ${dado}
 
 
