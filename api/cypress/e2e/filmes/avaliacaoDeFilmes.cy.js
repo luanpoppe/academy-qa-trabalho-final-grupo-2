@@ -245,6 +245,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
+    // Teste com bug --> Não está sendo possível criar um filme com uma reviewText sendo uma string vazia
     it.skip('Deve ser possível criar uma review com uma avaliação do filme sendo um texto em branco', function () {
       const localReviewBody = {
         ...defaultReviewBody,
@@ -400,6 +401,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
+    // Teste com bug --> Está sendo possível criar uma avaliação de um filme passando uma nota com número decimal
     it.skip('Não deve ser possível criar uma review passando a nota como um número decimal', function () {
       const localReviewBody = {
         ...defaultReviewBody,
