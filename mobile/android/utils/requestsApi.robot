@@ -87,3 +87,10 @@ Criar avaliação de um filme
     ${score}=    Convert To Integer    4
     ${avaliacaoFilme}=    Create Dictionary      movieId=${idDoFilme}    score=${score}    reviewText=Review em texto do filme
     ${resposta}    POST On Session    alias=api    url=/api/users/review    json=${avaliacaoFilme}
+
+Pegar reviews de filme por id
+    [Arguments]    ${idDoFilme}
+    Iniciar sessão padrão da API
+    ${resposta}    GET On Session    alias=api    url=/api/movies/${idDoFilme}
+    Set Local Variable    ${respostaBody}    ${resposta.json()}
+    RETURN    ${respostaBody}[reviews]
