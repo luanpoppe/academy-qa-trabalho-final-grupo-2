@@ -1,7 +1,7 @@
 *** Settings ***
-Library    DateTime
-
+Library     DateTime
 Resource    ../../base.robot
+
 
 *** Keywords ***
 Clicar para voltar no celular
@@ -13,12 +13,12 @@ Clicar enter no celular
 Espera elemento está visivel
     [Arguments]    ${elemento}
     Wait Until Element Is Visible    ${elemento}    10
-    Element Should Be Visible        ${elemento}
+    Element Should Be Visible    ${elemento}
 
 Espera elemento e clica
     [Arguments]    ${elemento}
     Wait Until Element Is Visible    ${elemento}    10
-    Wait Until Keyword Succeeds    5    1    Click Element                    ${elemento}    
+    Wait Until Keyword Succeeds    5    1    Click Element    ${elemento}
 
 Swipe para cima
     [Arguments]    ${yInicial}=75    ${yFinal}=15    ${x}=50
@@ -42,18 +42,17 @@ Inserir dados
     [Arguments]    ${campo}    ${dado}
     Espera elemento e clica    ${campo}
     Espera elemento está visivel    ${campo}
-    Wait Until Keyword Succeeds    8    1    Input Text     ${campo}    ${dado}
-
+    Wait Until Keyword Succeeds    8    1    Input Text    ${campo}    ${dado}
 
 Preencher formulário cadastro
     ${emailfake}=    FakerLibrary.Email
-    ${nomefake}=     FakerLibrary.Name
+    ${nomefake}=    FakerLibrary.Name
     ${senhafake}=    FakerLibrary.Password
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}
-    Inserir dados    ${EMAIL}         ${emailfake}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${EMAIL}    ${emailfake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem nome aleatório
@@ -62,20 +61,20 @@ Preencher formulário cadastro sem nome aleatório
     ${senhafake}=    FakerLibrary.Password
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nom}
-    Inserir dados    ${EMAIL}         ${emailfake}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nom}
+    Inserir dados    ${EMAIL}    ${emailfake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem gerar email aleatório
     [Arguments]    ${ema}
-    ${nomefake}=     FakerLibrary.Name
+    ${nomefake}=    FakerLibrary.Name
     ${senhafake}=    FakerLibrary.Password
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}
-    Inserir dados    ${EMAIL}         ${ema}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${EMAIL}    ${ema}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem nome
@@ -83,26 +82,31 @@ Preencher formulário cadastro sem nome
     ${senhafake}=    FakerLibrary.Password
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${EMAIL}         ${emailfake}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${EMAIL}    ${emailfake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem email
-    ${nomefake}=     FakerLibrary.Name
+    ${nomefake}=    FakerLibrary.Name
     ${senhafake}=    FakerLibrary.Password
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}           
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem senha principal e sem confirmar senha
-    ${nomefake}=     FakerLibrary.Name
-    ${emailfake}=    FakerLibrary.Email 
+    ${nomefake}=    FakerLibrary.Name
+    ${emailfake}=    FakerLibrary.Email
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}
-    Inserir dados    ${EMAIL}         ${emailfake}            
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${EMAIL}    ${emailfake}
 
 Pegar e formatar data atual
     Run Keyword And Return    Get Current Date    result_format=%d/%m/%Y
+
+Verifica se o contentDesc contains text
+    [Arguments]    ${elemento}    ${validarText}
+    ${contentDesc}=    AppiumLibrary.Get Element Attribute    ${elemento}    content-desc
+    Should Contain    ${contentDesc}    ${validarText}
