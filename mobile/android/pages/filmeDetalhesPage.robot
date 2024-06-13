@@ -123,7 +123,7 @@ Então a review deve ser cadastrada com sucesso contendo 500 caracteres
     ${resultado}    Evaluate    ${qtdCaracteresReview} == 500
     Should Be True    ${resultado}
 
-E deve ser possível de ser vista na seção de reviews do filme
+E deve ser possível de ser vista imediatamente na seção de reviews do filme
     Clicar para voltar no celular
     Swipe para cima múltiplas vezes    4
     Page Should Contain Text    ${textoReviewPadrao}

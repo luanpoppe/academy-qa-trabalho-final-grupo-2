@@ -18,19 +18,19 @@ Cenário: Usuário comum deve poder realizar a avaliação de um filme
     Dado que um usuário comum está autenticado
     Quando tentar adicionar uma review em um filme pelo aplicativo
     Então a review deve ser cadastrada com sucesso
-    E deve ser possível de ser vista na seção de reviews do filme
+    E deve ser possível de ser vista imediatamente na seção de reviews do filme
 
 Cenário: Usuário crítico deve poder realizar a avaliação de um filme
     Dado que um usuário crítico está autenticado
     Quando tentar adicionar uma review em um filme pelo aplicativo
     Então a review deve ser cadastrada com sucesso
-    E deve ser possível de ser vista na seção de reviews do filme
+    E deve ser possível de ser vista imediatamente na seção de reviews do filme
 
 Cenário: Usuário administrador deve poder realizar a avaliação de um filme
     Dado que um usuário administrador está autenticado
     Quando tentar adicionar uma review em um filme pelo aplicativo
     Então a review deve ser cadastrada com sucesso
-    E deve ser possível de ser vista na seção de reviews do filme
+    E deve ser possível de ser vista imediatamente na seção de reviews do filme
 
 Cenário: Usuário não deve poder realizar a avaliação de um filme sem definir uma nota
     Dado que um usuário está autenticado
