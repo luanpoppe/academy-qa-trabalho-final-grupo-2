@@ -25,7 +25,7 @@ export default class MoviesPage {
   labelReview = ".movie-details-container > :nth-child(2)";
   labelStarReview = ".stars";
   inputTextReview = "textarea";
-  buttonEntre = '[href="/login"]';
+  buttonEntre = '.rate-movie [href="/login"]';
   labelAllReviews = ".user-reviews-section > h2";
   cardUserReview = ".user-review-card";
   nameUserReview = ".user-review-card h3";
