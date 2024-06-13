@@ -49,7 +49,6 @@ describe('Consulta geral de Usuários', function () {
         }
       }).then((response) => {
         expect(response.status).to.equal(403);
-        expect(response.status).to.equal(403);
         expect(response.body.message).to.equal("Forbidden")
       });
     });
@@ -74,25 +73,67 @@ describe('Consulta geral de Usuários', function () {
     });
   });
 
-  it('Deve ser possível acessar as informações de um usuário, sendo um usuário Admin', function () {
-    cy.promoteAdmin(token).then(function () {
-      cy.request({
-        method: 'GET',
-        url: '/api/users/' + usuarioConsulta.id,
-        failOnStatusCode: false,
-        auth: {
-          bearer: token
-        }
-      }).then((response) => {
-        expect(response.status).to.equal(200);
-        expect(response.body).to.deep.include({
-          id: usuarioConsulta.id,
-          name: usuarioConsulta.name,
-          email: usuarioConsulta.email,
-          active: usuarioConsulta.active,
-          type: usuarioConsulta.type,
+  it('Não deve ser possível acessar as informações de um usuário, inserindo um id de usuário não cadastrado', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + "12123129381923813",
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.equal("");
         })
       })
-    })
+    });
+  });
+
+  it('Não deve ser possível acessar as informações de um usuário, inserindo um id inválido', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + "string",
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(400);
+          expect(response.body.error).to.equal("Bad Request");
+          expect(response.body.message).to.equal("Validation failed (numeric string is expected)");
+        })
+      })
+    });
+  });
+
+  it('Deve ser possível acessar as informações de um usuário, sendo um usuário Admin', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + usuarioConsulta.id,
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.include({
+            id: usuarioConsulta.id,
+            name: usuarioConsulta.name,
+            email: usuarioConsulta.email,
+            active: usuarioConsulta.active,
+            type: usuarioConsulta.type,
+          })
+        })
+      })
+    });
   });
 });
