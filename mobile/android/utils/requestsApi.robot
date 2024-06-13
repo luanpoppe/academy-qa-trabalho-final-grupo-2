@@ -76,3 +76,16 @@ Deletar filme
     Promover usuário para administrador    ${tokenParam}
     Iniciar sessão com token da API    ${tokenParam}
     ${resposta}    DELETE On Session    alias=api    url=/api/movies/${filme}[id]
+
+Pegar lista de filmes
+    Iniciar sessão padrão da API
+    ${resposta}    GET On Session    alias=api    url=/api/movies
+    Set Local Variable    ${listaFilmes}    ${resposta.json()}
+    RETURN    ${listaFilmes}
+
+Criar avaliação de um filme
+    [Arguments]    ${idDoFilme}    ${tokenUsuario}
+    Iniciar sessão com token da API    ${tokenUsuario}
+    ${score}=    Convert To Integer    4
+    ${avaliacaoFilme}=    Create Dictionary      movieId=${idDoFilme}    score=${score}    reviewText=Review em texto do filme
+    ${resposta}    POST On Session    alias=api    url=/api/users/review    json=${avaliacaoFilme}
