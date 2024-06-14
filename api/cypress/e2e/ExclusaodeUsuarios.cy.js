@@ -86,6 +86,28 @@ describe('Exclusão de Usuários', function () {
         });
     });
 
+    it('Não deve ser possível que um usuário com perfil Administrador, insira um valor diferente de um número inteiro para excluir uma conta', function () {
+
+        cy.login(usuarioCriado).then((login) => {
+            token = login.body.accessToken
+        }).then(function () {
+            cy.promoteAdmin(token).then(function () {
+                cy.request({
+                    method: 'DELETE',
+                    url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/' + "string",
+                    failOnStatusCode: false,
+                    auth: {
+                        bearer: token,
+                    },
+                }).then((response) => {
+                    expect(response.status).to.equal(400);
+                    expect(response.body.error).to.equal("Bad Request");
+                    expect(response.body.message).to.equal("Validation failed (numeric string is expected)");
+                });
+            });
+        });
+    });
+
     it('Deve ser possível que um usuário com perfil Administrador, exclua a própria conta', function () {
         cy.deleteUser(usuarioCriado).then((response) => {
             expect(response.status).to.equal(204);
