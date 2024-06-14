@@ -483,27 +483,6 @@ describe("Cenários de testes de criação de usuário", function () {
       });
     });
 
-    it("Deve ser possível cadastrar usuário com email em letras maiúsculas", function () {
-      email = fakerPT_BR.internet.email().toUpperCase();
-      cy.request({
-        method: "POST",
-        url: "/api/users/",
-        body: {
-          name: name,
-          email: email,
-          password: password,
-        },
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(201);
-        expect(resposta.body).to.deep.include({
-          name: name,
-          email: email.toLowerCase(),
-        });
-        expect(resposta.body.id).to.be.a("number");
-        id = resposta.body.id;
-      });
-    });
-
     it("Deve ser possível cadastrar usuário com nome de 99 caracteres", function () {
       let nomeCaractere = "";
       for (let i = 0; i < 99; i++) {
@@ -598,6 +577,27 @@ describe("Cenários de testes de criação de usuário", function () {
           name: name,
           type: 0,
           active: true,
+        });
+        expect(resposta.body.id).to.be.a("number");
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com email em letras maiúsculas", function () {
+      email = fakerPT_BR.internet.email().toUpperCase();
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.deep.include({
+          name: name,
+          email: email.toLowerCase(),
         });
         expect(resposta.body.id).to.be.a("number");
         id = resposta.body.id;
