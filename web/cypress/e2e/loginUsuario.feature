@@ -10,6 +10,11 @@ Funcionalidade: Login Usuário
       E acessa a funcionalidade salvar
       Então usuário deve autenticar-se com sucesso
     
+    Cenário: Usuário deve conseguir autenticar-se inserindo o email cadastrado em letras maiúsculas
+      Quando o usuário informa as credenciais cadastradas inserindo o email em letras maiúsculas
+      E acessa a funcionalidade salvar
+      Então usuário deve autenticar-se com sucesso
+    
     Cenário: A sessão de autenticação deve expirar após 60 min
       Quando o usuário informa as credenciais cadastradas
       E acessa a funcionalidade salvar
@@ -32,7 +37,7 @@ Funcionalidade: Login Usuário
       Então o site exibe mensagem "Usuário ou senha inválidos."
       E ao clicar no botão OK deve retornar para o formulário
 
-    Cenário: Usuário não deve se autenticar informando senha incorreta
+    Cenário: Usuário não deve se autenticar informando senha não cadastrada
       Quando o usuário informa as credenciais com email válido e senha incorreta
       E acessa a funcionalidade salvar
       Então o site exibe mensagem "Usuário ou senha inválidos."

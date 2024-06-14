@@ -232,7 +232,7 @@ describe("Cenários de testes de criação de usuário", function () {
         "carol@br",
         "carolll.com",
         "     @gmail.com",
-        "carol@g😅mail.com",
+        "caro@g😅mail.com",
       ];
       listEmails.forEach(function (email) {
         cy.request({
@@ -477,6 +477,27 @@ describe("Cenários de testes de criação de usuário", function () {
         expect(resposta.body).to.deep.include({
           name: name,
           email: email,
+        });
+        expect(resposta.body.id).to.be.a("number");
+        id = resposta.body.id;
+      });
+    });
+
+    it("Deve ser possível cadastrar usuário com email em letras maiúsculas", function () {
+      email = fakerPT_BR.internet.email().toUpperCase();
+      cy.request({
+        method: "POST",
+        url: "/api/users/",
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(201);
+        expect(resposta.body).to.deep.include({
+          name: name,
+          email: email.toLowerCase(),
         });
         expect(resposta.body.id).to.be.a("number");
         id = resposta.body.id;

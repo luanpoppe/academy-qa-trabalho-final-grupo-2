@@ -33,6 +33,12 @@ Funcionalidade: Registrar Usuário
       Então o usuario deve ser registrado com sucesso
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
     
+    Cenário: Deve ser possível registrar usuário inserindo email com letras maiúsculas
+      Quando preenche todos os campos do formulário inserindo email com letras maiúsculas
+      E acessar a funcionalidade salvar
+      Então o usuario deve ser registrado com sucesso
+      E o usuário deve retornar para o formulário de cadastro clicando no botão OK  
+    
     Cenário: Deve ser possível registrar usuário com email com 6 caracteres
       Quando preenche todos os campos do formulário utilizando email com 6 caracteres
       E acessar a funcionalidade salvar

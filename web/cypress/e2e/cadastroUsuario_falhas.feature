@@ -30,6 +30,12 @@ Funcionalidade: Registrar Usuário
         Quando preenche todos os campos do formulário exceto o campo email
         E acessar a funcionalidade salvar
         Então o site exibe alerta de email no formulário "Informe o e-mail."
+
+    Cenário: Não deve ser possivel registrar usuário com email em letra maiusucula utilizando email já cadastrado com letra minúscula
+        Quando preenche todos os campos do formulário inserindo email em letra maíuscula de um email ja cadastrado
+        E acessar a funcionalidade salvar
+        Então a operação de registro não poderá ser concluída com alerta "E-mail já cadastrado. Utilize outro e-mail"
+        E o botão OK deve retornar para o formulário
    
     Cenário: Não deve ser possível registrar usuário utilizando email informando espaços entre os caracteres
         Quando preenche todos os campos do formulário utilizando espaços no email "c   a@gmail.com"
@@ -47,7 +53,7 @@ Funcionalidade: Registrar Usuário
         |                         123@.com                             |            Informe um e-mail válido.          |                  
         |                        carolail.com                          |            Informe um e-mail válido.          |
         |                      caromaia#gmail.com                      |            Informe um e-mail válido.          |
-        |                      caromaia@gmai🫢l.com                    |            Informe um e-mail válido.          |
+        |                      caromai@gmai🫢l.com                    |            Informe um e-mail válido.          |
         |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@h.com |   O e-mail deve ter no máximo 60 dígitos.     |
         
     Cenário: Não deve ser possível registrar usuário sem informar senha

@@ -14,7 +14,7 @@ let nome;
 let senha = fakerPT_BR.internet.password(6);
 
 beforeEach(() => {
-  email = fakerPT_BR.internet.email().toLowerCase();
+  email = fakerPT_BR.internet.email();
   nome = fakerPT_BR.person.fullName();
 });
 
@@ -53,6 +53,21 @@ When(
     regisUser.typeNome(nome);
     regisUser.typeSenha(senha);
     regisUser.typeConfSenha(senha);
+  }
+);
+
+When(
+  "preenche todos os campos do formulário inserindo email em letra maíuscula de um email ja cadastrado",
+  function () {
+    emailMaiusculo = fakerPT_BR.internet.email().toUpperCase();
+    cy.intercept("POST", "/api/users", {
+      statusCode: 409,
+      body: {
+        message: "Email already in use",
+        error: "Conflict",
+      },
+    }).as("post2");
+    regisUser.registrarUsuario({ email: emailMaiusculo });
   }
 );
 

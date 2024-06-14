@@ -2,7 +2,6 @@
 ///  <reference path="../support/index.d.ts" />
 
 describe("Login de cadastros de usuários", () => {
-  let token;
   let usuarioCriado;
 
   beforeEach(() => {
@@ -152,13 +151,13 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
-    it("Não deve ser possível usuário autenticar-se com senha incorreta", () => {
+    it("Não deve ser possível usuário autenticar-se com senha não cadastrada", () => {
       cy.request({
         method: "POST",
         url: "/api/auth/login",
         body: {
           email: usuarioCriado.email,
-          password: "aaaaa",
+          password: "aaaaaa",
         },
         failOnStatusCode: false,
       }).then((resposta) => {
@@ -184,7 +183,20 @@ describe("Login de cadastros de usuários", () => {
       }).then((resposta) => {
         expect(resposta.status).to.equal(200);
         expect(resposta.body.accessToken).to.be.a("string");
-        token = resposta.body.accessToken;
+      });
+    });
+
+    it("Deve ser possível usuário cadastrado autenticar-se utilizando email em letras maiúsculas", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: usuarioCriado.email.toUpperCase(),
+          password: usuarioCriado.password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(200);
+        expect(resposta.body.accessToken).to.be.a("string");
       });
     });
 

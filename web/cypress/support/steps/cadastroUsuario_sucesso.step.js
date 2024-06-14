@@ -91,6 +91,19 @@ When(
 );
 
 When(
+  "preenche todos os campos do formulário inserindo email com letras maiúsculas",
+  function () {
+    emailMaiusculo = fakerPT_BR.internet.email().toUpperCase();
+
+    regisUser
+      .registrarUsuario({ email: emailMaiusculo })
+      .then(function (resposta) {
+        user = resposta;
+      });
+  }
+);
+
+When(
   "preenche todos os campos do formulário utilizando email com 60 caracteres",
   function () {
     email = fakerPT_BR.internet.email();
@@ -140,6 +153,7 @@ Then("o usuario deve ser registrado com conta do tipo comum", function () {
   cy.wait("@post").then(function (intercept) {
     type = intercept.response.body.type;
     cy.wrap(type).should("eq", 0);
+    user.id = intercept.response.body.id;
   });
 });
 

@@ -54,7 +54,7 @@ When(
   "o usuário informa as credenciais com email válido e senha incorreta",
   function () {
     loginUser.typeEmail(usuarioCriado.email);
-    loginUser.typeSenha("12345");
+    loginUser.typeSenha("123456");
   }
 );
 
@@ -73,6 +73,14 @@ When(
     loginUser.clickConta();
     loginUser.typeNome(" Carol");
     loginUser.clickSalvar();
+  }
+);
+When(
+  "o usuário informa as credenciais cadastradas inserindo o email em letras maiúsculas",
+  function () {
+    let emailMaiusculo = usuarioCriado.email.toUpperCase();
+    loginUser.typeEmail(emailMaiusculo);
+    loginUser.typeSenha(usuarioCriado.password);
   }
 );
 
