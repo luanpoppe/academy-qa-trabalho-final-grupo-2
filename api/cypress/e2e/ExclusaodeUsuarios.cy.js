@@ -66,6 +66,13 @@ describe('Exclusão de Usuários', function () {
         });
     });
 
+    it('Deve ser possível que um usuário com perfil Administrador, exclua a própria conta', function () {
+        cy.deleteUser(usuarioCriado).then((response) => {
+            expect(response.status).to.equal(204);
+            expect(response.body).to.equal("");
+        });
+    });
+
     it('Deve ser possível que um usuário com perfil Administrador, exclua a conta de outro usuário', function () {
 
         cy.login(usuarioCriado).then((login) => {
@@ -108,10 +115,24 @@ describe('Exclusão de Usuários', function () {
         });
     });
 
-    it('Deve ser possível que um usuário com perfil Administrador, exclua a própria conta', function () {
-        cy.deleteUser(usuarioCriado).then((response) => {
-            expect(response.status).to.equal(204);
-            expect(response.body).to.equal("");
+    it('Não deve ser possível que um usuário com perfil Administrador, exclua um usuario com id invalido', function () {
+
+        cy.login(usuarioCriado).then((login) => {
+            token = login.body.accessToken
+        }).then(function () {
+            cy.promoteAdmin(token).then(function () {
+                cy.request({
+                    method: 'DELETE',
+                    url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/' + 123172398172,
+                    failOnStatusCode: false,
+                    auth: {
+                        bearer: token,
+                    },
+                }).then((response) => {
+                    expect(response.status).to.equal(204);
+                    expect(response.body).to.equal("");
+                });
+            });
         });
     });
 
@@ -150,4 +171,6 @@ describe('Exclusão de Usuários', function () {
             });
         });
     });
+
+  
 });
