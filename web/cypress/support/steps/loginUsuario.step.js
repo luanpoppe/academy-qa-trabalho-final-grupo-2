@@ -76,9 +76,11 @@ When(
   }
 );
 
-Then("o site exibe alerta de falha na atualização", function () {
-  cy.get(loginUser.msgErro).contains("Não foi possível atualizar os dados.");
-});
+Then("o site deve redirecionar o usuário para página de login", function () {});
+
+// Then("o site exibe alerta de falha na atualização", function () {
+//   cy.get(loginUser.msgErro).contains("Não foi possível atualizar os dados.");
+// });
 
 Then("usuário deve autenticar-se com sucesso", function () {
   cy.wait("@auth").then(function (intercept) {

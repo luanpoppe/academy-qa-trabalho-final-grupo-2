@@ -14,7 +14,7 @@ Funcionalidade: Login Usuário
       Quando o usuário informa as credenciais cadastradas
       E acessa a funcionalidade salvar
       E realiza tentativa de atualizar dados após 60 minutos de sessão de Login
-      Então o site exibe alerta de falha na atualização
+      Então o site deve redirecionar o usuário para página de login
     
     Cenário: Usuário não deve conseguir autenticar-se sem informar e-mail
       Quando o usuário informa as credenciais exceto campo email
