@@ -390,7 +390,7 @@ describe("Gerenciar conta", () => {
   });
 
   describe("Usuario não logado", function () {
-    it.only("Não deve ser possível como usuário não logado atualizar os dados de um usuário cadastrado", () => {
+    it("Não deve ser possível como usuário não logado atualizar os dados de um usuário cadastrado", () => {
       cy.request({
         method: "PUT",
         url: "/api/users/" + user.id,
