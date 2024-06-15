@@ -8,10 +8,11 @@ export default class GerenciarPage {
   labelCampoSenha = ":nth-child(5) > .input-error";
   labelCampoConfirmaSenha = ":nth-child(6) > .input-error";
   labelAlerta = ".modal-body > h3";
-  mensagemAlerta = ".error-message";
+  mensagemAlerta = ".modal-body .error-message";
   labelContaUsuario = ".account-container";
   labelSalvar = ".account-save-button";
   labelTipoUser = ":nth-child(3) > .profile-input";
+  divModal = ".modal-content"
 
   labelAtualize = ".register-account-header>span";
 
@@ -60,5 +61,11 @@ export default class GerenciarPage {
 
   clickButtonOk() {
     cy.get(this.buttonOk).click();
+  }
+
+  alterPassword(senha) {
+    this.clickButtonAlterarSenha();
+    this.typeSenha(senha);
+    this.typeConfirmaSenha(senha);
   }
 }

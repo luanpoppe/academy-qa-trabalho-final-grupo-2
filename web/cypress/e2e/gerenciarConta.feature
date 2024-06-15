@@ -5,20 +5,28 @@ Como um usuário do sistema
 Desejo poder gerenciar minha conta
 Para ter controle sobre minhas informações
 
+
+Cenário: Não deve ser possível usuário não logado poder acessar página de perfil
+Dado que um usuário não está logado
+Quando tentar acessar a página de perfil de usuário
+Então o site deverá redirecionar o usuário para a página de login
+
+# USUÁRIO COMUM:
+
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo comum autenticado no sistema
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando vizualizar o texto "Atualize informações da sua conta."
 Então o usuário poderá atualizar suas informações
 
-Cenário: Deve ser possível como usuário do tipo comum alterar apenas suas próprias informações 
+Cenário: Deve ser possível como usuário do tipo comum alterar apenas suas próprias informações
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar as próprias informações de nome, senha e confirmar senha do usuário comum
 E acessar a função salvar
 Então será possível atualizar as informações do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo comum atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta 
+Cenário: Deve ser possível como usuário do tipo comum atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
@@ -35,7 +43,7 @@ E atualizar o campo confirmar senha com o mesmo valor inserido no campo senha
 E acessar a função salvar
 Então será possível atualizar as informações do usuário com sucesso
 
-Cenário: Não deve ser possível como usuário do tipo comum alterar a senha do usuário caso os campos de senha e confirmação de senha sejam diferentes 
+Cenário: Não deve ser possível como usuário do tipo comum alterar a senha do usuário caso os campos de senha e confirmação de senha sejam diferentes
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando atualizar o campo senha
@@ -86,14 +94,14 @@ Quando atualizar o campo nome para "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 E acessar a função salvar
 Então o campo nome exibirá a mensagem de erro "O nome deve ter no máximo 100 dígitos."
 
-Cenário: Deve ser possível como usuário do tipo comum atualizar somente o nome 
+Cenário: Deve ser possível como usuário do tipo comum atualizar somente o nome
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
 E acessar a função salvar
 Então será possível atualizar apenas o nome do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo comum atualizar somente a senha 
+Cenário: Deve ser possível como usuário do tipo comum atualizar somente a senha
 Dado que possuo um usuário comum cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando atualizar o campo senha
@@ -101,20 +109,22 @@ E atualizar o campo confirmar senha com o mesmo valor inserido no campo senha
 E acessar a função salvar
 Então será possível atualizar apenas a senha do usuário com sucesso
 
+# USUÁRIO CRÍTICO:
+
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo crítico autenticado no sistema
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando vizualizar o texto "Atualize informações da sua conta."
 Então o usuário poderá atualizar suas informações
 
-Cenário: Deve ser possível como usuário do tipo crítico alterar apenas suas próprias informações 
+Cenário: Deve ser possível como usuário do tipo crítico alterar apenas suas próprias informações
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar as próprias informações de nome, senha e confirmar senha do usuário comum
 E acessar a função salvar
 Então será possível atualizar as informações do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo crítico atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta 
+Cenário: Deve ser possível como usuário do tipo crítico atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
@@ -131,7 +141,7 @@ E atualizar o campo confirmar senha com o mesmo valor inserido no campo senha
 E acessar a função salvar
 Então será possível atualizar as informações do usuário com sucesso
 
-Cenário: Não deve ser possível como usuário do tipo crítico alterar a senha do usuário caso os campos de senha e confirmação de senha sejam diferentes 
+Cenário: Não deve ser possível como usuário do tipo crítico alterar a senha do usuário caso os campos de senha e confirmação de senha sejam diferentes
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando atualizar o campo senha
@@ -181,14 +191,14 @@ Quando atualizar o campo nome para "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 E acessar a função salvar
 Então o campo nome exibirá a mensagem de erro "O nome deve ter no máximo 100 dígitos."
 
-Cenário: Deve ser possível como usuário do tipo crítico atualizar somente o nome 
+Cenário: Deve ser possível como usuário do tipo crítico atualizar somente o nome
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
 E acessar a função salvar
 Então será possível atualizar apenas o nome do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo crítico atualizar somente a senha 
+Cenário: Deve ser possível como usuário do tipo crítico atualizar somente a senha
 Dado que possuo um usuário crítico cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando atualizar o campo senha
@@ -196,20 +206,22 @@ E atualizar o campo confirmar senha com o mesmo valor inserido no campo senha
 E acessar a função salvar
 Então será possível atualizar apenas a senha do usuário com sucesso
 
+# USUÁRIO ADMINISTRADOR:
+
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo administrador autenticado no sistema
 Dado que possuo um usuário administrador cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando vizualizar o texto "Atualize informações da sua conta."
 Então o usuário poderá atualizar suas informações
 
-Cenário: Deve ser possível como usuário do tipo administrador alterar apenas suas próprias informações 
+Cenário: Deve ser possível como usuário do tipo administrador alterar apenas suas próprias informações
 Dado que possuo um usuário administrador cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar as próprias informações de nome, senha e confirmar senha do usuário comum
 E acessar a função salvar
 Então será possível atualizar as informações do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo administrador atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta 
+Cenário: Deve ser possível como usuário do tipo administrador atualizar suas informações de nome e senha na funcionalidade de gerenciamento de conta
 Dado que possuo um usuário administrador cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
@@ -276,14 +288,14 @@ Quando atualizar o campo nome para "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 E acessar a função salvar
 Então o campo nome exibirá a mensagem de erro "O nome deve ter no máximo 100 dígitos."
 
-Cenário: Deve ser possível como usuário do tipo administrador atualizar somente o nome 
+Cenário: Deve ser possível como usuário do tipo administrador atualizar somente o nome
 Dado que possuo um usuário administrador cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando alterar o campo nome
 E acessar a função salvar
 Então será possível atualizar apenas o nome do usuário com sucesso
 
-Cenário: Deve ser possível como usuário do tipo administrador atualizar somente a senha 
+Cenário: Deve ser possível como usuário do tipo administrador atualizar somente a senha
 Dado que possuo um usuário administrador cadastrado e logado no sistema
 E que acessei a funcionalidade de gerencimaneto de conta
 Quando atualizar o campo senha
