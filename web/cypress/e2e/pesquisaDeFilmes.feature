@@ -36,7 +36,7 @@ Funcionalidade: Pesquisa de Filmes
         E clicar no card do filme 
         Então o usuário deve ver os detalhes do filme selecionado
 
-    Cenário: Não deve ser possível efetuar pesquisa com resultado nulo
+    Cenário: Não deve ser possível efetuar pesquisa de um filme não cadastrado 
         Quando preencher o campo de pesquisa de pesquisa com um filme não cadastrado na base de dados
         E acessar a função de pesquisa
         Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
