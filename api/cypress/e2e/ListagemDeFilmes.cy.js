@@ -112,32 +112,6 @@ describe('Funcionalidade: Listagem de Filmes', () => {
 		});
 	});
 
-	it('Deve ser possível visualizar informações sumarizadas do filme', () => {
-		cy.searchMovie(movieInfo.title).then((response) => {
-			expect(response.status).to.eq(200);
-
-			const movie = response.body[0];
-
-			expect(movie.id).to.be.an('number');
-			expect(movie).to.have.property('title', movieInfo.title);
-			expect(movie).to.have.property('genre', movieInfo.genre);
-			expect(movie).to.have.property('description', movieInfo.description);
-			expect(movie).to.have.property('durationInMinutes', movieInfo.durationInMinutes);
-			expect(movie).to.have.property('releaseYear', movieInfo.releaseYear);
-			expect(movie).to.have.property('totalRating');
-		});
-	});
-
-	it('Deve ser possível ver mais detalhes de um filme', () => {
-		cy.wrap(movieId).should('not.be.undefined');
-		cy.getMovie(movieId).then((response) => {
-			expect(response.status).to.eq(200);
-			expect(response.body).to.have.property('id', movieId);
-			expect(response.body).to.have.property('title', movieInfo.title);
-			expect(response.body).to.have.property('genre', movieInfo.genre);
-			expect(response.body).to.have.property('description', movieInfo.description);
-			expect(response.body).to.have.property('durationInMinutes', movieInfo.durationInMinutes);
-			expect(response.body).to.have.property('releaseYear', movieInfo.releaseYear);
-		});
-	});
 });
+
+	

@@ -224,3 +224,4 @@ When('acessar a proxima pagina', () => {
 Then('verá uma próxima página de filmes', () => {
     cy.get('.carousel-data').should('exist');
 });
+

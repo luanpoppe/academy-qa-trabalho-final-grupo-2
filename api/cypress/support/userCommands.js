@@ -152,30 +152,30 @@ Cypress.Commands.add("InactivateUser", function (token) {
 
 Cypress.Commands.add("createAdminUser", function () {
   cy.createUser().then(function (resposta) {
-    let user = resposta
+    let user = resposta;
     cy.login(user).then(function (resposta) {
       user = {
         ...user,
-        ...resposta.body
-      }
+        ...resposta.body,
+      };
       cy.promoteAdmin(resposta.body.accessToken).then(function () {
-        return cy.wrap(user)
-      })
-    })
-  })
-})
+        return cy.wrap(user);
+      });
+    });
+  });
+});
 
 Cypress.Commands.add("createCriticUser", function () {
   cy.createUser().then(function (resposta) {
-    let user = resposta
+    let user = resposta;
     cy.login(user).then(function (resposta) {
       user = {
         ...user,
-        ...resposta.body
-      }
+        ...resposta.body,
+      };
       cy.promoteCritic(resposta.body.accessToken).then(function () {
-        return cy.wrap(user)
-      })
-    })
-  })
-})
+        return cy.wrap(user);
+      });
+    });
+  });
+});
