@@ -1,5 +1,3 @@
-import { fakerPT_BR } from "@faker-js/faker";
-
 export default class LoginPage {
   inputEmail = "[placeholder='E-mail']";
   inputSenha = "[placeholder='Password']";
@@ -10,7 +8,8 @@ export default class LoginPage {
   buttonSalvar = ".account-save-button";
   linkAuth = ".movies-page-link";
   erroFormulario = ".input-error";
-  msgErro = ".error-message";
+  msgErro = ".modal-body .error-message";
+  divModal = ".modal-content"
 
   perfil = "[href='/profile']";
   conta = "[href='/account']";

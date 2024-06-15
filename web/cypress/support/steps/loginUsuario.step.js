@@ -1,24 +1,19 @@
 ///  <reference types="cypress" />
 
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { fakerPT_BR } from "@faker-js/faker";
+import { Given, When, Then, Before, After } from "@badeball/cypress-cucumber-preprocessor";
 import LoginPage from "../pages/loginPage";
 
 const loginUser = new LoginPage();
 let usuarioCriado;
 
-beforeEach(() => {
+Before(() => {
   cy.createUser().then((newUser) => {
     usuarioCriado = newUser;
   });
 });
 
-afterEach(() => {
-  cy.deleteUser({
-    email: usuarioCriado.email,
-    id: usuarioCriado.id,
-    password: usuarioCriado.password,
-  });
+After(() => {
+  cy.deleteUser(usuarioCriado);
 });
 
 Given("que o usuário acessou a página de Login", function () {
@@ -30,7 +25,7 @@ When("o usuário informa as credenciais cadastradas", function () {
   loginUser.typeSenha(usuarioCriado.password);
 });
 
-When("acessa a funcionalidade salvar", function () {
+When("acessa a funcionalidade de logar", function () {
   cy.intercept("POST", "/api/auth/login").as("auth");
   loginUser.clickLogin();
 });
@@ -94,6 +89,7 @@ Then("usuário deve autenticar-se com sucesso", function () {
     expect(intercept.response.statusCode).to.equal(200);
   });
   cy.get(loginUser.linkAuth).eq(1).contains("Perfil");
+  cy.location("pathname").should('equal', "/")
 });
 
 Then(
@@ -114,4 +110,5 @@ Then("ao clicar no botão OK deve retornar para o formulário", function () {
   loginUser.clickOK();
   cy.get(loginUser.campoForm).eq(0).should("be.visible");
   cy.get(loginUser.campoForm).eq(1).should("be.visible");
+  cy.get(loginUser.divModal).should('not.exist')
 });
