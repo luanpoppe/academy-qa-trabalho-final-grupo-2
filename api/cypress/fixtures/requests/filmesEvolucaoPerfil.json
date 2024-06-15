@@ -54,5 +54,12 @@
         "description": "Apesar da proibição da música por gerações de sua família, o jovem Miguel sonha em se tornar um músico talentoso como seu ídolo Ernesto de la Cruz.",
         "durationInMinutes": 105,
         "releaseYear": 2017
+    },
+    "porLugaresIncriveis": {
+        "title": "Por lugares incríveis",
+        "genre": "Romance/Drama",
+        "description": "Dois adolescentes que estão passando por momentos difíceis criam um forte laço quando embarcam em uma jornada transformadora para visitar as maravilhas do estado de Indiana, nos Estados Unidos.",
+        "durationInMinutes": 108,
+        "releaseYear": 2020
     }
 }
