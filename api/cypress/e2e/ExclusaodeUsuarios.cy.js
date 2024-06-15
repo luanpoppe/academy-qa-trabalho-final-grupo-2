@@ -115,7 +115,7 @@ describe('Exclusão de Usuários', function () {
         });
     });
 
-    it('Não deve ser possível que um usuário com perfil Administrador, exclua um usuario com id invalido', function () {
+    it('Excluir um usuário com id não existente deve retornar sucesso', function () {
 
         cy.login(usuarioCriado).then((login) => {
             token = login.body.accessToken
@@ -170,7 +170,5 @@ describe('Exclusão de Usuários', function () {
                 });
             });
         });
-    });
-
-  
+    }); 
 });
