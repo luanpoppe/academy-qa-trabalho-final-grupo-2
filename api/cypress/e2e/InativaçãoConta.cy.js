@@ -126,18 +126,4 @@ describe('Inativação de conta de um usuário', function () {
             })
         });
     });
-
-    // Na dúvida se é bug ou não --> SE NÃO FOR, APAGAR
-    it.only('Deve ser possível visualizar as informações de um usuário mesmo depois da inativação de sua conta', function () {
-        cy.inactivateUser(usuarioCriado.accessToken).then(function () {
-            cy.getUser(usuarioCriado.id, adminUser.accessToken).then((response) => {
-                expect(response.status).to.equal(200);
-                expect(response.body).to.deep.include({
-                    name: usuarioCriado.name,
-                    email: usuarioCriado.email,
-                    id: usuarioCriado.id
-                })
-            })
-        })
-    })
 })
