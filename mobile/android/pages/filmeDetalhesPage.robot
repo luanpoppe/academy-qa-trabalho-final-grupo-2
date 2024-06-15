@@ -1,8 +1,11 @@
 *** Settings ***
 
 Resource    ../../base.robot
+Library    String
+Library    XML
 
 *** Variables ***
+${telaDetalhesFilme}    xpath=//android.widget.ImageView
 ${buttonAdicionarReview}    xpath=//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.Button
 ${inputReviewFilme}    xpath=//android.widget.EditText
 ${buttonSalvarReview}    xpath=//android.widget.Button[@content-desc="Salvar"]
@@ -12,6 +15,7 @@ ${msgFacaLoginReview}    xpath=//android.view.View[@content-desc="Faça login e 
 ${msgReviewAdicionada}    xpath=//android.view.View[@content-desc="Sua review foi adicionada!"]
 ${msgNaoFoiPossivelAdicionarReview}    xpath=//android.view.View[@content-desc="Não foi possível adicionar sua review."]
 ${textoReviewPadrao}    Review do filme opa
+${listaDeAvaliacoesContainer}    xpath=//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.widget.ImageView/android.view.View
 
 
 *** Keywords ***
@@ -59,6 +63,33 @@ Quando tentar adicionar uma review em um filme pelo aplicativo
     Clicar para voltar no celular
     Espera elemento e clica    ${buttonSalvarReview}
 
+E já realizou uma review em um filme
+    Quando tentar adicionar uma review em um filme pelo aplicativo
+
+Quando tentar realizar uma nova review no mesmo filme
+    Dar nota a filme    5
+    Espera elemento e clica    ${inputReviewFilme}
+    Clear Text    ${inputReviewFilme}
+    Inserir dados    ${inputReviewFilme}    Review Atualizada
+    Clicar para voltar no celular
+    Espera elemento e clica    ${buttonSalvarReview}
+
+Então o filme deverá continuar com apenas uma review do usuário
+    Clicar para voltar no celular
+    Swipe para cima múltiplas vezes    4
+    # Page Should Contain Text    ${textoReviewPadrao}
+    ${dataHoje}=    Pegar e formatar data atual
+    Set Local Variable    ${tituloReview}    Por "${usuarioLogado}[name]" em ${dataHoje}
+    # Should Contain X Times    ${telaDetalhesFilme}    ${tituloReview}    1
+    Set Local Variable    ${local}    ${tituloReview}\nReview Atualizada
+    # Page Should Contain Element    xpath=${listaDeAvaliacoesContainer}/android.view.View[contains(@content-desc, "${local}")]
+    # Page Should Not Contain Element    xpath=${listaDeAvaliacoesContainer}/android.view.View[contains(@content-desc, "${tituloReview}\n${textoReviewPadrao}")]
+    ${listaAvaliacoesLocal}=    Get Elements    android.widget.FrameLayout    ${listaDeAvaliacoesContainer}
+    FOR    ${element}    IN    @{listaDeAvaliacoesContainer}
+        Log    ${element}
+        
+    END
+
 Então deve aparecer mensagem informando a necessidade do usuário estar logado
     Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgFacaLoginReview}
 
@@ -84,7 +115,17 @@ Quando tentar adicionar uma review em um filme sem definir uma nota
 Então a review não deve ser adicionada
     Wait Until Keyword Succeeds    4    1    Element Should Be Visible    ${msgNaoFoiPossivelAdicionarReview}
 
+Quando tentar adicionar uma review em um filme apenas dando uma nota
+    Acessar primeiro filme da lista
+    Espera elemento e clica    ${buttonAdicionarReview}
+    Dar nota a filme    3
+    # Espera elemento e clica    ${inputReviewFilme}
+    # Inserir dados    ${inputReviewFilme}    ${textoReviewPadrao}
+    # Clicar para voltar no celular
+    Espera elemento e clica    ${buttonSalvarReview}
+
 Iniciar o teste com criação de usuário admin e filme
+    Log    ${listaDeAvaliacoesContainer}
     &{usuarioAdmin}=    Criar usuário admin
     Set Global Variable    ${usuarioRaiz}    ${usuarioAdmin}
     Cadastrar um filme    ${filmePadrao}    ${usuarioRaiz}[token]

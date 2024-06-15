@@ -20,6 +20,8 @@ Funcionalidade: Pesquisa de Filmes
         E acessar a função de pesquisa
         Então o usuário deve ver o resultado da pesquisa para o filme informado
 
+
+
     Cenário: Deve ser possível efetuar uma pesquisa de um filme utilizando o nome completo
         Quando preencher o campo de pesquisa de filmes com o título completo do filme cadastrado
         E acessar a função de pesquisa 

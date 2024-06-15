@@ -22,7 +22,7 @@ Criar usuário API
     ${localEmail}=    Fakerlibrary.Email
     Set Local Variable    ${localPassword}    senha123
     ${fakerName}=    FakerLibrary.Name
-    ${body}=    Create Dictionary    name=Nome Teste    email=${localEmail}    password=${localPassword}
+    ${body}=    Create Dictionary    name=${fakerName}    email=${localEmail}    password=${localPassword}
     Iniciar sessão padrão da API
     ${resposta}    POST On Session    alias=api    url=/api/users    json=${body}
     Set Local Variable    ${usuarioCriado}    ${resposta.json()}
