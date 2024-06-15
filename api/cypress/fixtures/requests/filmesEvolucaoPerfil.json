@@ -33,5 +33,19 @@
         "description": "O aniversário do garoto Andy está chegando e seus brinquedos ficam nervosos, temendo que ele ganhe novos brinquedos que possam substituí-los.",
         "durationInMinutes": 81,
         "releaseYear": 1995
+    },
+    "reiLeao": {
+        "title": "O Rei Leão",
+        "genre": "Animação",
+        "description": "As aventuras de um leão jovem de nome Simba, o herdeiro de seu pai, Mufasa.",
+        "durationInMinutes": 88,
+        "releaseYear": 1994
+    },
+    "reiLeao2": {
+        "title": "O Rei Leão 2: O Reino de Simba",
+        "genre": "Animação",
+        "description": "Kiara, a filha de Simba e herdeira do reino, desobedece o pai quando ele tenta impedi-la de se meter em confusões.",
+        "durationInMinutes": 81,
+        "releaseYear": 1998
     }
 }
