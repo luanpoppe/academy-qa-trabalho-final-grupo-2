@@ -16,3 +16,8 @@ CT002 - Validar as avaliações da audiência e da crítica
     Quando acessar o primeiro filme da lista no app
     Então os dados de avaliações da audiência serão exibidos na tela
     E os dados de avaliações da crítica também serão exibidos na tela
+
+CT003 - Validar a avaliação em porcentagem de um filme
+    Dado que o usuario acessou a API e retornou os dados do primeiro filme da lista de filmes
+    Quando acessar a sessão de filmes do aplicativo
+    Então deverá ser possível ver a porcentagem correta da avaliação de um filme

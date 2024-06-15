@@ -139,7 +139,6 @@ E deve ser possível de ser vista imediatamente na seção de reviews do filme
 Quando tentar adicionar uma review em um filme sem definir uma nota
     Acessar primeiro filme da lista
     Espera elemento e clica    ${buttonAdicionarReview}
-    # Dar nota a filme    3
     Espera elemento e clica    ${inputReviewFilme}
     Inserir dados    ${inputReviewFilme}    ${textoReviewPadrao}
     Clicar para voltar no celular
@@ -152,9 +151,6 @@ Quando tentar adicionar uma review em um filme apenas dando uma nota
     Acessar primeiro filme da lista
     Espera elemento e clica    ${buttonAdicionarReview}
     Dar nota a filme    3
-    # Espera elemento e clica    ${inputReviewFilme}
-    # Inserir dados    ${inputReviewFilme}    ${textoReviewPadrao}
-    # Clicar para voltar no celular
     Espera elemento e clica    ${buttonSalvarReview}
 
 Então não deverá conseguir digitar mais de 500 caracteres
@@ -230,6 +226,16 @@ E os dados de avaliações da crítica também serão exibidos na tela
     ${reviewsCriticString}=    Convert To String    ${qtdReviewsCritico}
     Verifica se o contentDesc contains text    ${reviewsCrítica}    ${reviewsCriticString}
     Verifica se o contentDesc contains text    ${reviewsCrítica}    Avaliação da crítica
+
+Quando acessar a sessão de filmes do aplicativo
+    Log    message
+
+Então deverá ser possível ver a porcentagem correta da avaliação de um filme
+    Set Local Variable    ${avaliacaoFilme}    ${primeiroFilme}[totalRating]
+    ${calculoPorcentagem}    Evaluate    str(int(${avaliacaoFilme} / 5 * 100))
+    Set Local Variable    ${avaliacaoPorcentagem}    ${calculoPorcentagem}%
+    ${infosFilme}    AppiumLibrary.Get Element Attribute    ${primeiroFilmeDaLista}    content-desc
+    Should Contain    ${infosFilme}    ${avaliacaoPorcentagem}
 
 Terminar o teste com deleção de usuários e de filme
     Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
