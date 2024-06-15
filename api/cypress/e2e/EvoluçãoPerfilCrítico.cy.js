@@ -2,10 +2,10 @@
 ///  <reference path="../support/index.d.ts" />
 
 describe('Evolução de usuário para perfil crítico', function () {
-    var usuarioCriado;
-    var token;
-    var filme;
-    var filmeCriado;
+    let usuarioCriado;
+    let token;
+    let filme;
+    let filmeCriado;
 
     beforeEach(function () {
         cy.createUser().then((newUser) => {
@@ -48,8 +48,10 @@ describe('Evolução de usuário para perfil crítico', function () {
             failOnStatusCode: false,
         }).then((response) => {
             expect(response.status).to.equal(401);
-            expect(response.body.message).to.be.eq('Access denied.');
-            expect(response.body.error).to.be.eq('Unauthorized');
+            expect(response.body).to.include({
+                message: 'Access denied.',
+                error: 'Unauthorized'
+            });
         });
     });
 
@@ -116,18 +118,36 @@ describe('Evolução de usuário para perfil crítico', function () {
         }).then(function () {
             cy.reviewMovie(filme.id, 5, "Melhor animação da Disney!", token).then(function () {
                 cy.promoteCritic(token).then(function () {
-                        cy.reviewMovie(filmeCriado.id, 3, "O primeiro filme é muito melhor!", token).then(function () {
-                            cy.listReviews(token).then((response) => {
-                                expect(response.status).to.equal(200);
-                                expect(response.body).to.be.an("array");
-                                expect(response.body[0].reviewType).to.equal(0);
-                                expect(response.body[1].reviewType).to.equal(1);
-                            })
+                    cy.reviewMovie(filmeCriado.id, 3, "O primeiro filme é muito melhor!", token).then(function () {
+                        cy.listReviews(token).then((response) => {
+                            expect(response.status).to.equal(200);
+                            expect(response.body).to.be.an("array");
+                            expect(response.body[0].reviewType).to.equal(0);
+                            expect(response.body[1].reviewType).to.equal(1);
                         })
                     })
-                });
+                })
             });
         });
     });
+
+    it('Deve ser possível verificar que as reviews criadas quando um usuário possui perfil comum, não sofrem alteração no seu tipo quando o usuário se torna Crítico', function () {
+
+        cy.login(usuarioCriado).then((login) => {
+            token = login.body.accessToken
+        }).then(function () {
+            cy.reviewMovie(filme.id, 5, "Melhor animação da Disney!", token).then(function () {
+                cy.promoteCritic(token).then(function () {
+                    cy.listReviews(token).then((response) => {
+                        expect(response.status).to.equal(200);
+                        expect(response.body).to.be.an("array");
+                        expect(response.body[0].reviewType).to.equal(0);
+                    })
+                })
+            })
+        });
+    });
+});
+
 
 

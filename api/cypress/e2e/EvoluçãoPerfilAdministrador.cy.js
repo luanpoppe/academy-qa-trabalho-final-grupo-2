@@ -82,7 +82,7 @@ describe('Evolução de usuário para perfil Administrador', function () {
         })
     });
 
-    it('Deve ser possível verificar que as reviews criadas quando um usuário possuir perfil comum, não sofrerão alteração no seu tipo quando o usuário se tornar Administrador', function () {
+    it('Deve ser possível verificar que as reviews criadas quando um usuário possui perfil comum, não sofrem alteração no seu tipo quando o usuário se torna Administrador', function () {
         cy.login(usuarioCriado).then((login) => {
             token = login.body.accessToken
         }).then(function () {
