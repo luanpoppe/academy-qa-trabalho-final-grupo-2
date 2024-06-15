@@ -47,5 +47,12 @@
         "description": "Kiara, a filha de Simba e herdeira do reino, desobedece o pai quando ele tenta impedi-la de se meter em confusões.",
         "durationInMinutes": 81,
         "releaseYear": 1998
+    },
+    "viva": {
+        "title": "Viva - A vida é uma festa",
+        "genre": "Infantil/Fantasia ",
+        "description": "Apesar da proibição da música por gerações de sua família, o jovem Miguel sonha em se tornar um músico talentoso como seu ídolo Ernesto de la Cruz.",
+        "durationInMinutes": 105,
+        "releaseYear": 2017
     }
 }
