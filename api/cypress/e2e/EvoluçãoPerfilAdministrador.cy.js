@@ -82,6 +82,23 @@ describe('Evolução de usuário para perfil Administrador', function () {
         })
     });
 
+    it('Deve ser possível verificar que as reviews criadas quando um usuário possuir perfil comum, não sofrerão alteração no seu tipo quando o usuário se tornar Administrador', function () {
+        cy.login(usuarioCriado).then((login) => {
+            token = login.body.accessToken
+        }).then(function () {
+            cy.reviewMovie(filme.id, 5, "Amo esse filme!", token).then(function () {
+                cy.promoteAdmin(token).then(function () {
+                    cy.listReviews(token).then((response) => {
+                        expect(response.status).to.equal(200);
+                        expect(response.body).to.be.an("array");
+                        expect(response.body[0].reviewType).to.equal(0);
+                    })
+                })
+            })
+        });
+    });
+
+
     it('Deve ser possível diferenciar os tipos de reviews feitas por um usuário, tendo ele perfil comum e depois administrador', function () {
         cy.login(usuarioCriado).then((login) => {
             token = login.body.accessToken
@@ -105,7 +122,7 @@ describe('Evolução de usuário para perfil Administrador', function () {
         });
     });
 
-    describe('Cenáris com usuário administrador', function () {
+    describe('Cenários com usuário administrador', function () {
         beforeEach(function () {
             cy.login(usuarioCriado).then(function (resposta) {
                 usuarioCriado.token = resposta.body.accessToken
