@@ -1,6 +1,5 @@
 ///  <reference types="cypress" />
 import {
-  Before,
   After,
   Given,
   When,
@@ -10,9 +9,7 @@ import { fakerPT_BR } from "@faker-js/faker";
 import CadastroPage from "../pages/cadastroPage";
 
 const regisUser = new CadastroPage();
-let senha;
 let email;
-let id;
 let user;
 
 // beforeEach(() => {
@@ -20,7 +17,7 @@ let user;
 //   senha = fakerPT_BR.internet.password(6);
 // });
 
-afterEach(() => {
+After(() => {
   cy.deleteUser(user);
 });
 
@@ -52,7 +49,7 @@ When(
 );
 
 When(
-  "preenche todos os campos do formulário utilizando um nome qualquer",
+  "preenche todos os campos do formulário com valores válidos",
   function () {
     regisUser.registrarUsuario().then(function (resposta) {
       user = resposta;
@@ -152,7 +149,7 @@ Then("o site exibirá uma mensagem de cadastro com sucesso", function () {
 Then("o usuario deve ser registrado com conta do tipo comum", function () {
   cy.wait("@post").then(function (intercept) {
     type = intercept.response.body.type;
-    cy.wrap(type).should("eq", 0);
+    expect(type).to.equal(0)
     user.id = intercept.response.body.id;
   });
 });
@@ -162,6 +159,7 @@ Then(
   function () {
     regisUser.clickOK();
 
+    cy.get(regisUser.divModal).should("not.exist")
     cy.get(regisUser.campoForms).eq(0).should("be.visible");
     cy.get(regisUser.campoForms).eq(1).should("be.visible");
     cy.get(regisUser.campoForms).eq(2).should("be.visible");
@@ -170,12 +168,10 @@ Then(
 );
 
 Then("o usuário deve está automaticamente logado no site", function () {
-  cy.intercept("POST", "/api/auth/login").as("auth");
-
   regisUser.clickOK();
 
   cy.wait("@auth").then(function (intercept) {
     expect(intercept.response.statusCode).to.equal(200);
   });
-  cy.get(regisUser.clickPerfil).contains("Perfil");
+  cy.get(regisUser.buttonsHeader).contains("Perfil");
 });

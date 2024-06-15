@@ -6,7 +6,7 @@ Funcionalidade: Registrar Usuário
       Dado que o usuário acessou a página de cadastrar usuários
 
     
-     Esquema do Cenário: Deve ser possível registrar usuário com sucesso
+    Esquema do Cenário: Deve ser possível registrar usuário com sucesso
       Quando preenche todos os campos do formulário utilizando um nome qualquer "<nome>"
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
@@ -19,7 +19,7 @@ Funcionalidade: Registrar Usuário
       |      @        | 
       |     C. M.     |
       |     cAr01     | 
-      |     🫂       |
+      |     🫂         |
 
     Cenário: Deve ser possível registrar usuário com nome com 99 caracteres
       Quando preenche todos os campos do formulário utilizando nome com 99 caracteres
@@ -64,13 +64,13 @@ Funcionalidade: Registrar Usuário
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
   
     Cenário: Usuário registrado com sucesso deve ser do tipo comum
-      Quando preenche todos os campos do formulário utilizando um nome qualquer
+      Quando preenche todos os campos do formulário com valores válidos
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com conta do tipo comum
       E o usuário deve retornar para o formulário de cadastro clicando no botão OK
 
-    Cenário: Deve ser possível está automaticamente logado após registro
-      Quando preenche todos os campos do formulário utilizando um nome qualquer
+    Cenário: Deve ser possível estar automaticamente logado após registro
+      Quando preenche todos os campos do formulário com valores válidos
       E acessar a funcionalidade salvar
       Então o usuario deve ser registrado com sucesso
       E o usuário deve está automaticamente logado no site
