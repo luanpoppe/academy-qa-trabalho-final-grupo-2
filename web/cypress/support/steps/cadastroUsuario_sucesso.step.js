@@ -12,11 +12,6 @@ const regisUser = new CadastroPage();
 let email;
 let user;
 
-// beforeEach(() => {
-//   email = fakerPT_BR.internet.email().toLowerCase();
-//   senha = fakerPT_BR.internet.password(6);
-// });
-
 After(() => {
   cy.deleteUser(user);
 });
