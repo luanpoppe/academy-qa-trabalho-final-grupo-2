@@ -8,6 +8,7 @@ Library     XML
 ${telaDetalhesFilme}                    xpath=//android.widget.ImageView
 ${buttonAdicionarReview}                xpath=//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.Button
 ${inputReviewFilme}                     xpath=//android.widget.EditText
+${estrelasReview}                       //android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]/android.view.View
 ${buttonSalvarReview}                   xpath=//android.widget.Button[@content-desc="Salvar"]
 ${descricaoAdicionarReview}             xpath=//android.view.View[@content-desc="Dê sua nota para o filme:"]
 ${tituloAdicionarReview}                xpath=//android.view.View[@content-desc="Review"]
@@ -27,8 +28,8 @@ ${reviewsCrítica}                       xpath=//android.view.View[contains(@con
 *** Keywords ***
 Dar nota a filme
     [Arguments]    ${quantidadeEstrelas}
-    Espera elemento e clica
-    ...    xpath=//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]/android.view.View[${quantidadeEstrelas}]
+    Set Local Variable    ${hue}    ${estrelasReview}\[${quantidadeEstrelas}]
+    Espera elemento e clica    ${hue}
 
 Dado que um usuário não está autenticado
     Log    Usuário não autenticado
@@ -59,6 +60,10 @@ Dado que um usuário administrador está autenticado
     Acessa login
     Fazer login aplicativo    ${usuarioCriado}[email]    ${usuarioCriado}[password]
     Set Global Variable    ${usuarioLogado}    ${usuarioCriado}
+
+Quando acessar a seção de review de um filme
+    Acessar primeiro filme da lista
+    Espera elemento e clica    ${buttonAdicionarReview}
 
 Quando tentar adicionar uma review em um filme pelo aplicativo
     Acessar primeiro filme da lista
@@ -132,7 +137,7 @@ Então a review deve ser cadastrada com sucesso contendo 500 caracteres
 E deve ser possível de ser vista imediatamente na seção de reviews do filme
     Clicar para voltar no celular
     Swipe para cima múltiplas vezes    4
-    Page Should Contain Text    ${textoReviewPadrao}
+    Wait Until Keyword Succeeds    4    1    Page Should Contain Text    ${textoReviewPadrao}
     ${dataHoje}=    Pegar e formatar data atual
     Page Should Contain Text    Por "${usuarioLogado}[name]" em ${dataHoje}
 
@@ -160,7 +165,6 @@ Então não deverá conseguir digitar mais de 500 caracteres
     Should Be True    ${resultado}
 
 Iniciar o teste com criação de usuário admin e filme
-    Log    ${listaDeAvaliacoesContainer}
     &{usuarioAdmin}=    Criar usuário admin
     Set Global Variable    ${usuarioRaiz}    ${usuarioAdmin}
     Cadastrar um filme    ${filmePadrao}    ${usuarioRaiz}[token]
@@ -228,7 +232,7 @@ E os dados de avaliações da crítica também serão exibidos na tela
     Verifica se o contentDesc contains text    ${reviewsCrítica}    Avaliação da crítica
 
 Quando acessar a sessão de filmes do aplicativo
-    Log    message
+    Log    Acessado a seção de review
 
 Então deverá ser possível ver a porcentagem correta da avaliação de um filme
     Set Local Variable    ${avaliacaoFilme}    ${primeiroFilme}[totalRating]
@@ -236,6 +240,13 @@ Então deverá ser possível ver a porcentagem correta da avaliação de um film
     Set Local Variable    ${avaliacaoPorcentagem}    ${calculoPorcentagem}%
     ${infosFilme}    AppiumLibrary.Get Element Attribute    ${primeiroFilmeDaLista}    content-desc
     Should Contain    ${infosFilme}    ${avaliacaoPorcentagem}
+
+Então poderá dar apenas notas de 1 a 5 em sua review do filme
+    Wait Until Element Is Visible    ${estrelasReview}
+    FOR    ${counter}    IN RANGE    1    6
+        Element Should Be Visible    ${estrelasReview}\[${counter}]
+    END
+    Page Should Not Contain Element    ${estrelasReview}\[6]
 
 Terminar o teste com deleção de usuários e de filme
     Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
