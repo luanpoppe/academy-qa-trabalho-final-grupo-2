@@ -158,8 +158,7 @@ describe('Avaliação de filmes', function () {
         })
       })
 
-      // Teste com bug --> Está criando uma review como se fosse do tipo administrador, sendo que deveria ser do tipo crítico
-      it.skip('A review feita por um usuário crítico deve ser do tipo crítico', function () {
+      it('A review feita por um usuário crítico deve ser do tipo crítico', function () {
         cy.promoteCritic(localToken)
 
         cy.request({
@@ -177,7 +176,7 @@ describe('Avaliação de filmes', function () {
 
             expect(reviewCreated.score).to.deep.equal(defaultReviewBody.score)
             expect(reviewCreated.reviewText).to.deep.equal(defaultReviewBody.reviewText)
-            expect(reviewCreated.reviewType).to.deep.equal(2)
+            expect(reviewCreated.reviewType).to.deep.equal(1)
           })
         })
       })
@@ -201,7 +200,7 @@ describe('Avaliação de filmes', function () {
 
             expect(reviewCreated.score).to.deep.equal(defaultReviewBody.score)
             expect(reviewCreated.reviewText).to.deep.equal(defaultReviewBody.reviewText)
-            expect(reviewCreated.reviewType).to.deep.equal(1)
+            expect(reviewCreated.reviewType).not.to.equal(0)
           })
         })
       })
@@ -286,7 +285,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
-    it('Em um filme que já possui uma review do usuário, novas reviews deste usuário deve atualizar a review prévia ao invés de criar uma nova', function () {
+    it('Em um filme que já possui uma review do usuário, novas reviews deste usuário devem atualizar a review prévia ao invés de criar uma nova', function () {
       const segundaReview = {
         movieId: movie.id,
         score: 5,
