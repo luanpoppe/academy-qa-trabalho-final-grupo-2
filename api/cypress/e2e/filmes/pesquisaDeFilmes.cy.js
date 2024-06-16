@@ -174,8 +174,48 @@ describe("Pesquisa de Filmes", () => {
     const movieInvalidNull = "Filme inexistente 123456789acbde";
     cy.searchMovie(movieInvalidNull).then((response) => {
       expect(response.status).to.eq(200);
-
       expect(response.body).to.be.an("array").that.is.empty;
+    });
+  });
+
+  it("Não deve ser possível efetuar pesquisa de um filme pelo gênero ", () => {
+    cy.searchMovie(movieCreated.genre).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an("array").that.is.empty;
+    });
+  });
+
+  it("Não deve ser possível efetuar pesquisa de um filme pela descrição", () => {
+    cy.searchMovie(movieCreated.description).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an("array").that.is.empty;
+    });
+  });
+
+  it("Não deve ser possível efetuar pesquisa de um filme pelo tempo de duração", () => {
+    cy.searchMovie(movieCreated.durationInMinutes).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an("array").that.is.empty;
+    });
+  });
+
+  it("Não deve ser possível efetuar pesquisa de um filme pelo ano de lançamento", () => {
+    cy.searchMovie(movieCreated.releaseYear).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an("array").that.is.empty;
+    });
+  });
+
+  it("Não deve ser possível efetuar pesquisa de um filme sem informar um título", () => {
+    cy.request({
+      method: "GET",
+      url: "/api/movies/search",
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(500);
+      expect(response.body).to.deep.include({
+        message: 'Internal server error',
+      });
     });
   });
 });
