@@ -11,9 +11,11 @@ export default class CadastroPage {
   erroFormulario = ".input-error";
   mensagemCadastro = ".modal-content .error-message";
   campoForms = ".profile-input";
-  divModal = ".modal-content"
+  divModal = ".modal-content";
+  campoContainer = ".input-container";
 
   buttonsHeader = ".movies-page-link";
+  buttonConta = "[href='/account']";
 
   typeNome(nome) {
     cy.get(this.inputNome).type(nome);
@@ -37,6 +39,14 @@ export default class CadastroPage {
 
   clickOK() {
     cy.get(this.buttonOk).click();
+  }
+
+  clickPerfil() {
+    cy.get(this.buttonsHeader).click();
+  }
+
+  clickConta() {
+    cy.get(this.buttonConta).click();
   }
 
   registrarUsuario(userParam) {

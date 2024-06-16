@@ -4,6 +4,17 @@ Funcionalidade: Registrar Usuário
 
     Contexto: Acessar a página de cadastro de usuários
         Dado que o usuário acessou a página de cadastrar usuários
+
+    Esquema do Cenário: Não deve ser possível registrar usuário inserindo termo que não identifica o nome do usuário
+      Quando preenche todos os campos do formulário utilizando termos inválidos "<nome>"
+      E acessar a funcionalidade salvar
+      Então a operação de registro não poderá ser concluída exibindo o alerta "Não foi possível cadastrar o usuário."
+      Exemplos:
+      |     nome      |
+      |      1        |
+      |      *        | 
+      |      @        | 
+      |     🫂       |
    
     Cenário: Não deve ser possível registrar usuário sem inserir os dados no formulário
         Quando não preencher nenhum campo
@@ -53,7 +64,7 @@ Funcionalidade: Registrar Usuário
         |                         123@.com                             |            Informe um e-mail válido.          |                  
         |                        carolail.com                          |            Informe um e-mail válido.          |
         |                      caromaia#gmail.com                      |            Informe um e-mail válido.          |
-        |                      caromai@gmai🫢l.com                      |            Informe um e-mail válido.          |
+        |                      caromail@gmai🫢l.com                   |            Informe um e-mail válido.          |
         |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@h.com |   O e-mail deve ter no máximo 60 dígitos.     |
         
     Cenário: Não deve ser possível registrar usuário sem informar senha

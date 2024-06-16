@@ -20,15 +20,6 @@ Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
 });
 
-When(
-  "preenche todos os campos do formulário utilizando um nome qualquer {string}",
-  function (nome) {
-    regisUser.registrarUsuario({ name: nome }).then(function (resposta) {
-      user = resposta;
-    });
-  }
-);
-
 When("acessar a funcionalidade salvar", function () {
   cy.intercept("POST", "/api/users").as("post");
   regisUser.clickCadastrar();
@@ -43,14 +34,11 @@ When(
   }
 );
 
-When(
-  "preenche todos os campos do formulário com valores válidos",
-  function () {
-    regisUser.registrarUsuario().then(function (resposta) {
-      user = resposta;
-    });
-  }
-);
+When("preenche todos os campos do formulário com valores válidos", function () {
+  regisUser.registrarUsuario().then(function (resposta) {
+    user = resposta;
+  });
+});
 
 When(
   "preenche todos os campos do formulário utilizando nome com 99 caracteres",
@@ -144,9 +132,10 @@ Then("o site exibirá uma mensagem de cadastro com sucesso", function () {
 Then("o usuario deve ser registrado com conta do tipo comum", function () {
   cy.wait("@post").then(function (intercept) {
     type = intercept.response.body.type;
-    expect(type).to.equal(0)
+    expect(type).to.equal(0);
     user.id = intercept.response.body.id;
   });
+  regisUser.clickOK();
 });
 
 Then(
@@ -154,7 +143,7 @@ Then(
   function () {
     regisUser.clickOK();
 
-    cy.get(regisUser.divModal).should("not.exist")
+    cy.get(regisUser.divModal).should("not.exist");
     cy.get(regisUser.campoForms).eq(0).should("be.visible");
     cy.get(regisUser.campoForms).eq(1).should("be.visible");
     cy.get(regisUser.campoForms).eq(2).should("be.visible");
@@ -170,3 +159,13 @@ Then("o usuário deve está automaticamente logado no site", function () {
   });
   cy.get(regisUser.buttonsHeader).contains("Perfil");
 });
+
+Then(
+  "deve ser possivel consultar o tipo de usuario no seu Perfil",
+  function () {
+    cy.get(regisUser.buttonsHeader).contains("Perfil").click();
+    regisUser.clickConta();
+    cy.get(regisUser.campoContainer).contains("Tipo de usuário:");
+    cy.get(regisUser.campoForms).contains("Comum");
+  }
+);
