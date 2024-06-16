@@ -569,11 +569,26 @@ describe("Gerenciar conta", () => {
   });
 
   describe("Usuário não logado", function () {
-    it("Não deve ser possível como usuário não logado atualizar os dados de um usuário cadastrado", () => {
+    it("Não deve ser possível como usuário não logado atualizar a senha de um usuário cadastrado", () => {
       cy.request({
         method: "PUT",
         url: "/api/users/" + user.id,
-        body: { name: newName, password: newPassword },
+        body: { password: newPassword },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(401);
+        expect(response.body).to.deep.eq({
+          message: "Access denied.",
+          error: "Unauthorized",
+          statusCode: 401,
+        });
+      });
+    });
+    it("Não deve ser possível como usuário não logado atualizar o nome de um usuário cadastrado", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + user.id,
+        body: { name: newName },
         failOnStatusCode: false,
       }).then(function (response) {
         expect(response.status).to.equal(401);
@@ -586,3 +601,5 @@ describe("Gerenciar conta", () => {
     });
   });
 });
+
+
