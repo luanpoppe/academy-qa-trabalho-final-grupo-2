@@ -21,14 +21,23 @@ Before(() => {
 After({ tags: "@usuarioCriado" }, function () {
   const user = {
     ...this.usuarioCriado,
-    id: this.usuarioId
-  }
-  cy.deleteUser(user)
-})
+    id: this.usuarioId,
+  };
+  cy.deleteUser(user);
+});
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
 });
+
+When(
+  "preenche todos os campos do formulário utilizando termos inválidos {string}",
+  function (nome) {
+    regisUser.registrarUsuario({ name: nome }).then(function (resposta) {
+      user = resposta;
+    });
+  }
+);
 
 When("não preencher nenhum campo", function () {
   cy.get(regisUser.inputNome).invoke("val").should("be.empty");
@@ -171,15 +180,15 @@ When(
 );
 
 When("realiza o cadastro de usuário com sucesso", function () {
-  cy.intercept('POST', '/api/users').as('criarUsuario')
+  cy.intercept("POST", "/api/users").as("criarUsuario");
   regisUser.registrarUsuario().then(function (resposta) {
-    cy.wrap(resposta).as("usuarioCriado")
-  })
+    cy.wrap(resposta).as("usuarioCriado");
+  });
   regisUser.clickCadastrar();
   regisUser.clickOK();
   cy.wait("@criarUsuario").then(function (intercept) {
-    cy.wrap(intercept.response.body.id).as("usuarioId")
-  })
+    cy.wrap(intercept.response.body.id).as("usuarioId");
+  });
 });
 
 When(
