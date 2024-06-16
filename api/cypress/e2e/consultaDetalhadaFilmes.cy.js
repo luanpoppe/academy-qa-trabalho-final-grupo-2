@@ -56,9 +56,46 @@ describe("Consulta detalhada de filmes", function () {
           auth: {
             bearer: response.body.accessToken,
           },
+          failOnStatusCode: false,
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.empty;
+        });
+      });
+    });
+    it("Não deve retornar dados do filme quando um usuário do tipo comum realizar uma consulta detalhada de filmes informando uma string", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + "string",
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
+        });
+      });
+    });
+    it("Não deve retornar dados do filme quando um usuário do tipo comum realizar uma consulta detalhada de filmes informando um número decimal", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + 0.5,
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
         });
       });
     });
@@ -171,6 +208,42 @@ describe("Consulta detalhada de filmes", function () {
         });
       });
     });
+    it("Não deve retornar dados do filme quando um usuário do tipo crítico realizar uma consulta detalhada de filmes informando uma string", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + "string",
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
+        });
+      });
+    });
+    it("Não deve retornar dados do filme quando um usuário do tipo crítico realizar uma consulta detalhada de filmes informando um número decimal", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + 0.5,
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
+        });
+      });
+    });
 
     describe('Criação de reviews', function () {
       beforeEach(function () {
@@ -275,9 +348,46 @@ describe("Consulta detalhada de filmes", function () {
           auth: {
             bearer: response.body.accessToken,
           },
+          failOnStatusCode: false,
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.empty;
+        });
+      });
+    });
+    it("Não deve retornar dados do filme quando um usuário do tipo administrador realizar uma consulta detalhada de filmes informando uma string", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + "string",
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
+        });
+      });
+    });
+    it("Não deve retornar dados do filme quando um usuário do tipo administrador realizar uma consulta detalhada de filmes informando um número decimal", function () {
+      cy.login(userCriado).then(function (response) {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/" + 0.5,
+          auth: {
+            bearer: response.body.accessToken,
+          },
+          failOnStatusCode: false,
+        }).then(function (response) {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.deep.include({
+            error: "Bad Request",
+            message: "Validation failed (numeric string is expected)"
+          });
         });
       });
     });
