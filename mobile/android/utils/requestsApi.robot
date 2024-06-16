@@ -59,6 +59,19 @@ Deletar usuário
     Iniciar sessão com token da API    ${tokenParam}
     ${resposta}    DELETE On Session    alias=api    url=/api/users/${usuarioParam}[id]
 
+Deletar usuário por ID
+    [Arguments]    ${id}    ${tokenParam}
+    Promover usuário para administrador    ${tokenParam}
+    Iniciar sessão com token da API    ${tokenParam}
+    ${resposta}    DELETE On Session    alias=api    url=/api/users/${id}
+
+Deletar usuário por email
+    [Arguments]    ${usuarioEmail}    ${tokenParam}
+    Promover usuário para administrador    ${tokenParam}
+    Iniciar sessão com token da API    ${tokenParam}
+    ${resposta}    DELETE On Session    alias=api    url=/api/movies/${usuarioEmail}
+
+
 Cadastrar um filme
     [Arguments]    ${dicionarioFilme}    ${tokenParam}
     ${localReleaseYear}=    Convert To Integer    ${dicionarioFilme}[releaseYear]

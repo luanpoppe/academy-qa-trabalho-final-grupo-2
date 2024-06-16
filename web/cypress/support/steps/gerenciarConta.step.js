@@ -9,9 +9,11 @@ import {
 } from "@badeball/cypress-cucumber-preprocessor";
 import { faker } from "@faker-js/faker";
 import GerenciarPage from "../pages/gerenciarPage";
+import LoginPage from "../pages/loginPage";
+
 const paginaGerenciar = new GerenciarPage();
-var token;
-var user;
+const paginaLogin = new LoginPage()
+let user;
 
 Before(() => {
   cy.visit("/login");
@@ -25,18 +27,14 @@ After(() => {
 });
 
 Given("que possuo um usuário comum cadastrado e logado no sistema", () => {
-  paginaGerenciar.typeEmail(user.email);
-  paginaGerenciar.typeSenha(user.password);
-  paginaGerenciar.clickButtonLogin();
+  paginaLogin.login(user)
 });
 
 Given("que possuo um usuário crítico cadastrado e logado no sistema", () => {
   cy.login(user).then(function (response) {
-    token = response.body.accessToken;
+    const token = response.body.accessToken;
     cy.promoteCritic(token);
-    paginaGerenciar.typeEmail(user.email);
-    paginaGerenciar.typeSenha(user.password);
-    paginaGerenciar.clickButtonLogin();
+    paginaLogin.login(user)
   });
 });
 
@@ -44,11 +42,9 @@ Given(
   "que possuo um usuário administrador cadastrado e logado no sistema",
   () => {
     cy.login(user).then(function (response) {
-      token = response.body.accessToken;
+      const token = response.body.accessToken;
       cy.promoteAdmin(token);
-      paginaGerenciar.typeEmail(user.email);
-      paginaGerenciar.typeSenha(user.password);
-      paginaGerenciar.clickButtonLogin();
+      paginaLogin.login(user)
     });
   }
 );
@@ -57,6 +53,10 @@ Given("que acessei a funcionalidade de gerencimaneto de conta", () => {
   paginaGerenciar.clickLinkPerfil();
   paginaGerenciar.clickLinkGerenciar();
 });
+
+Given('que um usuário não está logado', function () {
+
+})
 
 When("vizualizar o texto {string}", function (mensagem) {
   cy.get(paginaGerenciar.labelAtualize).should("contain", mensagem);
@@ -67,9 +67,7 @@ When(
   () => {
     user.password = "123456";
     paginaGerenciar.typeNome(faker.person.firstName() + " teste");
-    paginaGerenciar.clickButtonAlterarSenha();
-    paginaGerenciar.typeSenha(user.password);
-    paginaGerenciar.typeConfirmaSenha(user.password);
+    paginaGerenciar.alterPassword(user.password)
   }
 );
 
@@ -113,15 +111,17 @@ When(
 When(
   "atualizar os campos de senha e confirmar senha para {string}",
   (senha) => {
-    paginaGerenciar.clickButtonAlterarSenha();
-    paginaGerenciar.typeSenha(senha);
-    paginaGerenciar.typeConfirmaSenha(senha);
+    paginaGerenciar.alterPassword(senha)
   }
 );
 
 When("habilitar a função alterar senha", () => {
   paginaGerenciar.clickButtonAlterarSenha();
 });
+
+When('tentar acessar a página de perfil de usuário', function () {
+  cy.visit("/profile")
+})
 
 Then("o usuário poderá atualizar suas informações", () => {
   cy.get(paginaGerenciar.inputNome).should("be.enabled");
@@ -135,40 +135,32 @@ Then("o usuário poderá atualizar suas informações", () => {
 
 Then("será possível atualizar as informações do usuário com sucesso", () => {
   cy.get(paginaGerenciar.labelAlerta).should("contain", "Sucesso");
-  cy.get(paginaGerenciar.mensagemAlerta).should(
-    "contain",
-    "Informações atualizadas!"
-  );
+  cy.get(paginaGerenciar.mensagemAlerta).should("contain", "Informações atualizadas!");
   paginaGerenciar.clickButtonOk();
+  cy.get(paginaGerenciar.divModal).should('not.exist')
 });
 
 Then("será possível atualizar apenas o nome do usuário com sucesso", () => {
   cy.get(paginaGerenciar.labelAlerta).should("contain", "Sucesso");
-  cy.get(paginaGerenciar.mensagemAlerta).should(
-    "contain",
-    "Informações atualizadas!"
-  );
+  cy.get(paginaGerenciar.mensagemAlerta).should("contain", "Informações atualizadas!");
   paginaGerenciar.clickButtonOk();
+  cy.get(paginaGerenciar.divModal).should('not.exist')
 });
 
 Then("será possível atualizar apenas a senha do usuário com sucesso", () => {
   cy.get(paginaGerenciar.labelAlerta).should("contain", "Sucesso");
-  cy.get(paginaGerenciar.mensagemAlerta).should(
-    "contain",
-    "Informações atualizadas!"
-  );
+  cy.get(paginaGerenciar.mensagemAlerta).should("contain", "Informações atualizadas!");
   paginaGerenciar.clickButtonOk();
+  cy.get(paginaGerenciar.divModal).should('not.exist')
 });
 
 Then(
   "o alerta de erro informando que não é possível realizar a operação será exibido na tela",
   () => {
     cy.get(paginaGerenciar.labelAlerta).should("contain", "Ocorreu um erro");
-    cy.get(paginaGerenciar.mensagemAlerta).should(
-      "contain",
-      "Não foi possível atualizar os dados."
-    );
+    cy.get(paginaGerenciar.mensagemAlerta).should("contain", "Não foi possível atualizar os dados.");
     paginaGerenciar.clickButtonOk();
+    cy.get(paginaGerenciar.divModal).should('not.exist')
   }
 );
 
@@ -177,8 +169,8 @@ Then("o sistema exibirá a mensagem de erro {string}", (mensagem) => {
 });
 
 Then("o usuário terá acesso aos dados de nome e e-mail da sua conta", () => {
-  cy.get(paginaGerenciar.inputNome).should("be.visible");
-  cy.get(paginaGerenciar.inputEmail).should("be.visible");
+  cy.get(paginaGerenciar.inputNome).invoke("val").should("equal", user.name);
+  cy.get(paginaGerenciar.inputEmail).invoke("val").should("equal", user.email);
 });
 
 Then("o campo senha exibirá a mensagem de erro {string}", (mensagem) => {
@@ -195,3 +187,7 @@ Then(
 Then("o campo nome exibirá a mensagem de erro {string}", (mensagem) => {
   cy.get(paginaGerenciar.labelNome).should("contain", mensagem);
 });
+
+Then('o site deverá redirecionar o usuário para a página de login', function () {
+  cy.location("pathname").should('equal', "/login")
+})

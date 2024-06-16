@@ -1,5 +1,3 @@
-import { fakerPT_BR } from "@faker-js/faker";
-
 export default class MoviesPage {
   buttonLogo = ".link-logo";
   boxBusca = ".search-box";
@@ -19,9 +17,11 @@ export default class MoviesPage {
   labelAudience = ".movie-score-info > :nth-child(1) > :nth-child(1)";
   labelQtdAudience = ".movie-score-info > :nth-child(1) > :nth-child(3)";
   starAudience = ".movie-score-info > :nth-child(1)";
+  singleStarsAudience = ".movie-score-info > :nth-child(1) > div"
   labelCritic = ".movie-score-info > :nth-child(2) > :nth-child(1)";
   labelQtdCritic = ".movie-score-info > :nth-child(2) > :nth-child(3)";
   starCritic = ".movie-score-info > :nth-child(2)";
+  singleStarsCritic = ".movie-score-info > :nth-child(2) > div"
   labelReview = ".movie-details-container > :nth-child(2)";
   labelStarReview = ".stars";
   inputTextReview = "textarea";
@@ -37,6 +37,7 @@ export default class MoviesPage {
   erroIdinválido = "h2";
   statusIdInválido = "h3";
 
+
   modalError = {
     divModal: ".modal-content",
     titleModal: ".modal-content h3",
@@ -47,45 +48,30 @@ export default class MoviesPage {
   allReviewStars = () => {
     return cy.get(".review-form-star")
   }
+  allUserReviews() {
+    return cy.get(".user-reviews-container > div")
+  }
+  getUserReview(nota) {
+    return cy.get(`.user-reviews-container > :nth-child(${nota})`)
+  }
+  allReviewDateHour() {
+    return cy.get(".user-review-card > label")
+  }
+  allReviewAvatar() {
+    return cy.get(".user-review-info > img")
+  }
+  allReviewNames() {
+    return cy.get(".user-reviecard-info > h3")
+  }
+  allReviewTexts() {
+    return cy.get(".user-review-card > p")
+  }
+  allReviewUserStars() {
+    return cy.get(".user-reviews-section .star-container-reviewcard")
+  }
+
   buttohEnviar = ".rate-movie > button";
-  star5 = ".stars > :nth-child(5)";
-  star4 = ".stars > :nth-child(4)";
-  review5 = ".user-reviews-container > :nth-child(5)";
-  review4 = ".user-reviews-container > :nth-child(4)";
-  review3 = ".user-reviews-container > :nth-child(3)";
-  review2 = ".user-reviews-container > :nth-child(2)";
-  review1 = ".user-reviews-container > :nth-child(1)";
   labelEntre = ".rate-movie > a";
-  reviewDateHour1 = ":nth-child(1) > label";
-  reviewDateHour2 = ":nth-child(2) > label";
-  reviewDateHour3 = ":nth-child(3) > label";
-  reviewDateHour4 = ":nth-child(4) > label";
-  reviewDateHour5 = ":nth-child(5) > label";
-  reviewAvatar1 = ":nth-child(1) > .user-review-info > .avatar-img";
-  reviewAvatar2 = ":nth-child(2) > .user-review-info > .avatar-img";
-  reviewAvatar3 = ":nth-child(3) > .user-review-info > .avatar-img";
-  reviewAvatar4 = ":nth-child(4) > .user-review-info > .avatar-img";
-  reviewAvatar5 = ":nth-child(5) > .user-review-info > .avatar-img";
-  reviewName1 = ":nth-child(1) > .user-review-info > .user-reviecard-info > h3";
-  reviewName2 = ":nth-child(2) > .user-review-info > .user-reviecard-info > h3";
-  reviewName3 = ":nth-child(3) > .user-review-info > .user-reviecard-info > h3";
-  reviewName4 = ":nth-child(4) > .user-review-info > .user-reviecard-info > h3";
-  reviewName5 = ":nth-child(5) > .user-review-info > .user-reviecard-info > h3";
-  reviewText1 = ":nth-child(1) > p";
-  reviewText2 = ":nth-child(2) > p";
-  reviewText3 = ":nth-child(3) > p";
-  reviewText4 = ":nth-child(4) > p";
-  reviewText5 = ":nth-child(5) > p";
-  reviewStars1 =
-    ":nth-child(1) > .user-review-info > .user-reviecard-info > .star-container-reviewcard";
-  reviewStars2 =
-    ":nth-child(2) > .user-review-info > .user-reviecard-info > .star-container-reviewcard";
-  reviewStars3 =
-    ":nth-child(3) > .user-review-info > .user-reviecard-info > .star-container-reviewcard";
-  reviewStars4 =
-    ":nth-child(4) > .user-review-info > .user-reviecard-info > .star-container-reviewcard";
-  reviewStars5 =
-    ":nth-child(5) > .user-review-info > .user-reviecard-info > .star-container-reviewcard";
 
   typeEmail(email) {
     cy.get(this.inputEmail).type(email);
@@ -99,10 +85,6 @@ export default class MoviesPage {
     cy.get(this.inputTextReview).type(review);
   }
 
-  clickStar5() {
-    cy.get(this.star5).click();
-  }
-
   clickButtonEnviarReview() {
     cy.get(this.buttohEnviar).click();
   }
@@ -112,7 +94,7 @@ export default class MoviesPage {
   }
 
   clickLabelMovie() {
-    cy.get(this.labelMovie).click();
+    cy.get(this.labelMovie).click()
   }
 
   clickButtonLogo() {
@@ -129,9 +111,20 @@ export default class MoviesPage {
     cy.get(this.labelMovie).click();
   }
 
+
   visitMoviePage(movieId) {
     cy.wait('@getUser')
     cy.visit("/movies/" + movieId)
     cy.wait('@getMovie')
+  }
+
+  createUserReview(textoDaReview) {
+    cy.get(this.inputTextReview).clear();
+    this.typeReview(textoDaReview);
+    this.clickButtonEnviarReview();
+  }
+
+  clickStartReview(nota) {
+    return cy.get(`.rate-movie .stars > :nth-child(${nota})`).click()
   }
 }

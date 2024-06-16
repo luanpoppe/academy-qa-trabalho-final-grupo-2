@@ -1,0 +1,21 @@
+[
+    {
+        "title": "Atlas 5",
+        "genre": "Ação",
+        "description": "Loucura",
+        "durationInMinutes": 120,
+        "releaseYear": 2024,
+        "id": 1, 
+        "totalRating": 3
+    },
+    {
+        "title": "Flash",
+        "genre": "Ação",
+        "description": "Super Herois",
+        "durationInMinutes": 160,
+        "releaseYear": 2020,
+        "id": 2, 
+        "totalRating": 3.8
+    }
+   
+]

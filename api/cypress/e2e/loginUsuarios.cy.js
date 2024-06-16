@@ -2,7 +2,6 @@
 ///  <reference path="../support/index.d.ts" />
 
 describe("Login de cadastros de usuários", () => {
-  let token;
   let usuarioCriado;
 
   beforeEach(() => {
@@ -73,6 +72,25 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
+    it("Não deve ser possível usuário autenticar-se com e-mail não cadastradado", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: "emailnaoexistente1234@bol.com",
+          password: usuarioCriado.password,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(401);
+        expect(resposta.body).to.deep.equal({
+          message: "Invalid username or password.",
+          error: "Unauthorized",
+          statusCode: 401,
+        });
+      });
+    });
+
     it("Não deve ser possível usuário autenticar-se sem informar senha", () => {
       cy.request({
         method: "POST",
@@ -133,32 +151,13 @@ describe("Login de cadastros de usuários", () => {
       });
     });
 
-    it("Não deve ser possível usuário autenticar-se com e-mail não cadastradado", () => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/login",
-        body: {
-          email: "emailnaoexistente1234@bol.com",
-          password: usuarioCriado.password,
-        },
-        failOnStatusCode: false,
-      }).then((resposta) => {
-        expect(resposta.status).to.equal(401);
-        expect(resposta.body).to.deep.equal({
-          message: "Invalid username or password.",
-          error: "Unauthorized",
-          statusCode: 401,
-        });
-      });
-    });
-
-    it("Não deve ser possível usuário autenticar-se com senha incorreta", () => {
+    it("Não deve ser possível usuário autenticar-se com senha não cadastrada", () => {
       cy.request({
         method: "POST",
         url: "/api/auth/login",
         body: {
           email: usuarioCriado.email,
-          password: "aaaaa",
+          password: "aaaaaa",
         },
         failOnStatusCode: false,
       }).then((resposta) => {
@@ -184,10 +183,43 @@ describe("Login de cadastros de usuários", () => {
       }).then((resposta) => {
         expect(resposta.status).to.equal(200);
         expect(resposta.body.accessToken).to.be.a("string");
-        token = resposta.body.accessToken;
       });
     });
 
-    it("Sessão de login do usuário deve expirar em 60 min", function () {});
+    it("Deve ser possível usuário cadastrado autenticar-se utilizando email em letras maiúsculas", () => {
+      cy.request({
+        method: "POST",
+        url: "/api/auth/login",
+        body: {
+          email: usuarioCriado.email.toUpperCase(),
+          password: usuarioCriado.password,
+        },
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(200);
+        expect(resposta.body.accessToken).to.be.a("string");
+      });
+    });
+
+    //utilizando token  que não está mais válido para tentar realizar a promoção a perfil crítico, ação que só pode ser realizada se o token ainda estiver válido
+    it("Sessão de login do usuário deve expirar em 60 min", function () {
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAyNiwiZW1haWwiOiJjYXJvbEBnZ2cuY29tIiwiaWF0IjoxNzE4MTEwNTQ2LCJleHAiOjE3MTgxMTQxNDZ9.O6Q6ZAS16gdyNJgwsnr7tbgp0faRXttlqUii3b4v-00";
+
+      cy.request({
+        method: "PATCH",
+        url: "/api/users/apply",
+        auth: {
+          bearer: token,
+        },
+        failOnStatusCode: false,
+      }).then((resposta) => {
+        expect(resposta.status).to.equal(401);
+        expect(resposta.body).to.deep.equal({
+          error: "Unauthorized",
+          message: "Access denied.",
+          statusCode: 401,
+        });
+      });
+    });
   });
 });
