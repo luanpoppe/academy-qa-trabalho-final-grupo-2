@@ -45,7 +45,7 @@ describe("Pesquisa de Filmes", () => {
     });
   });
 
-  it("Deve ser possível pesquisar um filme estando logado no site como usuário comum", () => {
+  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Comum", () => {
     cy.createUser().then((response) => {
       user = response;
       cy.login(user).then((loginResponse) => {
@@ -70,7 +70,7 @@ describe("Pesquisa de Filmes", () => {
     });
   });
 
-  it("Deve ser possível pesquisar um filme como usuário crítico", () => {
+  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Crítico", () => {
     cy.createCriticUser().then((response) => {
       user = response;
       cy.login(user).then((loginResponse) => {
@@ -94,7 +94,8 @@ describe("Pesquisa de Filmes", () => {
       });
     });
   });
-  it("Deve ser possível pesquisar um filme como administrador", () => {
+  
+  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Administrador", () => {
     cy.createAdminUser().then((response) => {
       user = response;
       cy.login(user).then((loginResponse) => {
@@ -118,7 +119,8 @@ describe("Pesquisa de Filmes", () => {
       });
     });
   });
-  it("Deve ser possível efetuar uma pesquisa de um filme utilizando o nome completo", () => {
+  
+  it("Deve ser possível efetuar uma pesquisa utilizando o nome completo do filme", () => {
     cy.searchMovie(movieTitle).then((response) => {
       const movie = response.body.find((m) => m.title === movieTitle);
       expect(movie).to.not.be.undefined;
@@ -136,7 +138,7 @@ describe("Pesquisa de Filmes", () => {
     });
   });
 
-  it("Deve ser possível efetuar uma pesquisa de um filme escrevendo parte do título do filme", () => {
+  it("Deve ser possível efetuar uma pesquisa utilizando parte do título do filme", () => {
     const partialTitle = movieTitle.slice(0, Math.floor(movieTitle.length / 2));
     cy.searchMovie(partialTitle).then((response) => {
       const movie = response.body.find((m) => m.title.includes(partialTitle));
@@ -156,7 +158,7 @@ describe("Pesquisa de Filmes", () => {
     });
   });
 
-  it("Não deve ser possível efetuar pesquisa com resultado nulo", () => {
+  it("Não deve ser possível efetuar pesquisa de um filme não cadastrado", () => {
     const movieInvalidNull = "Filme inexistente";
     cy.searchMovie(movieInvalidNull).then((response) => {
       expect(response.status).to.eq(200);
