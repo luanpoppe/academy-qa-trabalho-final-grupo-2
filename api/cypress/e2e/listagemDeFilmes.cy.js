@@ -26,6 +26,12 @@ describe('Funcionalidade: Listagem de Filmes', () => {
 		});
 	});
 
+	after(function () {
+		cy.deleteMovie(movieId, token).then(() => {
+			cy.deleteUser(user)
+		})
+	})
+
 	describe('Usuários autenticados', function () {
 		let localUser
 		let localToken
@@ -97,21 +103,38 @@ describe('Funcionalidade: Listagem de Filmes', () => {
 	});
 
 	it('Listagem dos filmes deve conter informações detalhadas sobre os filmes', () => {
-		cy.searchMovie(movieInfo.title).then((response) => {
+		cy.request({ method: 'GET', url: '/api/movies' }).then((response) => {
 			expect(response.status).to.eq(200);
+			const sampleMovies = [
+				response.body[0],
+				response.body[response.body.length - 1],
+				response.body[Math.ceil(response.body.length / 2)]
+			]
 
-			const movie = response.body[0];
-
-			expect(movie.id).to.be.an('number');
-			expect(movie).to.have.property('title', movieInfo.title);
-			expect(movie).to.have.property('genre', movieInfo.genre);
-			expect(movie).to.have.property('description', movieInfo.description);
-			expect(movie).to.have.property('durationInMinutes', movieInfo.durationInMinutes);
-			expect(movie).to.have.property('releaseYear', movieInfo.releaseYear);
-			expect(movie).to.have.property('totalRating');
+			cy.wrap(sampleMovies).each((movie) => {
+				expect(movie).to.have.property('totalRating');
+				expect(movie.id).to.be.an('number');
+				expect(movie.title).to.be.a("string")
+				expect(movie.genre).to.be.a("string")
+				expect(movie.description).to.be.a("string")
+				expect(movie.durationInMinutes).to.be.a("number")
+				expect(movie.releaseYear).to.be.a("number")
+			});
 		});
-	});
+	})
 
-});
-
-	
+	// Teste está com bug --> Nem sempre ele ordena corretamente pelas notas mais altas
+	it('Deve ser possível listar os filmes ordenado pelas suas notas', function () {
+		cy.request({ method: 'GET', url: '/api/movies?sort=true' }).then((resposta) => {
+			const movies = resposta.body
+			let notaAtual = 101
+			movies.forEach((movie) => {
+				if (movie.totalRating == null) {
+					movie.totalRating = 0
+				}
+				expect(movie.totalRating <= notaAtual).to.equal(true)
+				notaAtual = movie.totalRating
+			})
+		})
+	})
+})
