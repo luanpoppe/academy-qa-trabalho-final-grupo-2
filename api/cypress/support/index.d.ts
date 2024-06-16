@@ -37,6 +37,8 @@ declare namespace Cypress {
 
         getUserReviews(token: string): Chainable<any>
 
+        listReviews(token: string): Chainable<any>
+
         getAllMovies(): Chainable<any>
 
         getMovie(movieId: number): Chainable<any>
@@ -74,5 +76,7 @@ declare namespace Cypress {
         createAdminUser(): Chainable<any>
 
         createCriticUser(): Chainable<any>
+
+        inactivateUser(userToken: string): Chainable<any>
     }
 }

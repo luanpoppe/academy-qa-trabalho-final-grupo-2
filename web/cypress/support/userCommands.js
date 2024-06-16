@@ -83,7 +83,7 @@ Cypress.Commands.add("deleteUser", function (userInfo) {
 
   return cy.login(userObject).then((responseLogar) => {
     token = responseLogar.body.accessToken;
-    return cy.promoteAdmin(token).then(function (resposta) {
+    return cy.promoteAdmin(token).then(function () {
       return cy.request({
         method: "DELETE",
         url: apiUrl + "/api/users/" + userObject.id,
@@ -137,5 +137,45 @@ Cypress.Commands.add("getUserReviews", function (token) {
     auth: {
       bearer: token,
     },
+  });
+});
+
+Cypress.Commands.add("inactivateUser", function (token) {
+  return cy.request({
+    method: "PATCH",
+    url: apiUrl + "/api/users/inactivate",
+    auth: {
+      bearer: token,
+    },
+  });
+});
+
+Cypress.Commands.add("createAdminUser", function () {
+  cy.createUser().then(function (resposta) {
+    let user = resposta;
+    cy.login(user).then(function (resposta) {
+      user = {
+        ...user,
+        ...resposta.body,
+      };
+      cy.promoteAdmin(resposta.body.accessToken).then(function () {
+        return cy.wrap(user);
+      });
+    });
+  });
+});
+
+Cypress.Commands.add("createCriticUser", function () {
+  cy.createUser().then(function (resposta) {
+    let user = resposta;
+    cy.login(user).then(function (resposta) {
+      user = {
+        ...user,
+        ...resposta.body,
+      };
+      cy.promoteCritic(resposta.body.accessToken).then(function () {
+        return cy.wrap(user);
+      });
+    });
   });
 });
