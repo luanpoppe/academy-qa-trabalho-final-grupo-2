@@ -26,9 +26,12 @@ ${ALERTA_FALHA_CADASTRO}    xpath=//android.view.View[@content-desc="Ocorreu um 
 ${ALERTA_NOME}              xpath=//android.view.View[@content-desc="Informe o nome."]
 ${ALERTA_EMAIL}             xpath=//android.view.View[@content-desc="Informe o e-mail."]
 ${ALERTA_EMAIL_INVALIDO}    xpath=//android.view.View[@content-desc="Informe um e-mail válido."]
+${ALERTA_EMAIL_CAD}         xpath=//android.view.View[@content-desc="E-mail já cadastrado. Utilize outro e-mail."]
 ${ALERTA_SENHA}             xpath=//android.view.View[@content-desc="Informe uma senha."]
 ${ALERTA_CONF_SENHA}        xpath=//android.view.View[@content-desc="Confirme a senha."]
 ${ALERTA_SENHA_DIF}         xpath=//android.view.View[@content-desc="As senhas não coincidem."]
+
+${CENARIO_100_CARACT}       ${None}    
 
 *** Keywords ***
 Dado que o usuário acessou o aplicativo
@@ -55,37 +58,37 @@ Quando preenche todos os campos do formulário com dados válidos
 
 E acessa a funcionalidade salvar
     Hide Keyboard
-    Click Element    ${BUTTON_REGISTRAR}
+    Espera elemento e clica    ${BUTTON_REGISTRAR}
 
 Então usuário é registrado com mensagem de cadastro com sucesso
     Espera elemento está visivel    ${CADASTRO_SUCESSO}
-
-Quando preenche todos os campos do formulário utilizando email de 60 caracteres
-    Preencher formulário cadastro sem gerar email aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCB@raro.com
-
-Quando preenche todos os campos do formulário utilizando email de 6 caracteres
-    Preencher formulário cadastro sem gerar email aleatório    c@r.br
-
-Quando preenche todos os campos do formulário utilizando nome de 100 caracteres
-    Preencher formulário cadastro sem nome aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+    Terminar o teste com deleção de usuário
 
 Quando preenche todos os campos do formulário utilizando nome de 99 caracteres
-    Preencher formulário cadastro sem nome aleatório    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+    ${nomeCaractere}=    Generate Random String    99
+    Preencher formulário cadastro    nomeLocal=${nomeCaractere}
+
+Quando preenche todos os campos do formulário utilizando nome de 100 caracteres
+    ${nomeCaractere}=    Generate Random String    100
+    Preencher formulário cadastro    nomeLocal=${nomeCaractere}    
+
+Quando preenche todos os campos do formulário utilizando email de 60 caracteres
+    ${emailCaractere}=    Generate Random String    51
+    Preencher formulário cadastro    emailLocal=${emailCaractere}@raro.com
+
+Quando preenche todos os campos do formulário utilizando email de 6 caracteres
+    Preencher formulário cadastro    emailLocal=c@t.br  
 
 Quando preenche todos os campos do formulário utilizando senha de 6 caracteres
-    Preencher formulário cadastro sem senha principal e sem confirmar senha
-    Inserir dados    ${SENHA}         123456
-    Inserir dados    ${CONF_SENHA}    123456
+    Preencher formulário cadastro    senhaLocal=123456
 
 Quando preenche todos os campos do formulário utilizando senha de 12 caracteres
-    Preencher formulário cadastro sem senha principal e sem confirmar senha
-    Inserir dados    ${SENHA}         123456789123
-    Inserir dados    ${CONF_SENHA}    123456789123
+    Preencher formulário cadastro    senhaLocal=123456789123
 
 Quando acessa a funcionalidade salvar
     Espera elemento e clica    ${BUTTON_REGISTRAR}
 
-Então deve alertar no formulário os campos obrigatórios
+Então deve alertar no formulário os campos obrigatórios de cadastro
     Espera elemento está visivel    ${ALERTA_NOME}
     Espera elemento está visivel    ${ALERTA_EMAIL}
     Espera elemento está visivel    ${ALERTA_SENHA}
@@ -116,16 +119,17 @@ Então deve alertar no formulário o campo Email como obrigatório
     Espera elemento está visivel    ${ALERTA_EMAIL}
 
  Quando preenche todos os campos do formulário utilizando email inválido
-    Preencher formulário cadastro sem gerar email aleatório    carol@.com
+    Preencher formulário cadastro    emailLocal=carol@.com
 
 Quando preenche todos os campos do formulário utilizando email com espaços entre os caracteres
-    Preencher formulário cadastro sem gerar email aleatório    c${SPACE}a@gmail.com
+    Preencher formulário cadastro    emailLocal=c${SPACE}a@gmail.com
 
 Então deve alertar no formulário o campo Email como inválido
     Espera elemento está visivel    ${ALERTA_EMAIL_INVALIDO}
 
 Quando preenche todos os campos do formulário exceto campo senha principal
     Preencher formulário cadastro sem senha principal e sem confirmar senha
+    Hide Keyboard   
     Inserir dados    ${CONF_SENHA}    123456
 
 Então deve alertar no formulário o campo Senha como obrigatório
@@ -160,4 +164,16 @@ Então deve alertar no formulário que a confirmação de senha está divergente
     Espera elemento está visivel    ${ALERTA_SENHA_DIF}
 
 Quando preenche todos os campos do formulário utlizando um email já cadastrado
-    Preencher formulário cadastro sem gerar email aleatório    $ema
+    ${usuarioCadastrado}=    Criar usuário API    
+    Preencher formulário cadastro    emailLocal=${usuarioCadastrado}[email]
+
+Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
+    Espera elemento está visivel    ${ALERTA_EMAIL_CAD}
+    
+Então deve alertar no formulário quantidade mínima de senha
+    Espera elemento está visivel    A senha deve ter pelo menos 6 dígitos.
+
+Então deve alertar no formulário quantidade máxima de senha
+    Espera elemento está visivel    A senha deve ter no máximo 12 dígitos.
+
+
