@@ -106,6 +106,45 @@ describe("Gerenciar conta", () => {
         });
       });
     });
+    it("Não deve ser possível como usuário do tipo comum atualizar sua senha para uma senha com valor diferente de string", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: 12345 },
+        auth: {
+          bearer: tokenComum
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string"
+        ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+    //BUG -> O sistema não deveria permitir a atualização de um nome para uma string com espaço em branco
+    it("Não deve ser possível como usuário do tipo comum atualizar seu nome para uma string com espaço em branco", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: " ", password: newPassword },
+        auth: {
+          bearer: tokenComum
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["name must be longer than or equal to 1 characters"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
     it("Não deve ser possível como usuário do tipo comum atualizar seu nome para um nome com < 1 dígitos", () => {
       cy.request({
         method: "PUT",
@@ -227,6 +266,45 @@ describe("Gerenciar conta", () => {
         });
       });
     });
+    it("Não deve ser possível como usuário do tipo crítico atualizar sua senha para uma senha com valor diferente de string", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: 1213231231 },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string"
+        ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+    //BUG -> O sistema não deveria permitir a atualização de um nome para uma string com espaço em branco
+    it("Não deve ser possível como usuário do tipo crítico atualizar seu nome para uma string com espaço em branco", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: " ", password: newPassword },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["name must be longer than or equal to 1 characters"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
     it("Não deve ser possível como usuário do tipo crítico atualizar seu nome para um nome com < 1 dígitos", () => {
       cy.request({
         method: "PUT",
@@ -315,6 +393,20 @@ describe("Gerenciar conta", () => {
         });
       });
     });
+    it("O sistema retorna sucesso ao tentar atualizar as informações de um usuário não cadastrado", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + "1242342342",
+        body: { name: newName, password: newPassword },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+      }).then(function (response) {
+        user.password = newPassword;
+        expect(response.status).to.equal(200);
+        expect(response.body).to.equal(undefined)
+      });
+    });
     it("Não deve ser possível como usuário do tipo administrador atualizar sua senha para uma senha com < 6 dígitos", () => {
       cy.request({
         method: "PUT",
@@ -346,6 +438,45 @@ describe("Gerenciar conta", () => {
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.eq({
           message: ["password must be shorter than or equal to 12 characters"],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+    it("Não deve ser possível como usuário do tipo administrador atualizar sua senha para uma senha com valor diferente de string", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: 1234567 },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string"
+        ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      });
+    });
+    //BUG -> O sistema não deveria permitir a atualização de um nome para uma string com espaço em branco
+    it("Não deve ser possível como usuário do tipo administrador atualizar seu nome para uma string com espaço em branco", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: " ", password: newPassword },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+        failOnStatusCode: false,
+      }).then(function (response) {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.eq({
+          message: ["name must be longer than or equal to 1 characters"],
           error: "Bad Request",
           statusCode: 400,
         });
