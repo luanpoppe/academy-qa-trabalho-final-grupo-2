@@ -25,7 +25,7 @@ export default class MoviesPage {
   labelReview = ".movie-details-container > :nth-child(2)";
   labelStarReview = ".stars";
   inputTextReview = "textarea";
-  buttonEntre = '[href="/login"]';
+  buttonEntre = '.rate-movie [href="/login"]';
   labelAllReviews = ".user-reviews-section > h2";
   cardUserReview = ".user-review-card";
   nameUserReview = ".user-review-card h3";
@@ -36,6 +36,7 @@ export default class MoviesPage {
   labelMovie = ".movie-card-footer";
   erroIdinválido = "h2";
   statusIdInválido = "h3";
+
 
   modalError = {
     divModal: ".modal-content",
@@ -112,7 +113,7 @@ export default class MoviesPage {
   }
 
   clickLabelMovie() {
-    cy.get(this.labelMovie).click();
+    cy.get(this.labelMovie).eq(0).click();
   }
 
   clickButtonLogo() {
@@ -128,6 +129,7 @@ export default class MoviesPage {
   clickMovieTelaInicial() {
     cy.get(this.labelMovie).click();
   }
+
 
   visitMoviePage(movieId) {
     cy.wait('@getUser')

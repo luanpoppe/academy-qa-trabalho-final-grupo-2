@@ -1,7 +1,7 @@
 *** Settings ***
-Library    DateTime
-
+Library     DateTime
 Resource    ../../base.robot
+
 
 *** Keywords ***
 Clicar para voltar no celular
@@ -13,12 +13,12 @@ Clicar enter no celular
 Espera elemento está visivel
     [Arguments]    ${elemento}
     Wait Until Element Is Visible    ${elemento}    10
-    Element Should Be Visible        ${elemento}
+    Element Should Be Visible    ${elemento}
 
 Espera elemento e clica
     [Arguments]    ${elemento}
     Wait Until Element Is Visible    ${elemento}    10
-    Wait Until Keyword Succeeds    5    1    Click Element                    ${elemento}    
+    Wait Until Keyword Succeeds    5    1    Click Element    ${elemento}
 
 Swipe para cima
     [Arguments]    ${yInicial}=75    ${yFinal}=15    ${x}=50
@@ -60,9 +60,9 @@ Preencher formulário cadastro
     Set Global Variable    ${nomefake}     ${nomeLocal}                
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}
-    Inserir dados    ${EMAIL}         ${emailfake}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${EMAIL}    ${emailfake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Gerar informaçoes de registro de usuario
@@ -77,24 +77,29 @@ Preencher formulário cadastro sem nome
     Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${EMAIL}         ${emailfake}            
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${EMAIL}    ${emailfake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem email
     Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}           
-    Inserir dados    ${SENHA}         ${senhafake}
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem senha principal e sem confirmar senha
     Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
-    Inserir dados    ${NOME}          ${nomefake}
-    Inserir dados    ${EMAIL}         ${emailfake}            
+    Inserir dados    ${NOME}    ${nomefake}
+    Inserir dados    ${EMAIL}    ${emailfake}
 
 Pegar e formatar data atual
     Run Keyword And Return    Get Current Date    result_format=%d/%m/%Y
+
+Verifica se o contentDesc contains text
+    [Arguments]    ${elemento}    ${validarText}
+    ${contentDesc}=    AppiumLibrary.Get Element Attribute    ${elemento}    content-desc
+    Should Contain    ${contentDesc}    ${validarText}
