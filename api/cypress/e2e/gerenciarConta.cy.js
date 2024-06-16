@@ -51,6 +51,22 @@ describe("Gerenciar conta", () => {
         });
       });
     });
+    it("Deve ser possível como usuário do tipo comum realizar login utilizando a nova senha atualizada", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: newPassword },
+        auth: {
+          bearer: tokenComum,
+        },
+      }).then(function () {
+        userCriado.password = newPassword;
+        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
+          expect(response.status).to.equal(200);
+          expect(response.body.accessToken).to.be.a("string");
+        });
+      });
+    });
     it("Não deve ser possível como usuário do tipo comum atualizar as informações de outro usuário", () => {
       cy.request({
         method: "PUT",
@@ -120,7 +136,7 @@ describe("Gerenciar conta", () => {
         expect(response.body).to.deep.eq({
           message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
             "password must be a string"
-        ],
+          ],
           error: "Bad Request",
           statusCode: 400,
         });
@@ -193,7 +209,7 @@ describe("Gerenciar conta", () => {
       cy.deleteUser(userCriado);
     });
 
-    it("Deve ser possível como usuário do tipo crítico atualizar apenas as próprias informações de nome e senha", () => {
+    it("Deve ser possível como usuário do tipo Crítico atualizar apenas as próprias informações de nome e senha", () => {
       cy.request({
         method: "PUT",
         url: "/api/users/" + userCriado.id,
@@ -210,6 +226,22 @@ describe("Gerenciar conta", () => {
           email: userCriado.email,
           type: 2,
           active: true,
+        });
+      });
+    });
+    it("Deve ser possível como usuário do tipo Crítico realizar login utilizando a nova senha atualizada", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: newPassword },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+      }).then(function () {
+        userCriado.password = newPassword;
+        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
+          expect(response.status).to.equal(200);
+          expect(response.body.accessToken).to.be.a("string");
         });
       });
     });
@@ -280,7 +312,7 @@ describe("Gerenciar conta", () => {
         expect(response.body).to.deep.eq({
           message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
             "password must be a string"
-        ],
+          ],
           error: "Bad Request",
           statusCode: 400,
         });
@@ -393,6 +425,22 @@ describe("Gerenciar conta", () => {
         });
       });
     });
+    it("Deve ser possível como usuário do tipo Administrador realizar login utilizando a nova senha atualizada", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { name: newName, password: newPassword },
+        auth: {
+          bearer: userCriado.accessToken,
+        },
+      }).then(function () {
+        userCriado.password = newPassword;
+        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
+          expect(response.status).to.equal(200);
+          expect(response.body.accessToken).to.be.a("string");
+        });
+      });
+    });
     it("O sistema retorna sucesso ao tentar atualizar as informações de um usuário não cadastrado", () => {
       cy.request({
         method: "PUT",
@@ -457,7 +505,7 @@ describe("Gerenciar conta", () => {
         expect(response.body).to.deep.eq({
           message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
             "password must be a string"
-        ],
+          ],
           error: "Bad Request",
           statusCode: 400,
         });
