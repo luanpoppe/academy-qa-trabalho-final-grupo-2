@@ -113,7 +113,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
-    it('Usuário admnistrador deve poder avaliar um filme', function () {
+    it('Usuário administrador deve poder avaliar um filme', function () {
       cy.promoteAdmin(localToken)
 
       cy.request({
