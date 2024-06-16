@@ -3,84 +3,58 @@
 import { fakerPT_BR } from "@faker-js/faker";
 
 describe('Inativação de conta de um usuário', function () {
-    var usuarioCriado;
-    var token;
-    var filmeCriado;
+    let usuarioCriado;
+    let filmeCriado;
+    let adminUser
 
+    before(function () {
+        cy.createAdminUser().then(function (resposta) {
+            adminUser = resposta
+        })
+    })
 
     beforeEach(function () {
         cy.createUser().then((newUser) => {
             usuarioCriado = newUser;
-        });
-    });
-
-    it('Não deve ser possível inativar conta, sem efetuar login', function () {
-        cy.request({
-            method: 'PATCH',
-            url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/inactivate',
-            failOnStatusCode: false,
-        }).then((response) => {
-            expect(response.status).to.equal(401);
-            expect(response.body.message).to.be.eq('Access denied.');
-            expect(response.body.error).to.be.eq('Unauthorized');
-        });
-    });
-
-    it('Deve ser possível inativar conta, sendo um usuário Comum', function () {
-
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.InactivateUser(token).then((response) => {
-                expect(response.status).to.equal(204);
-                expect(response.body).to.equal("");
+            cy.login(usuarioCriado).then(function (resposta) {
+                usuarioCriado.accessToken = resposta.body.accessToken
             })
-        })
-    });
-
-
-    it('Deve ser possível inativar a conta com sucesso, sendo um usuário Administrador', function () {
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.promoteAdmin(token).then(function () {
-                cy.InactivateUser(token).then((response) => {
-                    expect(response.status).to.equal(204);
-                    expect(response.body).to.equal("");
-                })
-            });
-        })
-    });
-
-    it('Deve ser possível inativar a conta com sucesso, sendo um usuário Crítico', function () {
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.promoteCritic(token).then(function () {
-                cy.InactivateUser(token).then((response) => {
-                    expect(response.status).to.equal(204);
-                    expect(response.body).to.equal("");
-                })
-            });
         });
     });
 
-    it('Deve ser possível cadastrar um novo usuário com o e-mail de um usuário inativo', function () {
+    after(function () {
+        cy.deleteUser(adminUser)
+    })
 
-        let name = fakerPT_BR.person.fullName();
-        let password = fakerPT_BR.internet.password(6);
+    describe('Cenários com deleção de usuário ao fim do teste', function () {
+        afterEach(function () {
+            cy.deleteUser(usuarioCriado)
+        })
 
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.InactivateUser(token).then(() => {
+        it('Não deve ser possível inativar conta, sem efetuar login', function () {
+            cy.request({
+                method: 'PATCH',
+                url: 'api/users/inactivate',
+                failOnStatusCode: false,
+            }).then((response) => {
+                expect(response.status).to.equal(401);
+                expect(response.body.message).to.be.eq('Access denied.');
+                expect(response.body.error).to.be.eq('Unauthorized');
+            });
+        });
+
+        it('Deve ser possível cadastrar um novo usuário com o e-mail de um usuário inativo', function () {
+            usuarioCriado.name = fakerPT_BR.person.fullName();
+            usuarioCriado.password = fakerPT_BR.internet.password({ length: 6 });
+
+            cy.inactivateUser(usuarioCriado.accessToken).then(() => {
                 cy.request({
                     method: "POST",
                     url: "/api/users/",
                     body: {
-                        name: name,
+                        name: usuarioCriado.name,
                         email: usuarioCriado.email,
-                        password: password,
+                        password: usuarioCriado.password,
                     }
                 }).then((response) => {
                     expect(response.status).to.equal(201);
@@ -88,37 +62,68 @@ describe('Inativação de conta de um usuário', function () {
                 })
             });
         });
+    })
+
+    it('Deve ser possível inativar a conta com sucesso, sendo um usuário Comum', function () {
+        cy.request({
+            method: "PATCH",
+            url: "/api/users/inactivate",
+            auth: {
+                bearer: usuarioCriado.accessToken,
+            },
+        }).then((response) => {
+            expect(response.status).to.equal(204);
+            expect(response.body).to.equal("");
+        })
+    });
+
+    it('Deve ser possível inativar a conta com sucesso, sendo um usuário Administrador', function () {
+        cy.promoteAdmin(usuarioCriado.accessToken).then(function () {
+            cy.request({
+                method: "PATCH",
+                url: "/api/users/inactivate",
+                auth: {
+                    bearer: usuarioCriado.accessToken,
+                },
+            }).then((response) => {
+                expect(response.status).to.equal(204);
+                expect(response.body).to.equal("");
+            })
+        });
+    })
+
+    it('Deve ser possível inativar a conta com sucesso, sendo um usuário Crítico', function () {
+        cy.promoteCritic(usuarioCriado.accessToken).then(function () {
+            cy.request({
+                method: "PATCH",
+                url: "/api/users/inactivate",
+                auth: {
+                    bearer: usuarioCriado.accessToken,
+                },
+            }).then((response) => {
+                expect(response.status).to.equal(204);
+                expect(response.body).to.equal("");
+            })
+        });
     });
 
     it('Deve ser possível visualizar as informações de uma review feita por um usuário em determinado filme, mesmo depois da inativação da sua conta', function () {
-
-        cy.login(usuarioCriado).then((login) => {
-            token = login.body.accessToken
-        }).then(function () {
-            cy.promoteAdmin(token).then(function () {
-                cy.createMovie({
-                    title: "Viva - A vida é uma festa",
-                    genre: "Infantil/Fantasia ",
-                    description: "Apesar da proibição da música por gerações de sua família, o jovem Miguel sonha em se tornar um músico talentoso como seu ídolo Ernesto de la Cruz.",
-                    durationInMinutes: 105,
-                    releaseYear: 2017
-                }, token).then((movie) => {
-                    filmeCriado = movie.body
-                }).then(function () {
-                    cy.reviewMovie(filmeCriado.id, 5, "Amei! Superou minhas expectativas", token).then(function () {
-                        cy.InactivateUser(token);
-
+        cy.fixture("requests/filmesEvolucaoPerfil.json").then(function (fixture) {
+            cy.createMovie(fixture.viva, adminUser.accessToken).then((movie) => {
+                filmeCriado = movie.body
+                cy.reviewMovie(filmeCriado.id, 5, "Amei! Superou minhas expectativas", usuarioCriado.accessToken).then(function () {
+                    cy.inactivateUser(usuarioCriado.accessToken).then(function () {
                         cy.getMovie(filmeCriado.id).then((response) => {
                             expect(response.status).to.equal(200);
                             expect(response.body.reviews).to.be.an("array");
-                            expect(response.body.reviews[0].user.id).to.equal(usuarioCriado.id);
-                            expect(response.body.reviews[0].user.name).to.equal(usuarioCriado.name);
+                            expect(response.body.reviews[0].user).to.deep.include({
+                                id: usuarioCriado.id,
+                                name: usuarioCriado.name
+                            });
                         })
                     })
                 })
-            });
+            })
         });
-    });  
-});
-
-
+    });
+})

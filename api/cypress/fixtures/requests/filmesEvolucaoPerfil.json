@@ -1,0 +1,65 @@
+{
+    "divertidamente": {
+        "title": "Divertidamente 1",
+        "genre": "Animação",
+        "description": "Divertidamente 1 marca a história de Riley (Kaitlyn Dias).",
+        "durationInMinutes": 95,
+        "releaseYear": 2015
+    },
+    "divertidamente2": {
+        "title": "Divertidamente 2",
+        "genre": "Animação",
+        "description": "Divertidamente 2 marca a sequência da famosa história de Riley (Kaitlyn Dias).",
+        "durationInMinutes": 93,
+        "releaseYear": 2024
+    },
+    "primeiraVista": {
+        "title": "Amor à Primeira Vista",
+        "genre": "Romance/Comédia",
+        "description": "O reencontro parece impossível, só que o amor desafia todas as probabilidades.",
+        "durationInMinutes": 91,
+        "releaseYear": 2023
+    },
+    "minions": {
+        "title": "Minions",
+        "genre": "Animação",
+        "description": "Seres amarelos milenares, os minions têm uma missão: servir aos maiores vilões.",
+        "durationInMinutes": 91,
+        "releaseYear": 2015
+    },
+    "toyStory": {
+        "title": "Toy Story",
+        "genre": "Animação",
+        "description": "O aniversário do garoto Andy está chegando e seus brinquedos ficam nervosos, temendo que ele ganhe novos brinquedos que possam substituí-los.",
+        "durationInMinutes": 81,
+        "releaseYear": 1995
+    },
+    "reiLeao": {
+        "title": "O Rei Leão",
+        "genre": "Animação",
+        "description": "As aventuras de um leão jovem de nome Simba, o herdeiro de seu pai, Mufasa.",
+        "durationInMinutes": 88,
+        "releaseYear": 1994
+    },
+    "reiLeao2": {
+        "title": "O Rei Leão 2: O Reino de Simba",
+        "genre": "Animação",
+        "description": "Kiara, a filha de Simba e herdeira do reino, desobedece o pai quando ele tenta impedi-la de se meter em confusões.",
+        "durationInMinutes": 81,
+        "releaseYear": 1998
+    },
+    "viva": {
+        "title": "Viva - A vida é uma festa",
+        "genre": "Infantil/Fantasia ",
+        "description": "Apesar da proibição da música por gerações de sua família, o jovem Miguel sonha em se tornar um músico talentoso como seu ídolo Ernesto de la Cruz.",
+        "durationInMinutes": 105,
+        "releaseYear": 2017
+    },
+    "porLugaresIncriveis": {
+        "title": "Por lugares incríveis",
+        "genre": "Romance/Drama",
+        "description": "Dois adolescentes que estão passando por momentos difíceis criam um forte laço quando embarcam em uma jornada transformadora para visitar as maravilhas do estado de Indiana, nos Estados Unidos.",
+        "durationInMinutes": 108,
+        "releaseYear": 2020
+    }
+}

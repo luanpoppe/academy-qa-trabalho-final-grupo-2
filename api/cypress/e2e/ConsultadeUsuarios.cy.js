@@ -6,86 +6,134 @@ describe('Consulta geral de Usuários', function () {
   var usuarioConsulta;
   var token;
 
-//Criação usuário para ser consultado 
   before(function () {
+    //Criação usuário para ser consultado 
     cy.createUser().then((newUser) => {
       usuarioConsulta = newUser;
     });
-  });
-
-//Criação usuário 
-  before(function () {
+    //Criação usuário 
     cy.createUser().then((newUser) => {
       usuarioCriado = newUser;
     });
   });
 
-//Exclusão dos usuários da base de dados 
+  //Exclusão dos usuários da base de dados 
   after(function () {
     cy.deleteUser(usuarioCriado);
     cy.deleteUser(usuarioConsulta);
   })
-  
-  it('Não deve ser possível acessar as informações de um usuário, sem efetuar login', function () {
 
+  it('Não deve ser possível acessar as informações de um usuário sem efetuar login', function () {
     cy.request({
       method: 'GET',
-      url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/' + usuarioConsulta.id,
+      url: '/api/users/' + usuarioConsulta.id,
       failOnStatusCode: false,
     }).then((response) => {
       expect(response.status).to.equal(401);
-      expect(response.body.message).to.be.eq('Access denied.');
-      expect(response.body.error).to.be.eq('Unauthorized');
+      expect(response.body).to.deep.include({
+        message: "Access denied.",
+        error: 'Unauthorized'
+      })
     });
   });
 
-  it('Não deve ser possível acessar as informações de um usuário, sendo um usuário Comum', function () {
-
+  it('Não deve ser possível acessar as informações de um usuário sendo um usuário Comum', function () {
     cy.login(usuarioCriado).then((login) => {
       token = login.body.accessToken
-    });
-
-    cy.request({
-      method: 'GET',
-      url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/' + usuarioConsulta.id,
-      failOnStatusCode: false,
-    }).then((response) => {
-      expect(response.status).to.equal(401);
-      expect(response.body.message).to.be.eq('Access denied.');
-      expect(response.body.error).to.be.eq('Unauthorized');
-    });
-  });
-
-  it('Não deve ser possível acessar as informações de um usuário, sendo um usuário Crítico ', function () {
-
-    cy.login(usuarioCriado).then((login) => {
-      token = login.body.accessToken
-    });
-
-    cy.promoteCritic(token).then(function () {
       cy.request({
         method: 'GET',
-        url: 'https://raromdb-3c39614e42d4.herokuapp.com/api/users/' + usuarioConsulta.id,
+        url: '/api/users/' + usuarioConsulta.id,
         failOnStatusCode: false,
+        auth: {
+          bearer: token
+        }
       }).then((response) => {
-        expect(response.status).to.equal(401);
-        expect(response.body.message).to.be.eq('Access denied.');
-        expect(response.body.error).to.be.eq('Unauthorized');
+        expect(response.status).to.equal(403);
+        expect(response.body.message).to.equal("Forbidden")
       });
     });
   });
 
-it('Deve ser possível acessar as informações de um usuário, sendo um usuário Admin', function () {
-      
-  cy.promoteAdmin(token);
+  it('Não deve ser possível acessar as informações de um usuário, sendo um usuário Crítico ', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteCritic(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + usuarioConsulta.id,
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(403);
+          expect(response.body.message).to.equal("Forbidden")
+        });
+      });
+    });
+  });
 
-    cy.getUser(usuarioConsulta.id, token).then((response) => {
-      expect(response.status).to.equal(200);
-      expect(response.body.id).to.be.equal(usuarioConsulta.id);
-      expect(response.body.name).to.be.equal(usuarioConsulta.name);
-      expect(response.body.email).to.be.equal(usuarioConsulta.email);
-      expect(response.body.active).to.be.equal(usuarioConsulta.active);
-      expect(response.body.type).to.be.equal(usuarioConsulta.type);
+  it('Não deve ser possível acessar as informações de um usuário, inserindo um id de usuário não cadastrado', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + "12123129381923813",
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.equal("");
+        })
+      })
+    });
+  });
+
+  it('Não deve ser possível acessar as informações de um usuário, inserindo um id inválido', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + "string",
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(400);
+          expect(response.body.error).to.equal("Bad Request");
+          expect(response.body.message).to.equal("Validation failed (numeric string is expected)");
+        })
+      })
+    });
+  });
+
+  it('Deve ser possível acessar as informações de um usuário, sendo um usuário Admin', function () {
+    cy.login(usuarioCriado).then((login) => {
+      token = login.body.accessToken
+      cy.promoteAdmin(token).then(function () {
+        cy.request({
+          method: 'GET',
+          url: '/api/users/' + usuarioConsulta.id,
+          failOnStatusCode: false,
+          auth: {
+            bearer: token
+          }
+        }).then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.deep.include({
+            id: usuarioConsulta.id,
+            name: usuarioConsulta.name,
+            email: usuarioConsulta.email,
+            active: usuarioConsulta.active,
+            type: usuarioConsulta.type,
+          })
+        })
+      })
     });
   });
 });
