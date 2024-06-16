@@ -131,7 +131,7 @@ Então a review deve ser cadastrada com sucesso contendo 500 caracteres
     Então a review deve ser cadastrada com sucesso
     ${textoReview}=    Get Text    ${inputReviewFilme}
     ${qtdCaracteresReview}=    Get Length    ${textoReview}
-    ${resultado}    Evaluate    ${qtdCaracteresReview} == 500
+    ${resultado}=    Evaluate    ${qtdCaracteresReview} == 500
     Should Be True    ${resultado}
 
 E deve ser possível de ser vista imediatamente na seção de reviews do filme
@@ -161,7 +161,7 @@ Quando tentar adicionar uma review em um filme apenas dando uma nota
 Então não deverá conseguir digitar mais de 500 caracteres
     ${textoReview}=    Get Text    ${inputReviewFilme}
     ${qtdCaracteresReview}=    Get Length    ${textoReview}
-    ${resultado}    Evaluate    ${qtdCaracteresReview} < 501
+    ${resultado}=    Evaluate    ${qtdCaracteresReview} < 501
     Should Be True    ${resultado}
 
 Iniciar o teste com criação de usuário admin e filme
@@ -176,28 +176,25 @@ Terminar o teste com deleção de usuário e de filme
         Promover usuário para administrador    ${localToken}
         Deletar usuário    ${usuarioLogado}    ${localToken}
         Set Global Variable    ${usuarioLogado}    ${None}
-    
     END
     Deletar filme    ${filmeCriado}    ${usuarioRaiz}[token]
     Deletar usuário    ${usuarioRaiz}[userInfo]    ${usuarioRaiz}[token]
     Teardown
-    
+
 Terminar o teste com deleção de usuário
     ${usuarioLocal}=    Create Dictionary    email=${emailfake}    password=${senhafake}
     ${localToken}=    Logar usuário API    ${usuarioLocal}
     Promover usuário para administrador    ${localToken}
-    
+
     Iniciar sessão com token da API    ${localToken}
-    ${request}    GET On Session    alias=api    url=/api/users
-    Set Local Variable    ${resposta}    ${request.json()}    
-    
+    ${request}=    GET On Session    alias=api    url=/api/users
+    Set Local Variable    ${resposta}    ${request.json()}
+
     ${userId}=    Evaluate    [item for item in ${resposta} if item["email"]=="${emailfake}".lower()][0]["id"]
     Promover usuário para administrador    ${localToken}
     Deletar usuário por ID    ${userId}    ${localToken}
 
-    
-
-Dado que o usuario acessou a API e retornou os dados do primeiro filme da lista de filmes
+Dado que o usuario possui a lista de filmes
     ${listaFilmes}=    Pegar lista de filmes
     Set Global Variable    ${primeiroFilme}    ${listaFilmes}[0]
     ${listaLocal}=    Create List
@@ -252,9 +249,9 @@ Quando acessar a sessão de filmes do aplicativo
 
 Então deverá ser possível ver a porcentagem correta da avaliação de um filme
     Set Local Variable    ${avaliacaoFilme}    ${primeiroFilme}[totalRating]
-    ${calculoPorcentagem}    Evaluate    str(int(${avaliacaoFilme} / 5 * 100))
+    ${calculoPorcentagem}=    Evaluate    str(int(${avaliacaoFilme} / 5 * 100))
     Set Local Variable    ${avaliacaoPorcentagem}    ${calculoPorcentagem}%
-    ${infosFilme}    AppiumLibrary.Get Element Attribute    ${primeiroFilmeDaLista}    content-desc
+    ${infosFilme}=    AppiumLibrary.Get Element Attribute    ${primeiroFilmeDaLista}    content-desc
     Should Contain    ${infosFilme}    ${avaliacaoPorcentagem}
 
 Então poderá dar apenas notas de 1 a 5 em sua review do filme

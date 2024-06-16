@@ -8,20 +8,22 @@ var idMovie;
 
 describe("Consulta detalhada de filmes", function () {
   before(function () {
-    cy.fixture("responses/responseBodyNewMovie.json").as("responseBodyMovie").then(function () {
-      cy.fixture("requests/bodyNewMovie.json").then((movieBody) => {
-        cy.createUserAndMovie(movieBody).then((response) => {
-          idMovie = response.movie.body.id;
-          this.responseBodyMovie.id = idMovie;
-          user = response.user;
+    cy.fixture("responses/responseBodyNewMovie.json")
+      .as("responseBodyMovie")
+      .then(function () {
+        cy.fixture("requests/bodyNewMovie.json").then((movieBody) => {
+          cy.createUserAndMovie(movieBody).then((response) => {
+            idMovie = response.movie.body.id;
+            this.responseBodyMovie.id = idMovie;
+            user = response.user;
+          });
         });
-      })
-    })
+      });
   });
 
   after(function () {
     cy.promoteToAdminAndDeleteMovie(user, idMovie);
-    cy.deleteUser(user)
+    cy.deleteUser(user);
   });
 
   describe("Usuário comum", function () {
@@ -100,14 +102,18 @@ describe("Consulta detalhada de filmes", function () {
       });
     });
 
-    describe('Criação de reviews', function () {
+    describe("Criação de reviews", function () {
       beforeEach(function () {
-        cy.login(userCriado)
-          .then(function (response) {
-            token = response.body.accessToken;
-            cy.reviewMovie(idMovie, 5, "são realmente muito velozes e mega furiosos", token)
-          })
-      })
+        cy.login(userCriado).then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            5,
+            "são realmente muito velozes e mega furiosos",
+            token
+          );
+        });
+      });
 
       it("Deve ser possível um usuário do tipo comum retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente", function () {
         cy.request({
@@ -119,7 +125,9 @@ describe("Consulta detalhada de filmes", function () {
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body.reviews[0].id).to.be.an("number");
-          expect(response.body.reviews[0].updatedAt).to.be.an("string");
+          expect(response.body.reviews[0].updatedAt).match(
+            /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([Zz]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?/
+          );
           expect(response.body.reviews[0]).to.deep.include({
             reviewText: "são realmente muito velozes e mega furiosos",
             reviewType: 0,
@@ -167,14 +175,14 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.body.criticScore).to.equal(0);
         });
       });
-    })
+    });
   });
 
   describe("Usuário crítico", function () {
     before(function () {
       cy.createCriticUser().then(function (resposta) {
         userCriado = resposta;
-      })
+      });
     });
     after(function () {
       cy.deleteUser(userCriado);
@@ -245,14 +253,13 @@ describe("Consulta detalhada de filmes", function () {
       });
     });
 
-    describe('Criação de reviews', function () {
+    describe("Criação de reviews", function () {
       beforeEach(function () {
-        cy.login(userCriado)
-          .then(function (response) {
-            token = response.body.accessToken;
-            cy.reviewMovie(idMovie, 1, "não são velozes nem furiosos", token);
-          })
-      })
+        cy.login(userCriado).then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(idMovie, 1, "não são velozes nem furiosos", token);
+        });
+      });
 
       it("Deve ser possível um usuário do tipo crítico retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente", function () {
         cy.request({
@@ -264,7 +271,9 @@ describe("Consulta detalhada de filmes", function () {
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body.reviews[0].id).to.be.an("number");
-          expect(response.body.reviews[0].updatedAt).to.be.an("string");
+          expect(response.body.reviews[0].updatedAt).match(
+            /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([Zz]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?/
+          );
           expect(response.body.reviews[0]).to.deep.include({
             reviewText: "não são velozes nem furiosos",
             reviewType: 1,
@@ -312,14 +321,14 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.body.criticScore).to.equal(1);
         });
       });
-    })
+    });
   });
 
   describe("Usuário administrador", function () {
     before(function () {
       cy.createAdminUser().then(function (resposta) {
         userCriado = resposta;
-      })
+      });
     });
 
     after(function () {
@@ -392,14 +401,18 @@ describe("Consulta detalhada de filmes", function () {
       });
     });
 
-    describe('Criação de reviews', function () {
+    describe("Criação de reviews", function () {
       beforeEach(function () {
-        cy.login(userCriado)
-          .then(function (response) {
-            token = response.body.accessToken;
-            cy.reviewMovie(idMovie, 4, "são realmente muito velozes, mas pouco furiosos", token);
-          })
-      })
+        cy.login(userCriado).then(function (response) {
+          token = response.body.accessToken;
+          cy.reviewMovie(
+            idMovie,
+            4,
+            "são realmente muito velozes, mas pouco furiosos",
+            token
+          );
+        });
+      });
 
       it("Deve ser possível um usuário do tipo administrador retornar os dados da avaliação realizada no filme ao consultá-lo detalhadamente", function () {
         cy.request({
@@ -411,12 +424,14 @@ describe("Consulta detalhada de filmes", function () {
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body.reviews[0].id).to.be.an("number");
-          expect(response.body.reviews[0].updatedAt).to.be.an("string");
+          expect(response.body.reviews[0].updatedAt).match(
+            /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([Zz]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?/
+          );
           expect(response.body.reviews[0]).to.deep.include({
             reviewText: "são realmente muito velozes, mas pouco furiosos",
             reviewType: 0,
             score: 4,
-          })
+          });
         });
       });
       it("Deve ser possível um usuário do tipo administrador retornar os dados do(s) usuário(s) que realizou a(s) avaliação(s) do filme ao consultá-lo detalhadamente", function () {
@@ -432,7 +447,7 @@ describe("Consulta detalhada de filmes", function () {
             id: userCriado.id,
             name: userCriado.name,
             type: 1,
-          })
+          });
         });
       });
       it("Deve ser possível um usuário do tipo administrador retornar um totalizador com a média das avaliações de audiência realizadas no filme ao consultá-lo detalhadamente", function () {
@@ -459,8 +474,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.body.criticScore).to.equal(0);
         });
       });
-    })
-
+    });
   });
 
   describe("Usuário não logado", function () {
@@ -483,13 +497,18 @@ describe("Consulta detalhada de filmes", function () {
       });
     });
 
-    describe('Criação de reviews', function () {
+    describe("Criação de reviews", function () {
       beforeEach(function () {
         cy.login(user).then(function (response) {
           token = response.body.accessToken;
-          cy.reviewMovie(idMovie, 2, "são pouco velozes e pouco furiosos", token);
-        })
-      })
+          cy.reviewMovie(
+            idMovie,
+            2,
+            "são pouco velozes e pouco furiosos",
+            token
+          );
+        });
+      });
 
       it("Deve ser possível um usuário do tipo não logado retornar os dados de avaliações realizada no filme ao consultá-lo detalhadamente", function () {
         cy.request({
@@ -498,7 +517,9 @@ describe("Consulta detalhada de filmes", function () {
         }).then(function (response) {
           expect(response.status).to.equal(200);
           expect(response.body.reviews[0].id).to.be.an("number");
-          expect(response.body.reviews[0].updatedAt).to.be.an("string");
+          expect(response.body.reviews[0].updatedAt).match(
+            /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([Zz]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?/
+          );
           expect(response.body.reviews[0]).to.deep.include({
             reviewText: "são pouco velozes e pouco furiosos",
             reviewType: 0,
@@ -538,6 +559,6 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.body.criticScore).to.equal(0);
         });
       });
-    })
+    });
   });
 });
