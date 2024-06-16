@@ -144,7 +144,7 @@ describe("Gerenciar conta", () => {
     });
   });
 
-  describe("Usuario crítico", () => {
+  describe("Usuário crítico", () => {
     before(() => {
       cy.createCriticUser().then(function (resposta) {
         userCriado = resposta
@@ -265,7 +265,7 @@ describe("Gerenciar conta", () => {
     });
   });
 
-  describe("Usuario administrador", () => {
+  describe("Usuário administrador", () => {
     before(() => {
       cy.createAdminUser().then(function (resposta) {
         userCriado = resposta;
@@ -389,7 +389,7 @@ describe("Gerenciar conta", () => {
     });
   });
 
-  describe("Usuario não logado", function () {
+  describe("Usuário não logado", function () {
     it("Não deve ser possível como usuário não logado atualizar os dados de um usuário cadastrado", () => {
       cy.request({
         method: "PUT",
