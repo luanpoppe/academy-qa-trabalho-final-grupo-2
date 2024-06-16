@@ -1,21 +1,21 @@
 import {
-    Before,
-    After,
     Given,
     When,
     Then,
+    BeforeAll,
+    AfterAll
 } from "@badeball/cypress-cucumber-preprocessor";
 import MoviesPage from "../pages/moviesPage";
 import LoginPage from "../pages/loginPage";
 
 
 const paginaMovies = new MoviesPage();
+const paginaLogin = new LoginPage();
 
 var filmeCriado;
 var usuarioCriado;
-var token;
 
-before(function () {
+BeforeAll(function () {
     cy.fixture("./requests/bodyNewMovie3").then(function (filme) {
         cy.createUserAndMovie(filme).then((response) => {
             filmeCriado = response.movie.body;
@@ -25,16 +25,14 @@ before(function () {
 
 });
 
-after(function () {
-    cy.login(usuarioCriado).then((login) => {
-        token = login.body.accessToken
-    }).then(function () {
-        cy.deleteMovie(filmeCriado.id, token)
+AfterAll(function () {
+    cy.deleteMovie(filmeCriado.id, usuarioCriado.accessToken).then(function (resposta) {
+        cy.deleteUser(usuarioCriado)
     })
 })
 
 Given('que o usuário acessou a página inicial do catálogo de filmes', function () {
-    cy.visit('https://raromdb-frontend-c7d7dc3305a0.herokuapp.com/');
+    cy.visit('/');
 })
 
 Given('não realizou login', function () {
@@ -42,9 +40,10 @@ Given('não realizou login', function () {
 })
 
 Given('realizou login', function () {
-    cy.login(usuarioCriado).then((login) => {
-        token = login.body.accessToken
-    })
+    cy.visit("/login")
+    paginaLogin.login(usuarioCriado)
+    cy.wait("@login")
+    cy.contains("Perfil")
 })
 
 When('preencher o campo de pesquisa de filmes com um filme cadastrado', function () {
@@ -70,24 +69,28 @@ When('acessar a função de pesquisa', function () {
 })
 
 When('preencher o campo de pesquisa de pesquisa com um filme não cadastrado na base de dados', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
     paginaMovies.typeMovie("Take back your life");
 })
 
 When('clicar no card do filme', function () {
-    paginaMovies.clickLabelMovie();
+    cy.get(`[href='/movies/${filmeCriado.id}']`).click()
 })
 
 Then('o usuário deve ver o resultado da pesquisa para o filme informado', function () {
     cy.get(paginaMovies.labelMovie).should('be.visible')
     cy.get(paginaMovies.labelMovie).contains(filmeCriado.title);
+    cy.get(`[href='/movies/${filmeCriado.id}']`).should("exist")
 })
 
 Then('o usuário deve ver os detalhes do filme selecionado', function () {
-    cy.get(paginaMovies.labelMovie).should('be.visible');
-    cy.get(paginaMovies.labelMovie).contains(filmeCriado.title);
+    cy.get(paginaMovies.labelMovie).should('be.visible').and("contain", filmeCriado.title)
     cy.get(paginaMovies.labelImage).should('be.visible');
     cy.get(paginaMovies.starAudience).should('be.visible');
     cy.get(paginaMovies.starCritic).should('be.visible');
+    cy.get(paginaMovies.labelHour).should("be.visible")
     cy.contains(filmeCriado.description);
     cy.contains(filmeCriado.releaseYear);
     cy.contains(filmeCriado.genre);

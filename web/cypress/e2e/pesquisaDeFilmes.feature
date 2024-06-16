@@ -6,7 +6,7 @@ Funcionalidade: Pesquisa de Filmes
     Para ser mais eficiente em minha busca pelo catálogo de filmes 
 
     Contexto: 
-        Dado que o usuário acessou a página inicial do catálogo de filmes  
+        Dado que o usuário acessou a página inicial do catálogo de filmes
 
     Cenário: Deve ser possível pesquisar um filme sem estar logado no site 
         E não realizou login
@@ -22,7 +22,7 @@ Funcionalidade: Pesquisa de Filmes
 
     Cenário: Deve ser possível efetuar uma pesquisa utilizando o nome completo do filme
         Quando preencher o campo de pesquisa de filmes com o título completo do filme cadastrado
-        E acessar a função de pesquisa 
+        E acessar a função de pesquisa
         Então o usuário deve ver o resultado da pesquisa para o filme informado
 
     Cenário: Deve ser possível efetuar uma pesquisa utilizando parte do título do filme
@@ -33,7 +33,7 @@ Funcionalidade: Pesquisa de Filmes
     Cenário: Deve ser possível consultar mais detalhes de um filme ao interagir com o filme exibido
         Quando preencher o campo de pesquisa de filmes com um filme cadastrado
         E acessar a função de pesquisa
-        E clicar no card do filme 
+        E clicar no card do filme
         Então o usuário deve ver os detalhes do filme selecionado
 
     Cenário: Não deve ser possível efetuar pesquisa de um filme não cadastrado 
