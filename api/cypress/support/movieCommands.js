@@ -112,6 +112,10 @@ Cypress.Commands.add("createUserAndMovie", function (movieInfo) {
               },
             })
             .then(function (response) {
+              userCreated = {
+                ...userCreated,
+                accessToken: token
+              }
               return {
                 movie: response,
                 user: userCreated,
