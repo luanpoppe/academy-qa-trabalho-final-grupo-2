@@ -68,11 +68,46 @@ When('acessar a função de pesquisa', function () {
     paginaMovies.clickButtonBusca();
 })
 
-When('preencher o campo de pesquisa de pesquisa com um filme não cadastrado na base de dados', function () {
+When('preencher o campo de pesquisa com um filme não cadastrado na base de dados', function () {
     cy.intercept('GET', '/api/movies/search?title=*', {
         body: []
     }).as('getMovies')
     paginaMovies.typeMovie("Take back your life");
+})
+
+When('preencher o campo de pesquisa com o gênero do filme', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
+    paginaMovies.typeMovie(filmeCriado.genre);
+})
+
+When('preencher o campo de pesquisa com a descrição do filme', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
+    paginaMovies.typeMovie(filmeCriado.description);
+})
+
+When('preencher o campo de pesquisa com a duração do filme', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
+    paginaMovies.typeMovie(filmeCriado.durationInMinutes);
+})
+
+When('preencher o campo de pesquisa com o ano de lançamento', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
+    paginaMovies.typeMovie(filmeCriado.releaseYear);
+})
+
+When('preencher o campo de pesquisa com o id do filme', function () {
+    cy.intercept('GET', '/api/movies/search?title=*', {
+        body: []
+    }).as('getMovies')
+    paginaMovies.typeMovie(filmeCriado.id);
 })
 
 When('clicar no card do filme', function () {
