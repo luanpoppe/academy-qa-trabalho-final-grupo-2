@@ -41,13 +41,23 @@ Acessa login
 Inserir dados
     [Arguments]    ${campo}    ${dado}
     Espera elemento e clica    ${campo}
-    Espera elemento está visivel    ${campo}
-    Wait Until Keyword Succeeds    8    1    Input Text    ${campo}    ${dado}
+    Espera elemento e clica    ${campo}
+    Wait Until Keyword Succeeds    8    1    Input Text     ${campo}    ${dado}
 
 Preencher formulário cadastro
-    ${emailfake}=    FakerLibrary.Email
-    ${nomefake}=    FakerLibrary.Name
-    ${senhafake}=    FakerLibrary.Password
+    [Arguments]    ${emailLocal}=fake    ${senhaLocal}=fake    ${nomeLocal}=fake
+    IF    $emailLocal=="fake"
+        ${emailLocal}=    FakerLibrary.Email  
+    END
+    IF    $senhaLocal=="fake"
+         ${senhaLocal}=    FakerLibrary.Password
+    END
+    IF    $nomeLocal=="fake"
+         ${nomeLocal}=     FakerLibrary.Name
+    END
+    Set Global Variable    ${emailfake}    ${emailLocal}
+    Set Global Variable    ${senhafake}    ${senhaLocal} 
+    Set Global Variable    ${nomefake}     ${nomeLocal}                
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
     Inserir dados    ${NOME}    ${nomefake}
@@ -55,31 +65,16 @@ Preencher formulário cadastro
     Inserir dados    ${SENHA}    ${senhafake}
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
-Preencher formulário cadastro sem nome aleatório
-    [Arguments]    ${nom}
-    ${emailfake}=    FakerLibrary.Email
-    ${senhafake}=    FakerLibrary.Password
-    Espera elemento está visivel    ${CADASTRO}
-    Click Element    ${NOME}
-    Inserir dados    ${NOME}    ${nom}
-    Inserir dados    ${EMAIL}    ${emailfake}
-    Inserir dados    ${SENHA}    ${senhafake}
-    Inserir dados    ${CONF_SENHA}    ${senhafake}
-
-Preencher formulário cadastro sem gerar email aleatório
-    [Arguments]    ${ema}
-    ${nomefake}=    FakerLibrary.Name
-    ${senhafake}=    FakerLibrary.Password
-    Espera elemento está visivel    ${CADASTRO}
-    Click Element    ${NOME}
-    Inserir dados    ${NOME}    ${nomefake}
-    Inserir dados    ${EMAIL}    ${ema}
-    Inserir dados    ${SENHA}    ${senhafake}
-    Inserir dados    ${CONF_SENHA}    ${senhafake}
+Gerar informaçoes de registro de usuario
+    ${emailLocal}=    FakerLibrary.Email
+    Set Global Variable    ${emailfake}    ${emailLocal}
+    ${nomeLocal}=     FakerLibrary.Name
+    Set Global Variable    ${nomefake}    ${nomeLocal}
+    ${senhaLocal}=    FakerLibrary.Password
+    Set Global Variable    ${senhafake}    ${senhaLocal}
 
 Preencher formulário cadastro sem nome
-    ${emailfake}=    FakerLibrary.Email
-    ${senhafake}=    FakerLibrary.Password
+    Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
     Inserir dados    ${EMAIL}    ${emailfake}
@@ -87,8 +82,7 @@ Preencher formulário cadastro sem nome
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem email
-    ${nomefake}=    FakerLibrary.Name
-    ${senhafake}=    FakerLibrary.Password
+    Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
     Inserir dados    ${NOME}    ${nomefake}
@@ -96,8 +90,7 @@ Preencher formulário cadastro sem email
     Inserir dados    ${CONF_SENHA}    ${senhafake}
 
 Preencher formulário cadastro sem senha principal e sem confirmar senha
-    ${nomefake}=    FakerLibrary.Name
-    ${emailfake}=    FakerLibrary.Email
+    Gerar informaçoes de registro de usuario
     Espera elemento está visivel    ${CADASTRO}
     Click Element    ${NOME}
     Inserir dados    ${NOME}    ${nomefake}

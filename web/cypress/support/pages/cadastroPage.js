@@ -9,10 +9,11 @@ export default class CadastroPage {
   buttonCadastrar = ".account-save-button";
   buttonOk = ".modal-actions";
   erroFormulario = ".input-error";
-  mensagemCadastro = ".error-message";
+  mensagemCadastro = ".modal-content .error-message";
   campoForms = ".profile-input";
+  divModal = ".modal-content"
 
-  clickPerfil = ".movies-page-link";
+  buttonsHeader = ".movies-page-link";
 
   typeNome(nome) {
     cy.get(this.inputNome).type(nome);
@@ -41,7 +42,7 @@ export default class CadastroPage {
   registrarUsuario(userParam) {
     let email = fakerPT_BR.internet.email();
     let nome = fakerPT_BR.person.fullName();
-    let senha = fakerPT_BR.internet.password(6);
+    let senha = fakerPT_BR.internet.password({ length: 6 });
 
     const user = {
       email: email,
