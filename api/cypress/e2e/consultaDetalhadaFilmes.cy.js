@@ -133,7 +133,7 @@ describe("Consulta detalhada de filmes", function () {
     })
   });
 
-  describe("Usuario crítico", function () {
+  describe("Usuário crítico", function () {
     before(function () {
       cy.createCriticUser().then(function (resposta) {
         userCriado = resposta;
@@ -242,7 +242,7 @@ describe("Consulta detalhada de filmes", function () {
     })
   });
 
-  describe("Usuario administrador", function () {
+  describe("Usuário administrador", function () {
     before(function () {
       cy.createAdminUser().then(function (resposta) {
         userCriado = resposta;
