@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 const apiUrl = "https://raromdb-3c39614e42d4.herokuapp.com";
 
-Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
+Cypress.Commands.add("createUser", function (newUser) {
   const userObject = {
     name: faker.person.firstName() + " teste",
     email: faker.internet.email(),
-    password: faker.internet.password(8),
+    password: faker.internet.password({ length: 8 }),
     ...newUser,
   };
 
@@ -14,7 +14,6 @@ Cypress.Commands.add("createUser", function (newUser, acceptFail = false) {
       method: "POST",
       url: apiUrl + "/api/users",
       body: userObject,
-      failOnStatusCode: !acceptFail,
     })
     .then((response) => {
       const userCreated = {
@@ -114,21 +113,6 @@ Cypress.Commands.add("getUser", function (userId, token = null) {
     },
   });
 });
-
-// Cypress.Commands.add("reviewMovie", function (movieInfo, token) {
-//   return cy.request({
-//     method: "POST",
-//     url: apiUrl + "/api/users/review",
-//     body: {
-//       movieId: movieInfo.id || movieInfo.movieId,
-//       score: movieInfo.score,
-//       reviewText: movieInfo.review || movieInfo.reviewText,
-//     },
-//     auth: {
-//       bearer: token,
-//     },
-//   });
-// });
 
 Cypress.Commands.add("getUserReviews", function (token) {
   return cy.request({
