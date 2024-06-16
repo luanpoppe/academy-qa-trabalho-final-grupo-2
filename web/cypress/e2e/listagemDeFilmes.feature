@@ -2,20 +2,28 @@
 
 Funcionalidade: Listagem de Filmes
 
-    Contexto: 
-        Dado que acessou a página de listagem de filme
+    Contexto: Acessar a listagem de filmes
+        Dado que usuário acessou a página de listagem de filme
 
+    Cenário: Deve ser possível usuário não autenticado consultar a lista de filmes sem retrições
+        E o usuário não está autenticado
+        Então deve conseguir visualizar a lista de filmes sem restrições
 
-    Cenário: Deve ser possível qualquer tipo de usuário, logado ou não, consultar a lista de filmes sem restrições
-        Então verá uma lista de filmes sem restrições
+    Cenário: Deve ser possível usuário comum autenticado consultar a lista de filmes sem retrições
+        E o usuário comum está autenticado
+        Então deve conseguir visualizar a lista de filmes sem restrições
+
+    Cenário: Deve ser possível usuário crítico autenticado consultar a lista de filmes sem retrições
+        E o usuário crítico está autenticado
+        Então deve conseguir visualizar a lista de filmes sem restrições
+
+    Cenário: Deve ser possível usuário administrador autenticado consultar a lista de filmes sem retrições
+        E o usuário administrador está autenticado
+        Então deve conseguir visualizar a lista de filmes sem restrições
 
     Cenário: Deve ser possível visualizar informações sumarizadas do filme
         Quando selecionar um filme da lista
         Então verá o id, title, description, durationInMinutes, releaseYear e uma imagem de capa para cada filme
-
-    Cenário: Deve ser possível ver informações sobre os filmes na listagem de filmes
-        Quando o usuário estiver na lista de filmes
-        Então será possível ver informações sobre os filmes na página de listagem
 
     Cenário: Deve ser possível ordenar filmes por ordem de cadastro
         Quando o usuário estiver na lista de filmes
@@ -29,12 +37,12 @@ Funcionalidade: Listagem de Filmes
         Quando houver mais filmes do que podem ser exibidos em uma página
         E visualizar opções de paginação
         E acessar a próxima página
-        Então verá uma próxima página de filmes
+        Então verá a próxima página de filmes
 
     Cenário: Deve ser possível ver mais detalhes de um filme
         Quando selecionar o primeiro filme da lista
         Então verá informações detalhadas sobre o filme
-
+    
     Cenário: Não deve haver paginação quando há menos de 5 filmes
         Quando existem menos de 5 filmes na lista
         E visualizar a lista de filmes
@@ -44,4 +52,4 @@ Funcionalidade: Listagem de Filmes
         Quando existem mais de 5 filmes na lista
         E visualizar uma opção de paginação
         E acessar a proxima pagina
-        Então verá uma próxima página de filmes
+        Então verá a próxima página de filmes

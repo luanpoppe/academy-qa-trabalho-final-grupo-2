@@ -1,28 +1,31 @@
 class listagemDeFilmesPage {
-    visit() {
-        cy.viewport("macbook-13")
-        cy.visit('/');
-    }
+  gridFilme = ".movie-grid";
+  tituloFilme = ".movie-details-title";
+  descricaoFilme = ".movie-detail-description";
+  iconeFilme = ".movie-details-info-with-icon";
 
-    listaDeFilmes() {
-        return cy.get('.carousel-data');
-    }
+  login = "[href='/login']";
 
-    selecionarPrimeiroFilme() {
-        cy.get('.movie-card-footer').first().click();
-    }
+  visit() {
+    cy.viewport("macbook-13");
+    cy.visit("/");
+  }
 
-    selecionarOrdenacaoPorCadastro() {
-        cy.get('.carousel-data').each((item, index) => {
-            cy.wrap(item).within(() => {
-                cy.get('.movie-title').should('contain.text', filmes[index].title);
-            });
-        });
-    }
+  listaDeFilmes() {
+    return cy.get(".carousel-data");
+  }
 
-    navegarParaProximaPaginaCadastro() {
-        cy.get('.navigation').eq(1).click();
-    }
+  selecionarPrimeiroFilme() {
+    cy.get(".movie-card-footer").first().click();
+  }
+
+  clickLogin() {
+    cy.get(this.login).click();
+  }
+
+  navegarParaProximaPaginaCadastro() {
+    cy.get(".navigation").eq(1).click();
+  }
 }
 
 export default listagemDeFilmesPage;
