@@ -1,0 +1,44 @@
+[
+    {
+        "title": "Atlas",
+        "genre": "Ação",
+        "description": "Loucura",
+        "durationInMinutes": 120,
+        "releaseYear": 2024
+    },
+    {
+        "title": "Flash",
+        "genre": "Ação",
+        "description": "Super Herois",
+        "durationInMinutes": 160,
+        "releaseYear": 2020
+    },
+    {
+        "title": "Matrix",
+        "genre": "Ação",
+        "description": "O fim da estrada está chegando",
+        "durationInMinutes": 120,
+        "releaseYear": 1999
+    },
+    {
+        "title": "Titanic",
+        "genre": "Ação",
+        "description": "Tragédia",
+        "durationInMinutes": 170,
+        "releaseYear": 2019
+    },
+    {
+        "title": "Harry Potter",
+        "genre": "Magia",
+        "description": "Magia negra",
+        "durationInMinutes": 200,
+        "releaseYear": 2015
+    },
+    {
+        "title": "Inception",
+        "genre": "Ação",
+        "description": "O sonho dentro do sonho",
+        "durationInMinutes": 148,
+        "releaseYear": 2010
+    }
+]
