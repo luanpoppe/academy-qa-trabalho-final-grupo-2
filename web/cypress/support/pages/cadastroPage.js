@@ -11,7 +11,7 @@ export default class CadastroPage {
   erroFormulario = ".input-error";
   mensagemCadastro = ".modal-content .error-message";
   campoForms = ".profile-input";
-  divModal = ".modal-content"
+  divModal = ".modal-content";
 
   buttonsHeader = ".movies-page-link";
 
@@ -51,11 +51,11 @@ export default class CadastroPage {
       ...userParam,
     };
 
-    cy.get(this.inputNome).type(user.name);
-    cy.get(this.inputEmail).type(user.email);
-    cy.get(this.inputSenha).type(user.password);
-    cy.get(this.inputConfirmarSenha).type(user.password);
-    // cy.get(this.buttonCadastrar).click();
+    this.typeNome(user.name);
+    this.typeEmail(user.email);
+    this.typeSenha(user.password);
+    this.typeConfSenha(user.password);
+
     cy.intercept("POST", "/api/auth/login").as("auth");
     return cy.wrap(user);
   }
