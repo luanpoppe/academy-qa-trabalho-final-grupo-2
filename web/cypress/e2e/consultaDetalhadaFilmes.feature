@@ -1,9 +1,9 @@
 # language: pt
 
 Funcionalidade: Consulta detalhada de filmes
-Como uma pessoa qualquer acessando o sistema
-Desejo poder consultar mais detalhes de um filme
-Para pode visualizar todas as informações registradas para aquele filme
+    Como uma pessoa qualquer acessando o sistema
+    Desejo poder consultar mais detalhes de um filme
+    Para pode visualizar todas as informações registradas para aquele filme
 
 Cenário: Deve ser possível visualizar o totalizador da média das avaliações realizadas por usuários comuns no filme ao consultá-lo detalhadamente
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb

@@ -111,6 +111,7 @@ export default class MoviesPage {
     cy.get(this.labelMovie).click();
   }
 
+
   visitMoviePage(movieId) {
     cy.wait('@getUser')
     cy.visit("/movies/" + movieId)
