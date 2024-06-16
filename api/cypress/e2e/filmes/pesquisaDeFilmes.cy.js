@@ -1,140 +1,154 @@
 import { faker } from "@faker-js/faker";
 
 describe("Pesquisa de Filmes", () => {
-  let token;
   let user;
   let movieTitle;
-  const movieInfo = {
-    title: faker.person.jobTitle(),
-    genre: "Ação",
-    description: "Descrição do Filme de Teste",
-    durationInMinutes: 120,
-    releaseYear: 2023,
-    audienceScore: 0,
-    criticScore: 0,
-  };
+  let movieCreated
 
   before(() => {
     cy.createAdminUser().then((responseUser) => {
       user = responseUser;
-      token = user.accessToken;
-      cy.createMovie(movieInfo, token).then((response) => {
-        const movieCreate = response.body;
-        movieTitle = movieCreate.title;
-      });
+      cy.fixture("requests/bodyNewMovie.json").then((fixture) => {
+        cy.createMovie(fixture, user.accessToken).then((response) => {
+          movieCreated = response.body;
+          movieTitle = movieCreated.title;
+        });
+      })
     });
   });
 
-  beforeEach(() => {});
+  after(() => {
+    cy.deleteMovie(movieCreated.id, user.accessToken).then(() => {
+      cy.deleteUser(user)
+    })
+  })
 
   it("Deve ser possível pesquisar um filme sem estar logado no site", () => {
-    cy.searchMovie(movieTitle).then((response) => {
+    cy.request({
+      method: "GET",
+      url: "/api/movies/search?title=" + movieTitle,
+    }).then((response) => {
       const movie = response.body.find((m) => m.title === movieTitle);
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
-      expect(movie).to.have.property("title", movieTitle);
-      expect(movie).to.have.property("genre", movieInfo.genre);
-      expect(movie).to.have.property("description", movieInfo.description);
-      expect(movie).to.have.property(
-        "durationInMinutes",
-        movieInfo.durationInMinutes
-      );
-      expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
       expect(movie).to.have.property("totalRating");
-    });
-  });
-
-  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Comum", () => {
-    cy.createUser().then((response) => {
-      user = response;
-      cy.login(user).then((loginResponse) => {
-        const userToken = loginResponse.body.accessToken;
-
-        cy.searchMovie(movieTitle, userToken).then((response) => {
-          const movie = response.body.find((m) => m.title === movieTitle);
-          expect(movie).to.not.be.undefined;
-          expect(response.status).to.eq(200);
-          expect(movie.id).to.be.a("number");
-          expect(movie).to.have.property("title", movieTitle);
-          expect(movie).to.have.property("genre", movieInfo.genre);
-          expect(movie).to.have.property("description", movieInfo.description);
-          expect(movie).to.have.property(
-            "durationInMinutes",
-            movieInfo.durationInMinutes
-          );
-          expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
-          expect(movie).to.have.property("totalRating");
-        });
+      expect(movie).to.deep.include({
+        title: movieTitle,
+        genre: movieCreated.genre,
+        description: movieCreated.description,
+        durationInMinutes: movieCreated.durationInMinutes,
+        releaseYear: movieCreated.releaseYear
       });
     });
   });
 
-  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Crítico", () => {
-    cy.createCriticUser().then((response) => {
-      user = response;
-      cy.login(user).then((loginResponse) => {
-        const userToken = loginResponse.body.accessToken;
+  describe('Cenários com criação de usuários', function () {
+    let localUser
+    beforeEach(() => {
+      cy.createUser().then((resposta) => {
+        localUser = resposta
+        cy.login(localUser).then((resposta) => {
+          localUser.accessToken = resposta.body.accessToken
+        })
+      })
+    });
 
-        cy.searchMovie(movieTitle, userToken).then((response) => {
+    afterEach(() => {
+      cy.deleteUser(localUser)
+    })
+
+    it("Deve ser possível pesquisar um filme sendo um usuário com perfil Comum", () => {
+      cy.request({
+        method: "GET",
+        url: "/api/movies/search?title=" + movieTitle,
+        auth: {
+          bearer: localUser.accessToken
+        }
+      }).then((response) => {
+        const movie = response.body.find((m) => m.title === movieTitle);
+        expect(movie).to.not.be.undefined;
+        expect(response.status).to.eq(200);
+        expect(movie.id).to.be.a("number");
+        expect(movie).to.have.property("totalRating");
+        expect(movie).to.deep.include({
+          title: movieTitle,
+          genre: movieCreated.genre,
+          description: movieCreated.description,
+          durationInMinutes: movieCreated.durationInMinutes,
+          releaseYear: movieCreated.releaseYear
+        });
+      });
+    });
+
+    it("Deve ser possível pesquisar um filme sendo um usuário com perfil Crítico", () => {
+      cy.promoteCritic(localUser.accessToken).then(() => {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/search?title=" + movieTitle,
+          auth: {
+            bearer: localUser.accessToken
+          }
+        }).then((response) => {
           const movie = response.body.find((m) => m.title === movieTitle);
           expect(movie).to.not.be.undefined;
           expect(response.status).to.eq(200);
           expect(movie.id).to.be.a("number");
-          expect(movie).to.have.property("title", movieTitle);
-          expect(movie).to.have.property("genre", movieInfo.genre);
-          expect(movie).to.have.property("description", movieInfo.description);
-          expect(movie).to.have.property(
-            "durationInMinutes",
-            movieInfo.durationInMinutes
-          );
-          expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
           expect(movie).to.have.property("totalRating");
+          expect(movie).to.deep.include({
+            title: movieTitle,
+            genre: movieCreated.genre,
+            description: movieCreated.description,
+            durationInMinutes: movieCreated.durationInMinutes,
+            releaseYear: movieCreated.releaseYear
+          });
         });
-      });
+      })
     });
-  });
-  
-  it("Deve ser possível pesquisar um filme sendo um usuário com perfil Administrador", () => {
-    cy.createAdminUser().then((response) => {
-      user = response;
-      cy.login(user).then((loginResponse) => {
-        const userToken = loginResponse.body.accessToken;
 
-        cy.searchMovie(movieTitle, userToken).then((response) => {
+    it("Deve ser possível pesquisar um filme sendo um usuário com perfil Administrador", () => {
+      cy.promoteAdmin(localUser.accessToken).then(() => {
+        cy.request({
+          method: "GET",
+          url: "/api/movies/search?title=" + movieTitle,
+          auth: {
+            bearer: localUser.accessToken
+          }
+        }).then((response) => {
           const movie = response.body.find((m) => m.title === movieTitle);
           expect(movie).to.not.be.undefined;
           expect(response.status).to.eq(200);
           expect(movie.id).to.be.a("number");
-          expect(movie).to.have.property("title", movieTitle);
-          expect(movie).to.have.property("genre", movieInfo.genre);
-          expect(movie).to.have.property("description", movieInfo.description);
-          expect(movie).to.have.property(
-            "durationInMinutes",
-            movieInfo.durationInMinutes
-          );
-          expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
           expect(movie).to.have.property("totalRating");
+          expect(movie).to.deep.include({
+            title: movieTitle,
+            genre: movieCreated.genre,
+            description: movieCreated.description,
+            durationInMinutes: movieCreated.durationInMinutes,
+            releaseYear: movieCreated.releaseYear
+          });
         });
-      });
+      })
     });
   });
-  
+
   it("Deve ser possível efetuar uma pesquisa utilizando o nome completo do filme", () => {
-    cy.searchMovie(movieTitle).then((response) => {
+    cy.request({
+      method: "GET",
+      url: "/api/movies/search?title=" + movieTitle,
+    }).then((response) => {
       const movie = response.body.find((m) => m.title === movieTitle);
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
-      expect(movie).to.have.property("title", movieTitle);
-      expect(movie).to.have.property("genre", movieInfo.genre);
-      expect(movie).to.have.property("description", movieInfo.description);
-      expect(movie).to.have.property(
-        "durationInMinutes",
-        movieInfo.durationInMinutes
-      );
-      expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
       expect(movie).to.have.property("totalRating");
+      expect(movie).to.deep.include({
+        title: movieTitle,
+        genre: movieCreated.genre,
+        description: movieCreated.description,
+        durationInMinutes: movieCreated.durationInMinutes,
+        releaseYear: movieCreated.releaseYear
+      });
     });
   });
 
@@ -145,21 +159,19 @@ describe("Pesquisa de Filmes", () => {
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
-      expect(movie).to.have.property("title");
       expect(movie.title).to.include(partialTitle);
-      expect(movie).to.have.property("genre", movieInfo.genre);
-      expect(movie).to.have.property("description", movieInfo.description);
-      expect(movie).to.have.property(
-        "durationInMinutes",
-        movieInfo.durationInMinutes
-      );
-      expect(movie).to.have.property("releaseYear", movieInfo.releaseYear);
       expect(movie).to.have.property("totalRating");
+      expect(movie).to.deep.include({
+        genre: movieCreated.genre,
+        description: movieCreated.description,
+        durationInMinutes: movieCreated.durationInMinutes,
+        releaseYear: movieCreated.releaseYear
+      });
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme não cadastrado", () => {
-    const movieInvalidNull = "Filme inexistente";
+    const movieInvalidNull = "Filme inexistente 123456789acbde";
     cy.searchMovie(movieInvalidNull).then((response) => {
       expect(response.status).to.eq(200);
 
