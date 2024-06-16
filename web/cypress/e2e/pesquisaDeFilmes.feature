@@ -37,6 +37,32 @@ Funcionalidade: Pesquisa de Filmes
         Então o usuário deve ver os detalhes do filme selecionado
 
     Cenário: Não deve ser possível efetuar pesquisa de um filme não cadastrado 
-        Quando preencher o campo de pesquisa de pesquisa com um filme não cadastrado na base de dados
+        Quando preencher o campo de pesquisa com um filme não cadastrado na base de dados
         E acessar a função de pesquisa
         Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+
+    Cenário: Não deve ser possível efetuar pesquisa de um filme pelo gênero 
+        Quando preencher o campo de pesquisa com o gênero do filme
+        E acessar a função de pesquisa
+        Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+
+    Cenário: Não deve ser possível efetuar pesquisa de um filme pela descrição
+        Quando preencher o campo de pesquisa com a descrição do filme
+        E acessar a função de pesquisa
+        Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+            
+    Cenário: Não deve ser possível efetuar pesquisa de um filme pelo tempo de duração
+        Quando preencher o campo de pesquisa com a duração do filme
+        E acessar a função de pesquisa
+        Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+
+    Cenário: Não deve ser possível efetuar pesquisa de um filme pelo ano de lançamento
+        Quando preencher o campo de pesquisa com o ano de lançamento
+        E acessar a função de pesquisa
+        Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+
+    Cenário: Não deve ser possível efetuar pesquisa de um filme pelo id
+        Quando preencher o campo de pesquisa com o id do filme
+        E acessar a função de pesquisa
+        Então o usuário deve ver uma mensagem indicando que nenhum filme foi encontrado
+
