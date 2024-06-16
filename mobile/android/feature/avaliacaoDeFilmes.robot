@@ -50,12 +50,17 @@ Cenário: Deve ser possível atualizar review de um usuário em um filme
     Então a review do usuário deve ser atualizada
 
 Cenário: Usuário não deve poder digitar uma avaliação contendo mais de 500 caracteres
-        Dado que um usuário está autenticado
-        Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
-        Então não deverá conseguir digitar mais de 500 caracteres
+    Dado que um usuário está autenticado
+    Quando tentar realizar uma nova review com um texto contendo mais de 500 caracteres
+    Então não deverá conseguir digitar mais de 500 caracteres
 
 # Teste quebrando por estar com bug --> Ele não consegue escrever 500 caracteres no campo de texto
 Cenário: Usuário deve poder digitar uma avaliação contendo 500 caracteres
-        Dado que um usuário está autenticado
-        Quando tentar realizar uma nova review com um texto contendo 500 caracteres
-        Então a review deve ser cadastrada com sucesso contendo 500 caracteres
+    Dado que um usuário está autenticado
+    Quando tentar realizar uma nova review com um texto contendo 500 caracteres
+    Então a review deve ser cadastrada com sucesso contendo 500 caracteres
+
+Cenário: Usuário deve poder dar nota apenas de 1 a 5 para um filme
+    Dado que um usuário está autenticado
+    Quando acessar a seção de review de um filme
+    Então poderá dar apenas notas de 1 a 5 em sua review do filme

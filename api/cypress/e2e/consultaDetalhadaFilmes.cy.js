@@ -24,7 +24,7 @@ describe("Consulta detalhada de filmes", function () {
     cy.deleteUser(user)
   });
 
-  describe("Usuario comum", function () {
+  describe("Usuário comum", function () {
     before(function () {
       cy.createUser().then(function (resposta) {
         userCriado = resposta;
@@ -133,7 +133,7 @@ describe("Consulta detalhada de filmes", function () {
     })
   });
 
-  describe("Usuario crítico", function () {
+  describe("Usuário crítico", function () {
     before(function () {
       cy.createCriticUser().then(function (resposta) {
         userCriado = resposta;
@@ -242,7 +242,7 @@ describe("Consulta detalhada de filmes", function () {
     })
   });
 
-  describe("Usuario administrador", function () {
+  describe("Usuário administrador", function () {
     before(function () {
       cy.createAdminUser().then(function (resposta) {
         userCriado = resposta;
@@ -353,7 +353,7 @@ describe("Consulta detalhada de filmes", function () {
 
   });
 
-  describe("Usuario não logado", function () {
+  describe("Usuário não logado", function () {
     it("Deve ser possível um usuário não logado realizar uma consulta detalhada de filmes com Id válido", function () {
       cy.request({
         method: "GET",

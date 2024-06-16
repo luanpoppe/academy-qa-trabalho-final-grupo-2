@@ -32,9 +32,12 @@ declare namespace Cypress {
 
         getUser(userId: number, token?: string): Chainable<any>
 
-        reviewMovie(movieInfo: { movieId: number, score: number, reviewText: string }, token: string): Chainable<any>
+        // reviewMovie(movieInfo: { movieId: number, score: number, reviewText: string }, token: string): Chainable<any>
+        reviewMovie(movieId: number, scoreMovie: number, reviewText: string, token: string): Chainable<any>
 
         getUserReviews(token: string): Chainable<any>
+
+        listReviews(token: string): Chainable<any>
 
         getAllMovies(): Chainable<any>
 
@@ -69,5 +72,11 @@ declare namespace Cypress {
         deleteMovie(movieId: number, token: string): Chainable<any>
 
         promoteToAdminAndDeleteMovie(userInfo: { email: string, password: string }, movieId: number): Chainable<any>
+
+        createAdminUser(): Chainable<any>
+
+        createCriticUser(): Chainable<any>
+
+        inactivateUser(userToken: string): Chainable<any>
     }
 }

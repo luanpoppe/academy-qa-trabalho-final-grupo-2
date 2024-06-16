@@ -86,6 +86,15 @@ When('tentar adicionar uma review em um filme', function () {
   cy.wait('@getMovie')
 })
 
+When('acessar a seção de review de um filme', function () {
+  cy.visit("/movies/" + movieInfo.id)
+  cy.wait('@getMovie')
+})
+
+Then('só poderá dar nota de 1 a 5 ao filme', function () {
+  cy.get(paginaMovies.labelStarReview + " span").should('have.length', 5)
+})
+
 When('adicionar uma review em um filme', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   paginaMovies.allReviewStars().eq(2).click()
@@ -207,9 +216,6 @@ When('tentar realizar uma nova review com um texto contendo mais de 500 caracter
       return false
     }
   })
-
-
-
 
   let largeReview = ""
   while (largeReview.length < 501) {
