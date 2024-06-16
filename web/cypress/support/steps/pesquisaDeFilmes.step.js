@@ -12,8 +12,8 @@ import LoginPage from "../pages/loginPage";
 const paginaMovies = new MoviesPage();
 const paginaLogin = new LoginPage();
 
-var filmeCriado;
-var usuarioCriado;
+let filmeCriado;
+let usuarioCriado;
 
 BeforeAll(function () {
     cy.fixture("./requests/bodyNewMovie3").then(function (filme) {
@@ -22,7 +22,6 @@ BeforeAll(function () {
             usuarioCriado = response.user;
         });
     })
-
 });
 
 AfterAll(function () {
@@ -39,11 +38,35 @@ Given('não realizou login', function () {
 
 })
 
-Given('realizou login', function () {
+Given('realizou login sendo um usuário com perfil Comum', function () {
     cy.visit("/login")
     paginaLogin.login(usuarioCriado)
     cy.wait("@login")
     cy.contains("Perfil")
+})
+
+Given('realizou login sendo um usuário com perfil Crítico', function () {
+    cy.login(usuarioCriado).then(function (response) {
+        const token = response.body.accessToken;
+        cy.promoteCritic(token);
+        
+        cy.visit("/login")
+        paginaLogin.login(usuarioCriado)
+        cy.wait("@login")
+        cy.contains("Perfil")
+      });
+})
+
+Given('realizou login sendo um usuário com perfil Administrador', function () {
+    cy.login(usuarioCriado).then(function (response) {
+        const token = response.body.accessToken;
+        cy.promoteAdmin(token);
+        
+        cy.visit("/login")
+        paginaLogin.login(usuarioCriado)
+        cy.wait("@login")
+        cy.contains("Perfil")
+    });
 })
 
 When('preencher o campo de pesquisa de filmes com um filme cadastrado', function () {

@@ -14,8 +14,20 @@ Funcionalidade: Pesquisa de Filmes
         E acessar a função de pesquisa
         Então o usuário deve ver o resultado da pesquisa para o filme informado
 
-    Cenário: Deve ser possível pesquisar um filme estando logado no site 
-        E realizou login 
+    Cenário: Deve ser possível pesquisar um filme sendo um usuário com perfil Comum 
+        E realizou login sendo um usuário com perfil Comum
+        Quando preencher o campo de pesquisa de filmes com um filme cadastrado
+        E acessar a função de pesquisa
+        Então o usuário deve ver o resultado da pesquisa para o filme informado
+
+    Cenário: Deve ser possível pesquisar um filme sendo um usuário com perfil Crítico
+        E realizou login sendo um usuário com perfil Crítico
+        Quando preencher o campo de pesquisa de filmes com um filme cadastrado
+        E acessar a função de pesquisa
+        Então o usuário deve ver o resultado da pesquisa para o filme informado
+
+    Cenário: Deve ser possível pesquisar um filme sendo um usuário com perfil Administrador
+        E realizou login sendo um usuário com perfil Administrador
         Quando preencher o campo de pesquisa de filmes com um filme cadastrado
         E acessar a função de pesquisa
         Então o usuário deve ver o resultado da pesquisa para o filme informado
