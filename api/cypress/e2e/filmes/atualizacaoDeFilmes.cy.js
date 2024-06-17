@@ -524,7 +524,7 @@ describe("Atualização de Filmes", function () {
       });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip("Não deve ser possível atualizar um filme com um título contendo apenas espaços em branco", function () {
+      it("Não deve ser possível atualizar um filme com um título contendo apenas espaços em branco", function () {
         const temporaryMovie = {
           ...movieUpdated,
           title: " ",
@@ -622,7 +622,7 @@ describe("Atualização de Filmes", function () {
       });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip("Não deve ser possível atualizar um filme contendo espaços em branco", function () {
+      it("Não deve ser possível atualizar um filme com gênero contendo espaços em branco", function () {
         const temporaryMovie = {
           ...movieUpdated,
           genre: " ",
@@ -723,7 +723,7 @@ describe("Atualização de Filmes", function () {
       });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip("Não deve ser possível atualizar um filme com uma descrição vazia", function () {
+      it("Não deve ser possível atualizar um filme com uma descrição contendo espaços em branco", function () {
         const temporaryMovie = {
           ...movieUpdated,
           description: " ",
