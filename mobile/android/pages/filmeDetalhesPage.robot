@@ -226,11 +226,9 @@ Então os dados principais do filme devem ser exibidos na tela
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[title]
     ${releaseYearString}=    Convert To String    ${primeiroFilme}[releaseYear]
     ${durationInMinutesRound}=    Evaluate    round(${primeiroFilme}[durationInMinutes] / 60)
-    #${durationMinutesString}=    Convert To String    ${durationInMinutesRound}
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${releaseYearString}
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[genre]
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[description]
-    #Verifica se o contentDesc contains text    ${dadosDoFilme}    ${durationMinutesString}h
 
 Então os dados de avaliações da audiência serão exibidos na tela
     Wait Until Element Is Visible    ${reviewsAudiencia}
