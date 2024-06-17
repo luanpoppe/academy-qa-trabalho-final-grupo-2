@@ -1,95 +1,95 @@
-import * as me from "../../support/utils/movieErrors"
+import * as me from "../../support/utils/movieErrors";
 
-describe('Criação de Filmes', function () {
-  let movieInfo
-  let adminUser
-  let token
-  let movie
+describe("Atualização de Filmes", function () {
+  let movieInfo;
+  let adminUser;
+  let token;
+  let movie;
 
   before(function () {
     cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
-      movie = resposta
-    })
-  })
+      movie = resposta;
+    });
+  });
 
   const movieUpdated = {
     title: "Nome do Filme Atualizado",
     genre: "Gênero do filme Atualizado",
     description: "Descrição do filme Atualizado",
     durationInMinutes: 150,
-    releaseYear: 2023
-  }
+    releaseYear: 2023,
+  };
 
   before(function () {
     cy.createUser().then(function (userInfo) {
-      adminUser = userInfo
+      adminUser = userInfo;
       cy.login(adminUser).then(function (resposta) {
-        token = resposta.body.accessToken
-        cy.promoteAdmin(token)
-      })
-    })
-  })
+        token = resposta.body.accessToken;
+        cy.promoteAdmin(token);
+      });
+    });
+  });
 
   beforeEach(function () {
     cy.createMovie(movie, token).then(function (resposta) {
-      movieInfo = resposta.body
-    })
-  })
+      movieInfo = resposta.body;
+    });
+  });
 
   after(function () {
-    cy.deleteUser(adminUser)
-  })
+    cy.deleteUser(adminUser);
+  });
 
   afterEach(function () {
-    cy.promoteToAdminAndDeleteMovie(adminUser, movieInfo.id)
-  })
+    cy.promoteToAdminAndDeleteMovie(adminUser, movieInfo.id);
+  });
 
-  describe('Usuário administrador', function () {
-    describe('Casos de atualização com sucesso', function () {
-      it('Usuário administrador deve poder atualizar um filme', function () {
+  describe("Usuário administrador", function () {
+    describe("Casos de atualização com sucesso", function () {
+      it("Usuário administrador deve poder atualizar um filme", function () {
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: movieUpdated,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(movieUpdated)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(movieUpdated);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o título contendo 1 caractere', function () {
+      it("Deve ser possível atualizar um filme com o título contendo 1 caractere", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: "a"
-        }
+          title: "a",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o título contendo 100 caracteres', function () {
+      it("Deve ser possível atualizar um filme com o título contendo 100 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: "a"
-        }
+          title: "a",
+        };
         while (temporaryMovie.title.length < 100) {
-          temporaryMovie.title += "a"
+          temporaryMovie.title += "a";
         }
 
         cy.request({
@@ -97,44 +97,44 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o gênero contendo 1 caractere', function () {
+      it("Deve ser possível atualizar um filme com o gênero contendo 1 caractere", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: "a"
-        }
+          genre: "a",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o gênero contendo 100 caracteres', function () {
+      it("Deve ser possível atualizar um filme com o gênero contendo 100 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: "a"
-        }
+          genre: "a",
+        };
         while (temporaryMovie.genre.length < 100) {
-          temporaryMovie.genre += "a"
+          temporaryMovie.genre += "a";
         }
 
         cy.request({
@@ -142,46 +142,44 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com a descrição contendo 1 caractere', function () {
+      it("Deve ser possível atualizar um filme com a descrição contendo 1 caractere", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: "a"
-        }
+          description: "a",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com a descrição contendo 500 caracteres', function () {
+      it("Deve ser possível atualizar um filme com a descrição contendo 500 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: "a"
-        }
+          description: "a",
+        };
         while (temporaryMovie.description.length < 500) {
-          temporaryMovie.description += "a"
+          temporaryMovie.description += "a";
         }
 
         cy.request({
@@ -189,393 +187,396 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o ano de lançamento de 1895', function () {
+      it("Deve ser possível atualizar um filme com o ano de lançamento de 1895", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: 1895
-        }
+          releaseYear: 1895,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com o ano de lançamento sendo o ano atual', function () {
+      it("Deve ser possível atualizar um filme com o ano de lançamento sendo o ano atual", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: new Date().getFullYear()
-        }
+          releaseYear: new Date().getFullYear(),
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com a duração de 1 minuto', function () {
+      it("Deve ser possível atualizar um filme com a duração de 1 minuto", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: 1
-        }
+          durationInMinutes: 1,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme com a duração de 720 horas', function () {
+      it("Deve ser possível atualizar um filme com a duração de 720 horas", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: 720 * 60
-        }
+          durationInMinutes: 720 * 60,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
         }).then(function (resposta) {
-
-          expect(resposta.status).to.equal(204)
+          expect(resposta.status).to.equal(204);
           cy.getMovie(movieInfo.id).then(function (resposta) {
-            expect(resposta.body).to.deep.include(temporaryMovie)
-          })
-        })
-      })
+            expect(resposta.body).to.deep.include(temporaryMovie);
+          });
+        });
+      });
 
-      it('Deve ser possível atualizar um filme sem passar um título', function () {
+      it("Deve ser possível atualizar um filme sem passar um título", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: null
-        }
+          title: null,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
-          }
+            bearer: token,
+          },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
-        })
-      })
+          expect(resposta.status).to.equal(204);
+        });
+      });
 
-      it('Deve ser possível atualizar um filme sem passar um gênero', function () {
+      it("Deve ser possível atualizar um filme sem passar um gênero", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: null
-        }
+          genre: null,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
-          }
+            bearer: token,
+          },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
-        })
-      })
+          expect(resposta.status).to.equal(204);
+        });
+      });
 
-      it('Deve ser possível atualizar um filme sem passar uma descrição', function () {
+      it("Deve ser possível atualizar um filme sem passar uma descrição", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: null
-        }
+          description: null,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
-          }
+            bearer: token,
+          },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
-        })
-      })
+          expect(resposta.status).to.equal(204);
+        });
+      });
 
-      it('Deve ser possível atualizar um filme sem passar uma duração', function () {
+      it("Deve ser possível atualizar um filme sem passar uma duração", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: null
-        }
+          durationInMinutes: null,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
-          }
+            bearer: token,
+          },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
-        })
-      })
+          expect(resposta.status).to.equal(204);
+        });
+      });
 
-      it('Deve ser possível atualizar um filme sem passar um ano de lançamento', function () {
+      it("Deve ser possível atualizar um filme sem passar um ano de lançamento", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: null
-        }
+          releaseYear: null,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
-          }
+            bearer: token,
+          },
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(204)
-        })
-      })
+          expect(resposta.status).to.equal(204);
+        });
+      });
 
-
-      describe('Cenário com criação de mais de um filme', function () {
-        let movieInfo2
-        let differentMovie = movieUpdated
+      describe("Cenário com criação de mais de um filme", function () {
+        let movieInfo2;
+        let differentMovie = movieUpdated;
         beforeEach(function () {
           cy.createMovie(differentMovie, token).then(function (resposta) {
-            movieInfo2 = resposta.body
-          })
-        })
+            movieInfo2 = resposta.body;
+          });
+        });
 
         afterEach(function () {
-          cy.deleteMovie(movieInfo2.id, token)
-        })
+          cy.deleteMovie(movieInfo2.id, token);
+        });
 
-        it('Deve ser possível adicionar dois filmes com as exatas mesmas informações', function () {
+        it("Deve ser possível adicionar dois filmes com as exatas mesmas informações", function () {
           cy.request({
             method: "PUT",
             url: "/api/movies/" + movieInfo2.id,
             body: movie,
             auth: {
-              bearer: token
+              bearer: token,
             },
           }).then(function (resposta) {
-            expect(movieInfo.title).to.deep.equal(movie.title)
-            expect(resposta.status).to.equal(204)
-          })
-        })
-      })
-    })
+            expect(movieInfo.title).to.deep.equal(movie.title);
+            expect(resposta.status).to.equal(204);
+          });
+        });
+      });
+    });
 
-    it('Não deve ser possível atualizar um filme sem passar nenhuma informação', function () {
+    it("Não deve ser possível atualizar um filme sem passar nenhuma informação", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/" + movieInfo.id,
         body: null,
         auth: {
-          bearer: token
+          bearer: token,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(404)
-      })
-    })
+        expect(resposta.status).to.equal(404);
+      });
+    });
 
-    it('Não deve ser possível atualizar um filme sem passar um id do filme', function () {
+    it("Não deve ser possível atualizar um filme sem passar um id do filme", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/",
         body: movieUpdated,
         auth: {
-          bearer: token
+          bearer: token,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(404)
-        expect(resposta.body.error).to.equal("Not Found")
-      })
-    })
+        expect(resposta.status).to.equal(404);
+        expect(resposta.body.error).to.equal("Not Found");
+      });
+    });
 
-    it('Não deve ser possível atualizar um filme passando um id não existente', function () {
-      let lastMovieId
-      cy.getAllMovies().then(function (resposta) {
-        lastMovieId = resposta.body[resposta.body.length - 1].id
-      }).then(function (resposta) {
-        cy.request({
-          method: "PUT",
-          url: "/api/movies/" + (lastMovieId + 100),
-          body: movieUpdated,
-          auth: {
-            bearer: token
-          },
-          failOnStatusCode: false
-        }).then(function (resposta) {
-          expect(resposta.status).to.equal(404)
-          expect(resposta.body.error).to.equal("Not Found")
+    it("Não deve ser possível atualizar um filme passando um id não existente", function () {
+      let lastMovieId;
+      cy.getAllMovies()
+        .then(function (resposta) {
+          lastMovieId = resposta.body[resposta.body.length - 1].id;
         })
-      })
+        .then(function (resposta) {
+          cy.request({
+            method: "PUT",
+            url: "/api/movies/" + (lastMovieId + 100),
+            body: movieUpdated,
+            auth: {
+              bearer: token,
+            },
+            failOnStatusCode: false,
+          }).then(function (resposta) {
+            expect(resposta.status).to.equal(404);
+            expect(resposta.body.error).to.equal("Not Found");
+          });
+        });
+    });
 
-    })
-
-    it('Não deve ser possível atualizar um filme passando um id como um texto', function () {
+    it("Não deve ser possível atualizar um filme passando um id como um texto", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/" + "idDoFilme",
         body: movieUpdated,
         auth: {
-          bearer: token
+          bearer: token,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.equal("Validation failed (numeric string is expected)")
-      })
-    })
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body.message).to.equal(
+          "Validation failed (numeric string is expected)"
+        );
+      });
+    });
 
-    it('Não deve ser possível atualizar um filme passando um id como um número decimal', function () {
+    it("Não deve ser possível atualizar um filme passando um id como um número decimal", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/" + (movieInfo.id + 0.5),
         body: movieUpdated,
         auth: {
-          bearer: token
+          bearer: token,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.equal("Validation failed (numeric string is expected)")
-      })
-    })
+        expect(resposta.status).to.equal(400);
+        expect(resposta.body.message).to.equal(
+          "Validation failed (numeric string is expected)"
+        );
+      });
+    });
 
-    it('Não deve ser possível atualizar um filme passando um id como número negativo', function () {
+    it("Não deve ser possível atualizar um filme passando um id como número negativo", function () {
       cy.request({
         method: "PUT",
-        url: "/api/movies/" + (movieInfo.id * -1),
+        url: "/api/movies/" + movieInfo.id * -1,
         body: movieUpdated,
         auth: {
-          bearer: token
+          bearer: token,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(404)
-        expect(resposta.body.message).to.equal("Movie not found")
-      })
-    })
+        expect(resposta.status).to.equal(404);
+        expect(resposta.body.message).to.equal("Movie not found");
+      });
+    });
 
-    describe('Casos de falha do título do filme', function () {
-      it('Não deve ser possível atualizar um filme com um título vazio', function () {
+    describe("Casos de falha do título do filme", function () {
+      it("Não deve ser possível atualizar um filme com um título vazio", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: ""
-        }
+          title: "",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          // expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeLonger)
-          // expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustNotBeEmpty)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.deep.include(
+            me.titleErrors.titleMustBeLonger
+          );
+        });
+      });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip('Não deve ser possível atualizar um filme com um título contendo apenas espaços em branco', function () {
+      it.skip("Não deve ser possível atualizar um filme com um título contendo apenas espaços em branco", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: " "
-        }
+          title: " ",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um título sem ser uma string', function () {
+      it("Não deve ser possível atualizar um filme com um título sem ser uma string", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: 1234
-        }
+          title: 1234,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeString)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(2);
+          expect(resposta.body.message).to.deep.include(
+            me.titleErrors.titleMustBeShortherAndLonger
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.titleErrors.titleMustBeString
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um título contendo 101 caracteres', function () {
+      it("Não deve ser possível atualizar um filme com um título contendo 101 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          title: "a"
-        }
+          title: "a",
+        };
 
         while (temporaryMovie.title.length < 101) {
-          temporaryMovie.title += "a"
+          temporaryMovie.title += "a";
         }
 
         cy.request({
@@ -583,93 +584,101 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.titleErrors.titleMustBeShorter)
-        })
-      })
-    })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.titleErrors.titleMustBeShorter
+          );
+        });
+      });
+    });
 
-    describe('Casos de falha do gênero do filme', function () {
-      it('Não deve ser possível atualizar um filme com gênero vazio', function () {
+    describe("Casos de falha do gênero do filme", function () {
+      it("Não deve ser possível atualizar um filme com gênero vazio", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: ""
-        }
+          genre: "",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeLonger)
-          // expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustNotBeEmpty)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.genreErrors.genreMustBeLonger
+          );
+        });
+      });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip('Não deve ser possível atualizar um filme contendo espaços em branco', function () {
+      it.skip("Não deve ser possível atualizar um filme contendo espaços em branco", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: " "
-        }
+          genre: " ",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeLonger)
-          // expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustNotBeEmpty)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.genreErrors.genreMustBeLonger
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com gênero sem ser uma string', function () {
+      it("Não deve ser possível atualizar um filme com gênero sem ser uma string", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: 1234
-        }
+          genre: 1234,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeString)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(2);
+          expect(resposta.body.message).to.deep.include(
+            me.genreErrors.genreMustBeShortherAndLonger
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.genreErrors.genreMustBeString
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um gênero contendo 101 caracteres', function () {
+      it("Não deve ser possível atualizar um filme com um gênero contendo 101 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          genre: "a"
-        }
+          genre: "a",
+        };
 
         while (temporaryMovie.genre.length < 101) {
-          temporaryMovie.genre += "a"
+          temporaryMovie.genre += "a";
         }
 
         cy.request({
@@ -677,90 +686,96 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.genreErrors.genreMustBeShorter)
-        })
-      })
-    })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.genreErrors.genreMustBeShorter
+          );
+        });
+      });
+    });
 
-    describe('Casos de falha da descrição do filme', function () {
-      it('Não deve ser possível atualizar um filme com uma descrição vazia', function () {
+    describe("Casos de falha da descrição do filme", function () {
+      it("Não deve ser possível atualizar um filme com uma descrição vazia", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: ""
-        }
+          description: "",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          // expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeLonger)
-          // expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustNotBeEmpty)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.deep.include(
+            me.descriptionErrors.descriptionMustBeLonger
+          );
+        });
+      });
 
       // Teste com bug --> Está sendo permitido atualizar o filme
-      it.skip('Não deve ser possível atualizar um filme com uma descrição vazia', function () {
+      it.skip("Não deve ser possível atualizar um filme com uma descrição vazia", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: " "
-        }
+          description: " ",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com a descrição sem ser uma string', function () {
+      it("Não deve ser possível atualizar um filme com a descrição sem ser uma string", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: 1234
-        }
+          description: 1234,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(2)
-          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeShortherAndLonger)
-          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeString)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(2);
+          expect(resposta.body.message).to.deep.include(
+            me.descriptionErrors.descriptionMustBeShortherAndLonger
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.descriptionErrors.descriptionMustBeString
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com uma descrição contendo 501 caracteres', function () {
+      it("Não deve ser possível atualizar um filme com uma descrição contendo 501 caracteres", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          description: "a"
-        }
+          description: "a",
+        };
 
         while (temporaryMovie.description.length < 501) {
-          temporaryMovie.description += "a"
+          temporaryMovie.description += "a";
         }
 
         cy.request({
@@ -768,277 +783,309 @@ describe('Criação de Filmes', function () {
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.descriptionErrors.descriptionMustBeShorter)
-        })
-      })
-    })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.descriptionErrors.descriptionMustBeShorter
+          );
+        });
+      });
+    });
 
-    describe('Casos de falha da duração do filme', function () {
-      it('Não deve ser possível atualizar um filme com uma duração sem ser um número', function () {
+    describe("Casos de falha da duração do filme", function () {
+      it("Não deve ser possível atualizar um filme com uma duração sem ser um número", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: "abcd"
-        }
+          durationInMinutes: "abcd",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(4)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMaxNumber)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeNumber)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeInteger)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(4);
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMaxNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMinNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMustBeNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMustBeInteger
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com uma duração que seja um número decimal', function () {
+      it("Não deve ser possível atualizar um filme com uma duração que seja um número decimal", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: 120.5
-        }
+          durationInMinutes: 120.5,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMustBeInteger)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMustBeInteger
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com uma duração que seja 0', function () {
+      it("Não deve ser possível atualizar um filme com uma duração que seja 0", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: 0
-        }
+          durationInMinutes: 0,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMinNumber
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com uma duração que seja negativa', function () {
+      it("Não deve ser possível atualizar um filme com uma duração que seja negativa", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: -1
-        }
+          durationInMinutes: -1,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMinNumber)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMinNumber
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com uma duração que seja maior do que 720 horas', function () {
+      it("Não deve ser possível atualizar um filme com uma duração que seja maior do que 720 horas", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          durationInMinutes: (720 * 60) + 1
-        }
+          durationInMinutes: 720 * 60 + 1,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.durationErrors.durationMaxNumber)
-        })
-      })
-    })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.durationErrors.durationMaxNumber
+          );
+        });
+      });
+    });
 
-    describe('Casos de falha do ano de lançamento do filme', function () {
-      it('Não deve ser possível atualizar um filme com um ano de lançamento sem ser um número', function () {
+    describe("Casos de falha do ano de lançamento do filme", function () {
+      it("Não deve ser possível atualizar um filme com um ano de lançamento sem ser um número", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: "abcd"
-        }
+          releaseYear: "abcd",
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(4)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMaxNumber)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMinNumber)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeNumber)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeInteger)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(4);
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMaxNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMinNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMustBeNumber
+          );
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMustBeInteger
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um ano de lançamento que seja um número decimal', function () {
+      it("Não deve ser possível atualizar um filme com um ano de lançamento que seja um número decimal", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: 2000.5
-        }
+          releaseYear: 2000.5,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMustBeInteger)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMustBeInteger
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um ano de lançamento que seja menor que 1895', function () {
+      it("Não deve ser possível atualizar um filme com um ano de lançamento que seja menor que 1895", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: 1894
-        }
+          releaseYear: 1894,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMinNumber)
-        })
-      })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMinNumber
+          );
+        });
+      });
 
-      it('Não deve ser possível atualizar um filme com um ano de lançamento que seja maior do que o ano atual', function () {
+      it("Não deve ser possível atualizar um filme com um ano de lançamento que seja maior do que o ano atual", function () {
         const temporaryMovie = {
           ...movieUpdated,
-          releaseYear: new Date().getFullYear() + 1
-        }
+          releaseYear: new Date().getFullYear() + 1,
+        };
 
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: temporaryMovie,
           auth: {
-            bearer: token
+            bearer: token,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(400)
-          expect(resposta.body.message).to.have.length(1)
-          expect(resposta.body.message).to.deep.include(me.releaseYearErrors.releaseYearMaxNumber)
-        })
-      })
-    })
-  })
+          expect(resposta.status).to.equal(400);
+          expect(resposta.body.message).to.have.length(1);
+          expect(resposta.body.message).to.deep.include(
+            me.releaseYearErrors.releaseYearMaxNumber
+          );
+        });
+      });
+    });
+  });
 
-  describe('Casos de falhar por conta da autorização', function () {
-    let localUser
-    let localToken
+  describe("Casos de falhar por conta da autorização", function () {
+    let localUser;
+    let localToken;
 
     beforeEach(function () {
       cy.createUser().then(function (resposta) {
-        localUser = resposta
+        localUser = resposta;
         cy.login(localUser).then(function (resposta) {
-          localToken = resposta.body.accessToken
-        })
-      })
-    })
+          localToken = resposta.body.accessToken;
+        });
+      });
+    });
 
     afterEach(function () {
-      cy.deleteUser(localUser)
-    })
+      cy.deleteUser(localUser);
+    });
 
-    it('Usuário não logado não deve conseguir atualizar um filme', function () {
+    it("Usuário não logado não deve conseguir atualizar um filme", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/" + movieInfo.id,
         body: movie,
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(401)
-        expect(resposta.body.message).to.equal("Access denied.")
-        expect(resposta.body.error).to.equal("Unauthorized")
-      })
-    })
+        expect(resposta.status).to.equal(401);
+        expect(resposta.body.message).to.equal("Access denied.");
+        expect(resposta.body.error).to.equal("Unauthorized");
+      });
+    });
 
-    it('Usuário comum não deve conseguir atualizar um filme', function () {
+    it("Usuário comum não deve conseguir atualizar um filme", function () {
       cy.request({
         method: "PUT",
         url: "/api/movies/" + movieInfo.id,
         body: movie,
         auth: {
-          bearer: localToken
+          bearer: localToken,
         },
-        failOnStatusCode: false
+        failOnStatusCode: false,
       }).then(function (resposta) {
-        expect(resposta.status).to.equal(403)
-        expect(resposta.body.message).to.equal("Forbidden")
-      })
-    })
+        expect(resposta.status).to.equal(403);
+        expect(resposta.body.message).to.equal("Forbidden");
+      });
+    });
 
-    it('Usuário crítico não deve conseguir atualizar um filme', function () {
+    it("Usuário crítico não deve conseguir atualizar um filme", function () {
       cy.promoteCritic(localToken).then(function (resposta) {
         cy.request({
           method: "PUT",
           url: "/api/movies/" + movieInfo.id,
           body: movie,
           auth: {
-            bearer: localToken
+            bearer: localToken,
           },
-          failOnStatusCode: false
+          failOnStatusCode: false,
         }).then(function (resposta) {
-          expect(resposta.status).to.equal(403)
-          expect(resposta.body.message).to.equal("Forbidden")
-        })
-      })
-    })
-  })
-})
+          expect(resposta.status).to.equal(403);
+          expect(resposta.body.message).to.equal("Forbidden");
+        });
+      });
+    });
+  });
+});
