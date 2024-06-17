@@ -11,6 +11,11 @@ Cenário: Não deve ser possível usuário não logado poder acessar página de 
     Quando tentar acessar a página de perfil de usuário
     Então o site deverá redirecionar o usuário para a página de login
 
+Cenário: Usuário logado deve poder ver informações corretas sobre sua conta na página de perfil
+    Dado que possuo um usuário comum cadastrado e logado no sistema
+    Quando acessar a página de perfil
+    Então deverá ver informações corretas sobre sua conta
+
 # USUÁRIO COMUM:
 
 Cenário: Deve ser possível acessar a atualização de informações como usuário do tipo comum autenticado no sistema

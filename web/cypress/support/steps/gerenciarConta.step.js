@@ -123,6 +123,10 @@ When('tentar acessar a página de perfil de usuário', function () {
   cy.visit("/profile")
 })
 
+When('acessar a página de perfil', function () {
+  paginaGerenciar.clickLinkPerfil();
+})
+
 Then("o usuário poderá atualizar suas informações", () => {
   cy.get(paginaGerenciar.inputNome).should("be.enabled");
   cy.get(paginaGerenciar.inputEmail).should("be.disabled");
@@ -190,4 +194,9 @@ Then("o campo nome exibirá a mensagem de erro {string}", (mensagem) => {
 
 Then('o site deverá redirecionar o usuário para a página de login', function () {
   cy.location("pathname").should('equal', "/login")
+})
+
+Then('deverá ver informações corretas sobre sua conta', function () {
+  cy.get(".user-info span").eq(0).invoke("text").should("equal", user.name)
+  cy.get(".user-info span").eq(1).invoke("text").should("equal", user.email)
 })
