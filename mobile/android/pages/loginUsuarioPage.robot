@@ -9,6 +9,8 @@ ${buttonLogin}        xpath=//android.widget.Button[@content-desc="Login"]
 ${usuarioLogado}      ${None}
 ${loginRealizado}     xpath=//android.view.View[@content-desc="Login realizado!"]
 ${alertaLogin}        xpath=//android.view.View[@content-desc="Usuário ou senha inválidos."]
+${loginLogout}        xpath=//android.view.View[@content-desc="Sair"]
+
 
 *** Keywords ***
 Fazer login aplicativo
@@ -64,3 +66,17 @@ Então o site deve exibir alerta de usuário ou senha inválidos
 
 Quando informa as credenciais utilizando senha incorreta
     Quando informa as credenciais utilizando email não cadastrado
+
+Dado que o usuário está autenticado no aplicativo
+    Dado que o usuário acessa a tela de login
+    Quando informa as credenciais cadastradas
+
+Quando encerra a sessão acessando a funcionalidade Logout
+    Clicar para voltar no celular
+    Acessa menu
+    Espera elemento e clica    ${loginLogout}
+
+    
+Então usuário deve ser deslogado do aplicativo
+    Espera elemento está visivel    ${REGISTRO}
+    Espera elemento está visivel    ${LOGIN}
