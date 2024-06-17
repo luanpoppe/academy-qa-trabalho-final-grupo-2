@@ -33,6 +33,7 @@ Given("que o usuário acessou a página de cadastrar usuários", function () {
 When(
   "preenche todos os campos do formulário utilizando termos inválidos {string}",
   function (nome) {
+    cy.intercept("POST", "/api/users").as("post3");
     regisUser.registrarUsuario({ name: nome }).then(function (resposta) {
       user = resposta;
     });
