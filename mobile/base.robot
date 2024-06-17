@@ -9,10 +9,9 @@ Library    String
 
 #Utils
 Resource    android/utils/configPersonalizado.robot
-# Resource    android/utils/configPADRAO.robot --> DESCOMENTAR PARA ENVIAR O EXERCÍCIO
+# Resource    android/utils/config.robot --> DESCOMENTAR PARA ENVIAR O EXERCÍCIO
 Resource    android/utils/commons.robot
 Resource    android/utils/requestsApi.robot
-Resource    android/utils/requests.robot
 
 #Pages
 Resource    android/pages/cadastroUsuariopage.robot
