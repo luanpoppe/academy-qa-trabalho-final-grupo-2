@@ -1,5 +1,3 @@
-import { fakerPT_BR } from "@faker-js/faker";
-
 let userId;
 let user0;
 let user1;
