@@ -35,7 +35,7 @@ Funcionalidade: Avaliação de filmes
     @commonUser
     Esquema do Cenário: Usuário deve poder fechar a mensagem de erro ao avaliar um filme 
         Dado que um usuário está autenticado
-        E tentou adicionar uma review em um filme sem definir uma nota
+        E que tentou adicionar uma review em um filme sem definir uma nota
         Quando tentar tentar fechar a mensagem de erro "<comoFechar>"
         Então a mensagem de erro deve ser fechada
         Exemplos:
@@ -52,7 +52,7 @@ Funcionalidade: Avaliação de filmes
     @commonUser
     Cenário: Deve existir apenas uma review de um usuário em um filme
         Dado que um usuário está autenticado
-        E já realizou uma review em um filme
+        E que já realizou uma review em um filme
         Quando tentar realizar uma nova review no mesmo filme
         Então o filme deverá continuar com apenas uma review do usuário
         E a review do usuário deve ser atualizada

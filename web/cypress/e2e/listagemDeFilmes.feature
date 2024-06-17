@@ -5,22 +5,22 @@ Funcionalidade: Listagem de Filmes
 
     Cenário: Deve ser possível usuário não autenticado consultar a lista de filmes sem retrições
         Dado que usuário acessou a página de listagem de filme
-        E o usuário não está autenticado
+        E que o usuário não está autenticado
         Então deve conseguir visualizar a lista de filmes sem restrições
 
     Cenário: Deve ser possível usuário comum autenticado consultar a lista de filmes sem retrições
         Dado que usuário acessou a página de listagem de filme
-        E o usuário comum está autenticado
+        E que o usuário comum está autenticado
         Então deve conseguir visualizar a lista de filmes sem restrições
 
     Cenário: Deve ser possível usuário crítico autenticado consultar a lista de filmes sem retrições
         Dado que usuário acessou a página de listagem de filme
-        E o usuário crítico está autenticado
+        E que o usuário crítico está autenticado
         Então deve conseguir visualizar a lista de filmes sem restrições
 
     Cenário: Deve ser possível usuário administrador autenticado consultar a lista de filmes sem retrições
         Dado que usuário acessou a página de listagem de filme
-        E o usuário administrador está autenticado
+        E que o usuário administrador está autenticado
         Então deve conseguir visualizar a lista de filmes sem restrições
 
     Cenário: Deve ser possível visualizar informações sumarizadas do filme

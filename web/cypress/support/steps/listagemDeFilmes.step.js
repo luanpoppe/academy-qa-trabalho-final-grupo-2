@@ -45,14 +45,14 @@ Given("que usuário acessou a página de listagem de filme", () => {
   cy.intercept("GET", "/api/movies/*").as("getMovie");
   listFilmePage.visit();
   listFilmePage.listaDeFilmes().should("exist");
-});
+})
 
 Given("que usuário acessou a página inicial de listagem de filme", () => {
   cy.intercept("GET", "/api/movies/*").as("getMovie");
   listFilmePage.visit();
   cy.wait("@getFilmes")
   listFilmePage.listaDeFilmes().should("exist");
-});
+})
 
 Given('que usuário está na segunda página de listagem de filmes', function () {
   cy.intercept("GET", "/api/movies/*").as("getMovie");
@@ -74,50 +74,56 @@ Given('que não existem filmes cadastrados', function () {
   }).as("getFilmes0")
 })
 
-When("o usuário não está autenticado", () => {
-  cy.get(cadastroPage.buttonsHeader).contains("Registre-se");
-});
+Given("que há mais filmes do que podem ser exibidos em uma página", () => {
+  cy.intercept("GET", "/api/movies", {
+    fixture: "responses/responseBodyGetMovies6.json",
+  }).as("getFilmes");
+})
 
-When("o usuário comum está autenticado", () => {
+Given("que existem menos de 5 filmes na lista", () => {
+  cy.intercept("GET", "/api/movies", {
+    fixture: "responses/responseBodyGetMovies2.json",
+  }).as("getFilmes");
+})
+
+Given("que o usuário não está autenticado", () => {
+  cy.get(cadastroPage.buttonsHeader).contains("Registre-se");
+})
+
+Given("que o usuário comum está autenticado", () => {
   cy.createUser().then(function (userComum) {
     usuarioCriado = userComum;
     listFilmePage.clickLogin();
     loginPage.login(usuarioCriado);
   });
-});
+})
 
-When("o usuário crítico está autenticado", () => {
+Given("que o usuário crítico está autenticado", () => {
   cy.createCriticUser().then(function (userCritic) {
     usuarioCriado = userCritic;
     listFilmePage.clickLogin();
     loginPage.login(usuarioCriado);
   });
-});
+})
 
-When("o usuário administrador está autenticado", function () {
+Given("que o usuário administrador está autenticado", function () {
   cy.createAdminUser().then(function (userAdm) {
     usuarioCriado = userAdm;
     listFilmePage.clickLogin();
     loginPage.login(usuarioCriado);
   });
-});
+})
 
-When("o usuário estiver na lista de filmes", () => { });
+When("o usuário estiver na lista de filmes", () => { })
 
 When("selecionar um filme da lista", () => {
   listFilmePage.selecionarPrimeiroFilme();
   cy.wait("@getMovie");
-});
+})
 
 When("acessar lista de filmes mais bem avaliados", () => {
   cy.get("h3").contains("Mais bem avaliados");
-});
-
-Given("que há mais filmes do que podem ser exibidos em uma página", () => {
-  cy.intercept("GET", "/api/movies", {
-    fixture: "responses/responseBodyGetMovies6.json",
-  }).as("getFilmes");
-});
+})
 
 When('tentar retornar para a primeira parte', function () {
   listFilmePage.botaoRetornarFilmesDestaque().click()
@@ -127,6 +133,38 @@ When('usuário acessar a página de listagem de filmes', function () {
   listFilmePage.visit();
   cy.wait("@getFilmes0")
 })
+
+When("acessar a próxima página", () => {
+  listFilmePage.navegarParaProximaPaginaCadastro();
+})
+
+When("selecionar o primeiro filme da lista", () => {
+  listFilmePage.selecionarPrimeiroFilme();
+  cy.wait("@getMovie");
+})
+
+When("visualizar a lista de filmes", () => {
+  cy.wait("@getFilmes2");
+})
+
+When('usuário acessar a lista de filmes', function () {
+  listFilmePage.visit();
+  listFilmePage.listaDeFilmes().eq(0).should("exist");
+  cy.wait("@getFilmes")
+})
+
+When("visualizar uma opção de paginação", () => {
+  cy.get(".featured-movies .movie-card").should("have.length", 5);
+  listFilmePage.botaoAvancarFilmesDestaque().should("be.enabled");
+})
+
+When("acessar a proxima pagina", () => {
+  listFilmePage.navegarParaProximaPaginaCadastro();
+})
+
+When("visualizar opções de paginação", () => {
+  listFilmePage.botaoAvancarFilmesDestaque().should("exist").and("be.enabled");
+});
 
 Then("verá os filmes listados na ordem em que foram cadastrados", () => {
   let filmeAnterior = 0;
@@ -165,19 +203,6 @@ Then("verá os filmes listados com os mais avaliados primeiro", () => {
   });
 });
 
-Then("visualizar opções de paginação", () => {
-  listFilmePage.botaoAvancarFilmesDestaque().should("exist").and("be.enabled");
-});
-
-When("acessar a próxima página", () => {
-  listFilmePage.navegarParaProximaPaginaCadastro();
-});
-
-When("selecionar o primeiro filme da lista", () => {
-  listFilmePage.selecionarPrimeiroFilme();
-  cy.wait("@getMovie");
-});
-
 Then("verá informações detalhadas sobre o filme", () => {
   cy.get(listFilmePage.gridFilme).within(() => {
     cy.get(listFilmePage.tituloFilme).should("exist");
@@ -189,33 +214,8 @@ Then("verá informações detalhadas sobre o filme", () => {
   });
 });
 
-Given("que existem menos de 5 filmes na lista", () => {
-  cy.intercept("GET", "/api/movies", {
-    fixture: "responses/responseBodyGetMovies2.json",
-  }).as("getFilmes");
-});
-
-When("visualizar a lista de filmes", () => {
-  cy.wait("@getFilmes2");
-});
-
-When('usuário acessar a lista de filmes', function () {
-  listFilmePage.visit();
-  listFilmePage.listaDeFilmes().eq(0).should("exist");
-  cy.wait("@getFilmes")
-})
-
 Then("não verá opções de paginação", () => {
   listFilmePage.botaoAvancarFilmesDestaque().should("exist").and("be.disabled");
-});
-
-When("visualizar uma opção de paginação", () => {
-  cy.get(".featured-movies .movie-card").should("have.length", 5);
-  listFilmePage.botaoAvancarFilmesDestaque().should("be.enabled");
-});
-
-When("acessar a proxima pagina", () => {
-  listFilmePage.navegarParaProximaPaginaCadastro();
 });
 
 Then("verá a próxima página de filmes", () => {
