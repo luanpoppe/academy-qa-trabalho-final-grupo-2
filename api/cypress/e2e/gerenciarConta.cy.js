@@ -31,11 +31,31 @@ describe("Gerenciar conta", () => {
     after(() => {
       cy.deleteUser(userCriado);
     });
-    it("Deve ser possível como usuário do tipo comum atualizar apenas as próprias informações de nome e senha", () => {
+    it("Deve ser possível como usuário do tipo comum atualizar apenas a própria informaçõe de nome", () => {
       cy.request({
         method: "PUT",
         url: "/api/users/" + userCriado.id,
-        body: { name: newName, password: newPassword },
+        body: { name: newName },
+        auth: {
+          bearer: tokenComum,
+        },
+      }).then(function (response) {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.deep.eq({
+          id: userCriado.id,
+          name: newName,
+          email: userCriado.email,
+          type: 0,
+          active: true,
+        });
+      });
+    });
+
+    it("Deve ser possível como usuário do tipo comum atualizar apenas a própria informaçõe de senha", () => {
+      cy.request({
+        method: "PUT",
+        url: "/api/users/" + userCriado.id,
+        body: { password: newPassword },
         auth: {
           bearer: tokenComum,
         },
