@@ -46,3 +46,8 @@ CT007 - Usuário não deve conseguir autenticar-se sem informar os campos obriga
     Quando não informa Email e Senha
     E acessa funcionalidade login
     Então deve alertar no formulário os campos obrigatórios de login
+
+CT008 - Usuário deve conseguir encerrar a sessão
+    Dado que o usuário está autenticado no aplicativo
+    Quando encerra a sessão acessando a funcionalidade Logout
+    Então usuário deve ser deslogado do aplicativo
