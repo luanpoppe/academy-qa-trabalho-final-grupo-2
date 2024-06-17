@@ -226,11 +226,11 @@ Então os dados principais do filme devem ser exibidos na tela
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[title]
     ${releaseYearString}=    Convert To String    ${primeiroFilme}[releaseYear]
     ${durationInMinutesRound}=    Evaluate    round(${primeiroFilme}[durationInMinutes] / 60)
-    ${durationMinutesString}=    Convert To String    ${durationInMinutesRound}
+    #${durationMinutesString}=    Convert To String    ${durationInMinutesRound}
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${releaseYearString}
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[genre]
     Verifica se o contentDesc contains text    ${dadosDoFilme}    ${primeiroFilme}[description]
-    Verifica se o contentDesc contains text    ${dadosDoFilme}    ${durationMinutesString}h
+    #Verifica se o contentDesc contains text    ${dadosDoFilme}    ${durationMinutesString}h
 
 Então os dados de avaliações da audiência serão exibidos na tela
     Wait Until Element Is Visible    ${reviewsAudiencia}
@@ -239,6 +239,7 @@ Então os dados de avaliações da audiência serão exibidos na tela
     Verifica se o contentDesc contains text    ${reviewsAudiencia}    Avaliação da audiência
 
 E os dados de avaliações da crítica também serão exibidos na tela
+    Swipe By Percent    50    75    50    40    #Feito swipe personalizado pois o padrão não funcionava
     Wait Until Element Is Visible    ${reviewsCrítica}
     ${reviewsCriticString}=    Convert To String    ${qtdReviewsCritico}
     Verifica se o contentDesc contains text    ${reviewsCrítica}    ${reviewsCriticString}

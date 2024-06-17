@@ -7,7 +7,6 @@ Library    String
 
 
 #Utils
-#Resource    android/utils/configPersonalizado.robot
 Resource    android/utils/config.robot
 Resource    android/utils/commons.robot
 Resource    android/utils/requestsApi.robot
