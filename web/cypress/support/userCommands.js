@@ -115,21 +115,6 @@ Cypress.Commands.add("getUser", function (userId, token = null) {
   });
 });
 
-// Cypress.Commands.add("reviewMovie", function (movieInfo, token) {
-//   return cy.request({
-//     method: "POST",
-//     url: apiUrl + "/api/users/review",
-//     body: {
-//       movieId: movieInfo.id || movieInfo.movieId,
-//       score: movieInfo.score,
-//       reviewText: movieInfo.review || movieInfo.reviewText,
-//     },
-//     auth: {
-//       bearer: token,
-//     },
-//   });
-// });
-
 Cypress.Commands.add("getUserReviews", function (token) {
   return cy.request({
     method: "GET",

@@ -58,6 +58,5 @@ export default class LoginPage {
     this.typeEmail(userInfo.email);
     this.typeSenha(userInfo.password);
     this.clickLogin();
-    // this.clickOK()
   }
 }
