@@ -118,7 +118,7 @@ Quando preenche todos os campos do formulário exceto campo email
 Então deve alertar no formulário o campo Email como obrigatório
     Espera elemento está visivel    ${ALERTA_EMAIL}
 
- Quando preenche todos os campos do formulário utilizando email inválido
+Quando preenche todos os campos do formulário utilizando email inválido
     Preencher formulário cadastro    emailLocal=carol@.com
 
 Quando preenche todos os campos do formulário utilizando email com espaços entre os caracteres

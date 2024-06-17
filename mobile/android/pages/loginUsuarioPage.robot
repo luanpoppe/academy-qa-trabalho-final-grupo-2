@@ -15,7 +15,6 @@ Fazer login aplicativo
     [Arguments]    ${userEmail}    ${userPassword}
     Inserir dados    ${inputEmail}    ${userEmail}
     Inserir dados    ${inputSenha}    ${userPassword}
-    #Clicar para voltar no celular
     Espera elemento e clica    ${buttonLogin}
 
 E acessar a funcionalidade de Login

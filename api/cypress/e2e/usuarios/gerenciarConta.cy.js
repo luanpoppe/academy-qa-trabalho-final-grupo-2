@@ -1,5 +1,5 @@
 ///  <reference types="cypress" />
-///  <reference path="../support/index.d.ts" />
+///  <reference path="../../support/index.d.ts" />
 import { faker } from "@faker-js/faker";
 
 var user;
@@ -19,12 +19,12 @@ describe("Gerenciar conta", () => {
   });
 
   describe("Usuario comum", () => {
-    let tokenComum
+    let tokenComum;
     before(() => {
       cy.createUser().then((resposta) => {
         userCriado = resposta;
         cy.login(userCriado).then(function (response) {
-          tokenComum = response.body.accessToken
+          tokenComum = response.body.accessToken;
         });
       });
     });
@@ -81,10 +81,12 @@ describe("Gerenciar conta", () => {
         },
       }).then(function () {
         userCriado.password = newPassword;
-        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
-          expect(response.status).to.equal(200);
-          expect(response.body.accessToken).to.be.a("string");
-        });
+        cy.login({ email: userCriado.email, password: newPassword }).then(
+          function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.accessToken).to.be.a("string");
+          }
+        );
       });
     });
     it("Não deve ser possível como usuário do tipo comum atualizar as informações de outro usuário", () => {
@@ -93,7 +95,7 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + user.id,
         body: { name: newName, password: newPassword },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
@@ -110,7 +112,7 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: newName, password: "12345" },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
@@ -128,15 +130,13 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: newName, password: "1234567891011" },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.eq({
-          message: [
-            "password must be shorter than or equal to 12 characters",
-          ],
+          message: ["password must be shorter than or equal to 12 characters"],
           error: "Bad Request",
           statusCode: 400,
         });
@@ -148,14 +148,15 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: newName, password: 12345 },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.eq({
-          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
-            "password must be a string"
+          message: [
+            "password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string",
           ],
           error: "Bad Request",
           statusCode: 400,
@@ -169,7 +170,7 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: " ", password: newPassword },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
@@ -187,7 +188,7 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: "", password: newPassword },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
@@ -205,7 +206,7 @@ describe("Gerenciar conta", () => {
         url: "/api/users/" + userCriado.id,
         body: { name: "T".repeat(101), password: newPassword },
         auth: {
-          bearer: tokenComum
+          bearer: tokenComum,
         },
         failOnStatusCode: false,
       }).then(function (response) {
@@ -222,8 +223,8 @@ describe("Gerenciar conta", () => {
   describe("Usuário crítico", () => {
     before(() => {
       cy.createCriticUser().then(function (resposta) {
-        userCriado = resposta
-      })
+        userCriado = resposta;
+      });
     });
     after(function () {
       cy.deleteUser(userCriado);
@@ -259,10 +260,12 @@ describe("Gerenciar conta", () => {
         },
       }).then(function () {
         userCriado.password = newPassword;
-        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
-          expect(response.status).to.equal(200);
-          expect(response.body.accessToken).to.be.a("string");
-        });
+        cy.login({ email: userCriado.email, password: newPassword }).then(
+          function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.accessToken).to.be.a("string");
+          }
+        );
       });
     });
     it("Não deve ser possível como usuário do tipo crítico atualizar as informações de outro usuário", () => {
@@ -330,8 +333,9 @@ describe("Gerenciar conta", () => {
       }).then(function (response) {
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.eq({
-          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
-            "password must be a string"
+          message: [
+            "password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string",
           ],
           error: "Bad Request",
           statusCode: 400,
@@ -399,7 +403,7 @@ describe("Gerenciar conta", () => {
     before(() => {
       cy.createAdminUser().then(function (resposta) {
         userCriado = resposta;
-      })
+      });
     });
     after(function () {
       cy.deleteUser(userCriado);
@@ -455,10 +459,12 @@ describe("Gerenciar conta", () => {
         },
       }).then(function () {
         userCriado.password = newPassword;
-        cy.login({ email: userCriado.email, password: newPassword }).then(function (response) {
-          expect(response.status).to.equal(200);
-          expect(response.body.accessToken).to.be.a("string");
-        });
+        cy.login({ email: userCriado.email, password: newPassword }).then(
+          function (response) {
+            expect(response.status).to.equal(200);
+            expect(response.body.accessToken).to.be.a("string");
+          }
+        );
       });
     });
     it("O sistema retorna sucesso ao tentar atualizar as informações de um usuário não cadastrado", () => {
@@ -472,7 +478,7 @@ describe("Gerenciar conta", () => {
       }).then(function (response) {
         user.password = newPassword;
         expect(response.status).to.equal(200);
-        expect(response.body).to.equal(undefined)
+        expect(response.body).to.equal(undefined);
       });
     });
     it("Não deve ser possível como usuário do tipo administrador atualizar sua senha para uma senha com < 6 dígitos", () => {
@@ -523,8 +529,9 @@ describe("Gerenciar conta", () => {
       }).then(function (response) {
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.eq({
-          message: ["password must be longer than or equal to 6 and shorter than or equal to 12 characters",
-            "password must be a string"
+          message: [
+            "password must be longer than or equal to 6 and shorter than or equal to 12 characters",
+            "password must be a string",
           ],
           error: "Bad Request",
           statusCode: 400,
@@ -621,5 +628,3 @@ describe("Gerenciar conta", () => {
     });
   });
 });
-
-

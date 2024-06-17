@@ -28,8 +28,8 @@ ${reviewsCrítica}                       xpath=//android.view.View[contains(@con
 *** Keywords ***
 Dar nota a filme
     [Arguments]    ${quantidadeEstrelas}
-    Set Local Variable    ${hue}    ${estrelasReview}\[${quantidadeEstrelas}]
-    Espera elemento e clica    ${hue}
+    Set Local Variable    ${nota}    ${estrelasReview}\[${quantidadeEstrelas}]
+    Espera elemento e clica    ${nota}
 
 Dado que um usuário não está autenticado
     Log    Usuário não autenticado

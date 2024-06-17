@@ -5,7 +5,6 @@ Library    FakerLibrary
 Library    RequestsLibrary
 Library    String
 
-     
 
 #Utils
 #Resource    android/utils/configPersonalizado.robot

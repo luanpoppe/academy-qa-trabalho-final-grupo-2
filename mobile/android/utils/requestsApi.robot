@@ -6,17 +6,18 @@ Library    Collections
 *** Variables ***
 &{filmePadrao}    title=Nome do filme    genre=Gênero do filme    description=Descrição do filme    durationInMinutes=120    releaseYear=2020
 ${usuarioRaiz}
+${urlApi}         https://raromdb-3c39614e42d4.herokuapp.com/
 
 
 *** Keywords ***
 Iniciar sessão padrão da API
     ${headers}=    Create Dictionary    accept=application/json    Content-Type=application/json
-    Create Session    alias=api    url=https://raromdb-3c39614e42d4.herokuapp.com/    headers=${headers}
+    Create Session    alias=api    url=${urlApi}    headers=${headers}
 
 Iniciar sessão com token da API
     [Arguments]    ${tokenParam}
     ${headers}=    Create Dictionary    accept=application/json    Content-Type=application/json    Authorization=Bearer ${tokenParam}
-    Create Session    alias=api    url=https://raromdb-3c39614e42d4.herokuapp.com/    headers=${headers}
+    Create Session    alias=api    url=${urlApi}    headers=${headers}
 
 Criar usuário API
     ${localEmail}=    Fakerlibrary.Email

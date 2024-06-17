@@ -55,81 +55,81 @@ CT008 - Deve ser possível registrar usuário com senha de 12 caracteres
     E acessa a funcionalidade salvar
     Então usuário é registrado com mensagem de cadastro com sucesso
 
-CT007 - Não deve ser possível registrar usuário sem inserir os dados no formulário
+CT009 - Não deve ser possível registrar usuário sem inserir os dados no formulário
     Dado que o usuário acessou a tela de registro de usuário
     Quando acessa a funcionalidade salvar
     Então deve alertar no formulário os campos obrigatórios de cadastro
 
-CT008 - Não deve ser possível registrar usuário sem informar nome
+CT010 - Não deve ser possível registrar usuário sem informar nome
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário exceto campo nome
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Nome como obrigatório
 
 #BUG DA API
-CT009 - Não deve ser possível registrar usuário utilizando somente espaços no campo nome
+CT011 - Não deve ser possível registrar usuário utilizando somente espaços no campo nome
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando somente espaços no campo nome
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Nome como obrigatório
 
-CT010 - Não deve ser possível registrar usuário sem informar email
+CT012 - Não deve ser possível registrar usuário sem informar email
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário exceto campo email
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Email como obrigatório
 
-CT011 - Não deve ser possível registrar usuário utilizando email inválido
+CT013 - Não deve ser possível registrar usuário utilizando email inválido
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando email inválido
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Email como inválido
 
-CT012 - Não deve ser possível registrar usuário utilizando email informando espaços entre os caracteres
+CT014 - Não deve ser possível registrar usuário utilizando email informando espaços entre os caracteres
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando email com espaços entre os caracteres
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Email como inválido
 
-CT013 - Não deve ser possível registrar usuário utilizando email ja cadastrado
+CT015 - Não deve ser possível registrar usuário utilizando email ja cadastrado
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utlizando um email já cadastrado
     E acessa a funcionalidade salvar
     Então operação de cadastro não pode ser concluida com alerta de email já cadastrado
 
-CT014 - Não deve ser possível registrar usuário sem informar senha principal
+CT016 - Não deve ser possível registrar usuário sem informar senha principal
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário exceto campo senha principal
     E acessa a funcionalidade salvar
     Então deve alertar no formulário o campo Senha como obrigatório
 
-CT015 - Não deve ser possível registrar usuário sem informar confirmação de senha
+CT017 - Não deve ser possível registrar usuário sem informar confirmação de senha
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário sem confirmar senha
     E acessa a funcionalidade salvar
     Então deve alertar no formulário a confirmação de senha como obrigatória
 
 #BUG
-CT016 - Não deve ser possível registrar usuário utilizando senha menor que 6
+CT018 - Não deve ser possível registrar usuário utilizando senha menor que 6
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha menor que 6 caracteres
     E acessa a funcionalidade salvar
     Então deve alertar no formulário quantidade mínima de senha
 
 #BUG
-CT017 - Não deve ser possível registrar usuário utilizando senha maior que 12
+CT019 - Não deve ser possível registrar usuário utilizando senha maior que 12
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utilizando senha maior que 12 caracteres
     E acessa a funcionalidade salvar
     Então deve alertar no formulário quantidade máxima de senha
 
-CT018 - Não deve ser possível registrar usuário utilizando senha principal diferente da confirmação de senha
+CT020 - Não deve ser possível registrar usuário utilizando senha principal diferente da confirmação de senha
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário senha principal diferente da confirmação de senha
     E acessa a funcionalidade salvar
     Então deve alertar no formulário que a confirmação de senha está divergente da senha principal
 
-CT019 - Não deve ser possível registrar usuário utilizando email ja cadastrado
+CT021 - Não deve ser possível registrar usuário utilizando email ja cadastrado
     Dado que o usuário acessou a tela de registro de usuário
     Quando preenche todos os campos do formulário utlizando um email já cadastrado
     E acessa a funcionalidade salvar

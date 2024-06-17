@@ -1,5 +1,5 @@
 ///  <reference types="cypress" />
-///  <reference path="../support/index.d.ts" />
+///  <reference path="../../support/index.d.ts" />
 
 var user;
 var token;
@@ -78,7 +78,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });
@@ -96,7 +96,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });
@@ -229,7 +229,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });
@@ -247,7 +247,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });
@@ -377,7 +377,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });
@@ -395,7 +395,7 @@ describe("Consulta detalhada de filmes", function () {
           expect(response.status).to.equal(400);
           expect(response.body).to.deep.include({
             error: "Bad Request",
-            message: "Validation failed (numeric string is expected)"
+            message: "Validation failed (numeric string is expected)",
           });
         });
       });

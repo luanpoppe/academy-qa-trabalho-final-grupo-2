@@ -1,5 +1,5 @@
 ///  <reference types="cypress" />
-///  <reference path="../support/index.d.ts" />
+///  <reference path="../../support/index.d.ts" />
 
 describe("Login de cadastros de usuários", () => {
   let usuarioCriado;

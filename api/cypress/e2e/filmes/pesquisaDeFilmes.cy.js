@@ -1,9 +1,7 @@
-import { faker } from "@faker-js/faker";
-
 describe("Pesquisa de Filmes", () => {
   let user;
   let movieTitle;
-  let movieCreated
+  let movieCreated;
 
   before(() => {
     cy.createAdminUser().then((responseUser) => {
@@ -13,15 +11,15 @@ describe("Pesquisa de Filmes", () => {
           movieCreated = response.body;
           movieTitle = movieCreated.title;
         });
-      })
+      });
     });
   });
 
   after(() => {
     cy.deleteMovie(movieCreated.id, user.accessToken).then(() => {
-      cy.deleteUser(user)
-    })
-  })
+      cy.deleteUser(user);
+    });
+  });
 
   it("Deve ser possível pesquisar um filme sem estar logado no site", () => {
     cy.request({
@@ -38,33 +36,33 @@ describe("Pesquisa de Filmes", () => {
         genre: movieCreated.genre,
         description: movieCreated.description,
         durationInMinutes: movieCreated.durationInMinutes,
-        releaseYear: movieCreated.releaseYear
+        releaseYear: movieCreated.releaseYear,
       });
     });
   });
 
-  describe('Cenários com criação de usuários', function () {
-    let localUser
+  describe("Cenários com criação de usuários", function () {
+    let localUser;
     beforeEach(() => {
       cy.createUser().then((resposta) => {
-        localUser = resposta
+        localUser = resposta;
         cy.login(localUser).then((resposta) => {
-          localUser.accessToken = resposta.body.accessToken
-        })
-      })
+          localUser.accessToken = resposta.body.accessToken;
+        });
+      });
     });
 
     afterEach(() => {
-      cy.deleteUser(localUser)
-    })
+      cy.deleteUser(localUser);
+    });
 
     it("Deve ser possível pesquisar um filme sendo um usuário com perfil Comum", () => {
       cy.request({
         method: "GET",
         url: "/api/movies/search?title=" + movieTitle,
         auth: {
-          bearer: localUser.accessToken
-        }
+          bearer: localUser.accessToken,
+        },
       }).then((response) => {
         const movie = response.body.find((m) => m.title === movieTitle);
         expect(movie).to.not.be.undefined;
@@ -76,7 +74,7 @@ describe("Pesquisa de Filmes", () => {
           genre: movieCreated.genre,
           description: movieCreated.description,
           durationInMinutes: movieCreated.durationInMinutes,
-          releaseYear: movieCreated.releaseYear
+          releaseYear: movieCreated.releaseYear,
         });
       });
     });
@@ -87,8 +85,8 @@ describe("Pesquisa de Filmes", () => {
           method: "GET",
           url: "/api/movies/search?title=" + movieTitle,
           auth: {
-            bearer: localUser.accessToken
-          }
+            bearer: localUser.accessToken,
+          },
         }).then((response) => {
           const movie = response.body.find((m) => m.title === movieTitle);
           expect(movie).to.not.be.undefined;
@@ -100,10 +98,10 @@ describe("Pesquisa de Filmes", () => {
             genre: movieCreated.genre,
             description: movieCreated.description,
             durationInMinutes: movieCreated.durationInMinutes,
-            releaseYear: movieCreated.releaseYear
+            releaseYear: movieCreated.releaseYear,
           });
         });
-      })
+      });
     });
 
     it("Deve ser possível pesquisar um filme sendo um usuário com perfil Administrador", () => {
@@ -112,8 +110,8 @@ describe("Pesquisa de Filmes", () => {
           method: "GET",
           url: "/api/movies/search?title=" + movieTitle,
           auth: {
-            bearer: localUser.accessToken
-          }
+            bearer: localUser.accessToken,
+          },
         }).then((response) => {
           const movie = response.body.find((m) => m.title === movieTitle);
           expect(movie).to.not.be.undefined;
@@ -125,10 +123,10 @@ describe("Pesquisa de Filmes", () => {
             genre: movieCreated.genre,
             description: movieCreated.description,
             durationInMinutes: movieCreated.durationInMinutes,
-            releaseYear: movieCreated.releaseYear
+            releaseYear: movieCreated.releaseYear,
           });
         });
-      })
+      });
     });
   });
 
@@ -147,7 +145,7 @@ describe("Pesquisa de Filmes", () => {
         genre: movieCreated.genre,
         description: movieCreated.description,
         durationInMinutes: movieCreated.durationInMinutes,
-        releaseYear: movieCreated.releaseYear
+        releaseYear: movieCreated.releaseYear,
       });
     });
   });
@@ -165,7 +163,7 @@ describe("Pesquisa de Filmes", () => {
         genre: movieCreated.genre,
         description: movieCreated.description,
         durationInMinutes: movieCreated.durationInMinutes,
-        releaseYear: movieCreated.releaseYear
+        releaseYear: movieCreated.releaseYear,
       });
     });
   });
@@ -181,44 +179,44 @@ describe("Pesquisa de Filmes", () => {
   it("Não deve ser possível efetuar pesquisa de um filme pelo gênero", () => {
     cy.searchMovie(movieCreated.genre).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array")
+      expect(response.body).to.be.an("array");
       const filteredMovie = response.body.filter((filme) => {
-        return filme.id == movieCreated.id
-      })
-      expect(filteredMovie).to.have.length(0)
+        return filme.id == movieCreated.id;
+      });
+      expect(filteredMovie).to.have.length(0);
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pela descrição", () => {
     cy.searchMovie(movieCreated.description).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array")
+      expect(response.body).to.be.an("array");
       const filteredMovie = response.body.filter((filme) => {
-        return filme.id == movieCreated.id
-      })
-      expect(filteredMovie).to.have.length(0)
+        return filme.id == movieCreated.id;
+      });
+      expect(filteredMovie).to.have.length(0);
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pelo tempo de duração", () => {
     cy.searchMovie(movieCreated.durationInMinutes).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array")
+      expect(response.body).to.be.an("array");
       const filteredMovie = response.body.filter((filme) => {
-        return filme.id == movieCreated.id
-      })
-      expect(filteredMovie).to.have.length(0)
+        return filme.id == movieCreated.id;
+      });
+      expect(filteredMovie).to.have.length(0);
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pelo ano de lançamento", () => {
     cy.searchMovie(movieCreated.releaseYear).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array")
+      expect(response.body).to.be.an("array");
       const filteredMovie = response.body.filter((filme) => {
-        return filme.id == movieCreated.id
-      })
-      expect(filteredMovie).to.have.length(0)
+        return filme.id == movieCreated.id;
+      });
+      expect(filteredMovie).to.have.length(0);
     });
   });
 
@@ -230,7 +228,7 @@ describe("Pesquisa de Filmes", () => {
     }).then((response) => {
       expect(response.status).to.eq(500);
       expect(response.body).to.deep.include({
-        message: 'Internal server error',
+        message: "Internal server error",
       });
     });
   });
