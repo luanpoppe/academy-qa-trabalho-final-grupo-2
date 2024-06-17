@@ -25,7 +25,7 @@ BeforeAll(function () {
 });
 
 AfterAll(function () {
-    cy.deleteMovie(filmeCriado.id, usuarioCriado.accessToken).then(function (resposta) {
+    cy.deleteMovie(filmeCriado.id, usuarioCriado.accessToken).then(function () {
         cy.deleteUser(usuarioCriado)
     })
 })
@@ -48,24 +48,24 @@ Given('realizou login sendo um usuário com perfil Comum', function () {
 Given('realizou login sendo um usuário com perfil Crítico', function () {
     cy.login(usuarioCriado).then(function (response) {
         const token = response.body.accessToken;
-        cy.promoteCritic(token);
-        
-        cy.visit("/login")
-        paginaLogin.login(usuarioCriado)
-        cy.wait("@login")
-        cy.contains("Perfil")
-      });
+        cy.promoteCritic(token).then(function () {
+            cy.visit("/login")
+            paginaLogin.login(usuarioCriado)
+            cy.wait("@login")
+            cy.contains("Perfil")
+        })
+    });
 })
 
 Given('realizou login sendo um usuário com perfil Administrador', function () {
     cy.login(usuarioCriado).then(function (response) {
         const token = response.body.accessToken;
-        cy.promoteAdmin(token);
-        
-        cy.visit("/login")
-        paginaLogin.login(usuarioCriado)
-        cy.wait("@login")
-        cy.contains("Perfil")
+        cy.promoteAdmin(token).then(function () {
+            cy.visit("/login")
+            paginaLogin.login(usuarioCriado)
+            cy.wait("@login")
+            cy.contains("Perfil")
+        })
     });
 })
 
@@ -84,7 +84,6 @@ When('preencher o campo de pesquisa de filmes com parte do título de um filme c
     } else {
         paginaMovies.typeMovie(tituloFilme.slice(0, 2));
     }
-
 })
 
 When('acessar a função de pesquisa', function () {
