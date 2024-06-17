@@ -79,6 +79,11 @@ Funcionalidade: Criação de Filmes
         Quando tentar adicionar um novo filme com um título vazio
         Então o cadastro não deve ser realizado
 
+    Cenário: Não deve ser possível cadastrar um filme com um título contendo apenas espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um título contendo apenas espaços em branco
+        Então o cadastro não deve ser realizado
+
     Cenário: Não deve ser possível criar um filme com um título sendo um número
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme com um título sendo um número
@@ -97,6 +102,11 @@ Funcionalidade: Criação de Filmes
     Cenário: Não deve ser possível criar um filme com um gênero vazio
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme com um gênero vazio
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com um gênero apenas com espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com um gênero apenas com espaços em branco
         Então o cadastro não deve ser realizado
     
     Cenário: Não deve ser possível criar um filme com um gênero sendo um número
@@ -117,6 +127,11 @@ Funcionalidade: Criação de Filmes
     Cenário: Não deve ser possível criar um filme com uma descrição vazia
         Dado que um usuário é administrador
         Quando tentar adicionar um novo filme com uma descrição vazia
+        Então o cadastro não deve ser realizado
+
+    Cenário: Não deve ser possível criar um filme com uma descrição apenas com espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar adicionar um novo filme com uma descrição apenas com espaços em branco
         Então o cadastro não deve ser realizado
     
     Cenário: Não deve ser possível criar um filme com uma descrição sendo um número

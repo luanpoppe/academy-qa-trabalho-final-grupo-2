@@ -13,10 +13,18 @@ let email;
 let nome;
 let senha = fakerPT_BR.internet.password(6);
 
-beforeEach(() => {
-  email = fakerPT_BR.internet.email().toLowerCase();
+Before(() => {
+  email = fakerPT_BR.internet.email();
   nome = fakerPT_BR.person.fullName();
 });
+
+After({ tags: "@usuarioCriado" }, function () {
+  const user = {
+    ...this.usuarioCriado,
+    id: this.usuarioId
+  }
+  cy.deleteUser(user)
+})
 
 Given("que o usuário acessou a página de cadastrar usuários", function () {
   cy.visit("register");
@@ -57,11 +65,24 @@ When(
 );
 
 When(
+  "preenche todos os campos do formulário inserindo email em letra maíuscula de um email ja cadastrado",
+  function () {
+    emailMaiusculo = fakerPT_BR.internet.email().toUpperCase();
+    cy.intercept("POST", "/api/users", {
+      statusCode: 409,
+      body: {
+        message: "Email already in use",
+        error: "Conflict",
+      },
+    }).as("post2");
+    regisUser.registrarUsuario({ email: emailMaiusculo });
+  }
+);
+
+When(
   "preenche todos os campos do formulário utilizando espaços no email {string}",
   function (mensagem) {
-    cy.intercept("POST", "/api/users", {
-      statusCode: 400,
-    }).as("post3");
+    cy.intercept("POST", "/api/users").as("post3");
     regisUser.registrarUsuario({ email: mensagem });
   }
 );
@@ -71,6 +92,7 @@ When(
   function () {
     regisUser.typeNome(nome);
     regisUser.typeEmail(email);
+    regisUser.typeConfSenha(senha);
   }
 );
 
@@ -101,7 +123,7 @@ When(
 );
 
 When(
-  "preenche todos os campos do formulário e utiliza um email ja cadastrado",
+  "preenche todos os campos do formulário e utiliza um email já cadastrado",
   function () {
     cy.intercept("POST", "/api/users", {
       statusCode: 409,
@@ -128,14 +150,14 @@ When(
 );
 
 When(
-  "preenche todos os campos dos formulários e utiliza senha menor que 6 digitos {string} {string}",
+  "preenche todos os campos dos formulários e utiliza senha menor que 6 digitos {string}",
   function (mensagem) {
     regisUser.registrarUsuario({ password: mensagem });
   }
 );
 
 When(
-  "preenche todos os campos dos formulários e utiliza senha maior que 12 digitos {string} {string}",
+  "preenche todos os campos dos formulários e utiliza senha maior que 12 digitos {string}",
   function (mensagem) {
     regisUser.registrarUsuario({ password: mensagem });
   }
@@ -149,9 +171,15 @@ When(
 );
 
 When("realiza o cadastro de usuário com sucesso", function () {
-  regisUser.registrarUsuario();
+  cy.intercept('POST', '/api/users').as('criarUsuario')
+  regisUser.registrarUsuario().then(function (resposta) {
+    cy.wrap(resposta).as("usuarioCriado")
+  })
   regisUser.clickCadastrar();
   regisUser.clickOK();
+  cy.wait("@criarUsuario").then(function (intercept) {
+    cy.wrap(intercept.response.body.id).as("usuarioId")
+  })
 });
 
 When(
@@ -183,8 +211,7 @@ Then(
 Then(
   "o site exibe alerta de senha no formulário {string}",
   function (mensagem) {
-    cy.get(regisUser.erroFormulario).eq(0).contains(mensagem);
-    cy.get(regisUser.erroFormulario).eq(1).contains(mensagem);
+    cy.get(regisUser.erroFormulario).contains(mensagem);
   }
 );
 
@@ -192,13 +219,6 @@ Then(
   "o site exibe alerta no campo de confirmação de senha no formulário {string}",
   function (mensagem) {
     cy.get(regisUser.erroFormulario).contains(mensagem);
-  }
-);
-
-Then(
-  "a operação de registro não poderá ser concluida com alerta no formulario {string}",
-  function (alerta) {
-    cy.get(regisUser.erroFormulario).contains(alerta);
   }
 );
 

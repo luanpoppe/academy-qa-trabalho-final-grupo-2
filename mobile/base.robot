@@ -3,6 +3,7 @@
 Library    AppiumLibrary
 Library    FakerLibrary  
 Library    RequestsLibrary
+Library    String
 
      
 

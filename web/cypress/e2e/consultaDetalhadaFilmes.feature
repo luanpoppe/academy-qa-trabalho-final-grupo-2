@@ -5,6 +5,16 @@ Funcionalidade: Consulta detalhada de filmes
     Desejo poder consultar mais detalhes de um filme
     Para pode visualizar todas as informações registradas para aquele filme
 
+Cenário: Deve ser possível visualizar o totalizador da média das avaliações realizadas por usuários comuns no filme ao consultá-lo detalhadamente
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id de filme válido na url
+    Então deverá visualizar o totalizador da média das avaliações da audiência realizadas no filme selecionado
+
+Cenário: Deve ser possível visualizar o totalizador da média das avaliações realizadas por usuários críticos no filme ao consultá-lo detalhadamente
+    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
+    Quando inserir um Id de filme válido na url
+    Então deverá visualizar o totalizador da média das avaliações da crítica realizadas no filme selecionado
+
 Cenário: Deve ser possível visualizar a quantidade de avaliações realizadas por usuários comuns ao consultar um filme detalhadamente
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
     Quando inserir um Id de filme válido na url
@@ -23,7 +33,7 @@ Cenário: Deve ser possível realizar uma consulta detalhada de filmes com Id v�
 Cenário: Não deve ser possível realizar uma consulta detalhada de filmes com Id inválido
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
     Quando inserir um Id inválido na url
-    Então Então o sistema deverá exibir uma mensagem de erro
+    Então o sistema deverá exibir uma mensagem de erro
 
 Cenário: Deve ser possível visualizar o Id do filme na url ao realizar uma consulta detalhada de filmes
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
@@ -58,19 +68,9 @@ Cenário: Não deve ser possível um usuário não logado avaliar um filme ao re
     Quando selecionar um filme na tela inicial
     Então deverá visualizar um campo desabilitado para avaliar o filme 
     E uma mensagem informando "Entre para poder escrever sua review"
- 
+
 Cenário: Deve ser possível visualizar todas as avaliações realizadas no filme ao consultá-lo detalhadamente
     Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
     Quando inserir um Id de filme válido na url
     Então deverá visualizar todas as avaliações realizadas no filme selecionado
     E todas as informações das avaliações
-
-Cenário: Deve ser possível visualizar o totalizador da média das avaliações realizadas por usuários comuns no filme ao consultá-lo detalhadamente
-    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-    Quando inserir um Id de filme válido na url
-    Então deverá visualizar o totalizador da média das avaliações da audiência realizadas no filme selecionado
-
-Cenário: Deve ser possível visualizar o totalizador da média das avaliações realizadas por usuários críticos no filme ao consultá-lo detalhadamente
-    Dado que o usuário de qualquer tipo acessou a tela inicial do Frontend Raromdb
-    Quando inserir um Id de filme válido na url
-    Então deverá visualizar o totalizador da média das avaliações da crítica realizadas no filme selecionado

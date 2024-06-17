@@ -140,7 +140,7 @@ Cypress.Commands.add("getUserReviews", function (token) {
   });
 });
 
-Cypress.Commands.add("InactivateUser", function (token) {
+Cypress.Commands.add("inactivateUser", function (token) {
   return cy.request({
     method: "PATCH",
     url: apiUrl + "/api/users/inactivate",

@@ -86,11 +86,20 @@ When('tentar adicionar uma review em um filme', function () {
   cy.wait('@getMovie')
 })
 
+When('acessar a seção de review de um filme', function () {
+  cy.visit("/movies/" + movieInfo.id)
+  cy.wait('@getMovie')
+})
+
+Then('só poderá dar nota de 1 a 5 ao filme', function () {
+  cy.get(paginaMovies.labelStarReview + " span").should('have.length', 5)
+})
+
 When('adicionar uma review em um filme', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   paginaMovies.allReviewStars().eq(2).click()
   cy.get(paginaMovies.inputTextReview).type(defaultReview)
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 Then('não deve conseguir cadastrar a review', function () {
@@ -138,13 +147,13 @@ Given('que um usuário está autenticado', function () {
 When('tentar adicionar uma review em um filme sem definir uma nota', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   cy.get(paginaMovies.inputTextReview).type(defaultReview)
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 When('tentou adicionar uma review em um filme sem definir uma nota', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   cy.get(paginaMovies.inputTextReview).type(defaultReview)
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 Then('a review não deve ser adicionada', function () {
@@ -172,21 +181,21 @@ Then('a mensagem de erro deve ser fechada', function () {
 When('tentar adicionar uma review em um filme apenas dando uma nota', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   paginaMovies.allReviewStars().eq(2).click()
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 Given('já realizou uma review em um filme', function () {
   paginaMovies.visitMoviePage(movieInfo.id)
   paginaMovies.allReviewStars().eq(2).click()
   cy.get(paginaMovies.inputTextReview).type(defaultReview)
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 When('tentar realizar uma nova review no mesmo filme', function () {
   cy.wait('@getMovie')
   paginaMovies.allReviewStars().eq(4).click()
   cy.get(paginaMovies.inputTextReview).clear().type("Review do filme atualizada")
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 Then('o filme deverá continuar com apenas uma review do usuário', function () {
@@ -208,9 +217,6 @@ When('tentar realizar uma nova review com um texto contendo mais de 500 caracter
     }
   })
 
-
-
-
   let largeReview = ""
   while (largeReview.length < 501) {
     largeReview += "a"
@@ -219,7 +225,7 @@ When('tentar realizar uma nova review com um texto contendo mais de 500 caracter
   paginaMovies.visitMoviePage(movieInfo.id)
   paginaMovies.allReviewStars().eq(2).click()
   cy.get(paginaMovies.inputTextReview).type(largeReview)
-  cy.get(paginaMovies.buttonEnviarReview).click()
+  paginaMovies.clickButtonEnviarReview()
 })
 
 Then('não deverá conseguir digitar mais de 500 caracteres', function () {

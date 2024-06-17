@@ -1,4 +1,4 @@
-import { ReviewErrors } from "../../support/utils/reviewErrorsClass"
+import * as re from "../../support/utils/reviewErrors"
 import { createDefaultReviewBody } from "../../support/utils/utilitaryMethods"
 
 describe('Avaliação de filmes', function () {
@@ -6,7 +6,6 @@ describe('Avaliação de filmes', function () {
   let movie
   let token
   let defaultReviewBody
-  const reviewErrors = new ReviewErrors()
 
   before(function () {
     cy.fixture("./requests/bodyNewMovie.json").then(function (resposta) {
@@ -100,8 +99,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: localToken
         },
-        body: defaultReviewBody,
-        failOnStatusCode: false,
+        body: defaultReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
         cy.getMovie(movie.id).then(function (resposta) {
@@ -115,7 +113,7 @@ describe('Avaliação de filmes', function () {
       })
     })
 
-    it('Usuário admnistrador deve poder avaliar um filme', function () {
+    it('Usuário administrador deve poder avaliar um filme', function () {
       cy.promoteAdmin(localToken)
 
       cy.request({
@@ -124,8 +122,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: localToken
         },
-        body: defaultReviewBody,
-        failOnStatusCode: false,
+        body: defaultReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
         cy.getMovie(movie.id).then(function (resposta) {
@@ -161,31 +158,8 @@ describe('Avaliação de filmes', function () {
         })
       })
 
-      it.skip('A review feita por um usuário crítico deve ser do tipo crítico', function () {
+      it('A review feita por um usuário crítico deve ser do tipo crítico', function () {
         cy.promoteCritic(localToken)
-
-        cy.request({
-          method: 'POST',
-          url: '/api/users/review',
-          auth: {
-            bearer: localToken
-          },
-          body: defaultReviewBody,
-        }).then(function (resposta) {
-          cy.getMovie(movie.id).then(function (resposta) {
-            const reviewCreated = resposta.body.reviews.filter((review) => {
-              return review.user.id == localUser.id
-            })[0]
-
-            expect(reviewCreated.score).to.deep.equal(defaultReviewBody.score)
-            expect(reviewCreated.reviewText).to.deep.equal(defaultReviewBody.reviewText)
-            expect(reviewCreated.reviewType).to.deep.equal(2)
-          })
-        })
-      })
-
-      it.skip('A review feita por um usuário administrador deve ser do tipo administrador', function () {
-        cy.promoteAdmin(localToken)
 
         cy.request({
           method: 'POST',
@@ -206,6 +180,30 @@ describe('Avaliação de filmes', function () {
           })
         })
       })
+
+      // Teste com bug --> Está criando uma review como se fosse do tipo comum, sendo que deveria ser do tipo administrador
+      it.skip('A review feita por um usuário administrador deve ser do tipo administrador', function () {
+        cy.promoteAdmin(localToken)
+
+        cy.request({
+          method: 'POST',
+          url: '/api/users/review',
+          auth: {
+            bearer: localToken
+          },
+          body: defaultReviewBody,
+        }).then(function (resposta) {
+          cy.getMovie(movie.id).then(function (resposta) {
+            const reviewCreated = resposta.body.reviews.filter((review) => {
+              return review.user.id == localUser.id
+            })[0]
+
+            expect(reviewCreated.score).to.deep.equal(defaultReviewBody.score)
+            expect(reviewCreated.reviewText).to.deep.equal(defaultReviewBody.reviewText)
+            expect(reviewCreated.reviewType).not.to.equal(0)
+          })
+        })
+      })
     })
   })
 
@@ -222,8 +220,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
@@ -241,13 +238,13 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
     })
 
+    // Teste com bug --> Não está sendo possível criar um filme com uma reviewText sendo uma string vazia
     it.skip('Deve ser possível criar uma review com uma avaliação do filme sendo um texto em branco', function () {
       const localReviewBody = {
         ...defaultReviewBody,
@@ -260,8 +257,7 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
@@ -283,14 +279,13 @@ describe('Avaliação de filmes', function () {
         auth: {
           bearer: token
         },
-        body: localReviewBody,
-        failOnStatusCode: false,
+        body: localReviewBody
       }).then(function (resposta) {
         expect(resposta.status).to.equal(201)
       })
     })
 
-    it('Em um filme que já possui uma review do usuário, novas reviews deste usuário deve atualizar a review prévia ao invés de criar uma nova', function () {
+    it('Em um filme que já possui uma review do usuário, novas reviews deste usuário devem atualizar a review prévia ao invés de criar uma nova', function () {
       const segundaReview = {
         movieId: movie.id,
         score: 5,
@@ -334,12 +329,12 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(6)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustNotBeEmpty)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustNotBeEmpty)
       })
     })
 
@@ -360,8 +355,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustNotBeEmpty)
       })
     })
 
@@ -381,7 +376,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -401,10 +396,11 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
+    // Teste com bug --> Está sendo possível criar uma avaliação de um filme passando uma nota com número decimal
     it.skip('Não deve ser possível criar uma review passando a nota como um número decimal', function () {
       const localReviewBody = {
         ...defaultReviewBody,
@@ -421,7 +417,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.deep.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.deep.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -442,7 +438,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.score.mustBeNumber)
+        expect(resposta.body.message).to.deep.include(re.score.mustBeNumber)
       })
     })
 
@@ -462,7 +458,7 @@ describe('Avaliação de filmes', function () {
         failOnStatusCode: false,
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
-        expect(resposta.body.message).to.equal(reviewErrors.score.mustBeNotShortAndNotLong)
+        expect(resposta.body.message).to.equal(re.score.mustBeNotShortAndNotLong)
       })
     })
 
@@ -483,8 +479,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
       })
     })
 
@@ -505,8 +501,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeShorterAndLonger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeString)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeShorterAndLonger)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeString)
       })
     })
 
@@ -531,7 +527,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.text.mustBeShorter)
+        expect(resposta.body.message).to.deep.include(re.text.mustBeShorter)
       })
     })
 
@@ -552,8 +548,8 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(2)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustNotBeEmpty)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustNotBeEmpty)
       })
     })
 
@@ -599,7 +595,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
       })
     })
 
@@ -620,7 +616,7 @@ describe('Avaliação de filmes', function () {
       }).then(function (resposta) {
         expect(resposta.status).to.equal(400)
         expect(resposta.body.message).to.have.length(1)
-        expect(resposta.body.message).to.deep.include(reviewErrors.id.mustBeInteger)
+        expect(resposta.body.message).to.deep.include(re.id.mustBeInteger)
       })
     })
   })

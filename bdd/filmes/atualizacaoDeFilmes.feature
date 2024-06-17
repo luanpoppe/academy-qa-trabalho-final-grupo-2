@@ -104,6 +104,11 @@ Funcionalidade: Atualização de Filmes
         Quando tentar atualizar um filme com um título vazio
         Então a atualização não deve ser realizada
 
+    Cenário: Não deve ser possível atualizar um filme com um título apenas com espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme com um título apenas com espaços em branco
+        Então a atualização não deve ser realizada
+
     Cenário: Não deve ser possível atualizar um filme com um título sendo um número
         Dado que um usuário é administrador
         Quando tentar atualizar um filme com um título sendo um número
@@ -122,6 +127,11 @@ Funcionalidade: Atualização de Filmes
     Cenário: Não deve ser possível atualizar um filme com um gênero vazio
         Dado que um usuário é administrador
         Quando tentar atualizar um filme com um gênero vazio
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme com um gênero apenas com espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme com um gênero apenas com espaços em branco
         Então a atualização não deve ser realizada
     
     Cenário: Não deve ser possível atualizar um filme com um gênero sendo um número
@@ -142,6 +152,11 @@ Funcionalidade: Atualização de Filmes
     Cenário: Não deve ser possível atualizar um filme com uma descrição vazia
         Dado que um usuário é administrador
         Quando tentar atualizar um filme com uma descrição vazia
+        Então a atualização não deve ser realizada
+
+    Cenário: Não deve ser possível atualizar um filme com uma descrição apenas com espaços em branco
+        Dado que um usuário é administrador
+        Quando tentar atualizar um filme com uma descrição apenas com espaços em branco
         Então a atualização não deve ser realizada
     
     Cenário: Não deve ser possível atualizar um filme com uma descrição sendo um número
