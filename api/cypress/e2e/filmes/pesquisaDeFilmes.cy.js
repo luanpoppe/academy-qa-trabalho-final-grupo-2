@@ -26,7 +26,7 @@ describe("Pesquisa de Filmes", () => {
       method: "GET",
       url: "/api/movies/search?title=" + movieTitle,
     }).then((response) => {
-      const movie = response.body.find((m) => m.title === movieTitle);
+      const movie = response.body.find((m) => m.id === movieCreated.id);
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
@@ -64,7 +64,7 @@ describe("Pesquisa de Filmes", () => {
           bearer: localUser.accessToken,
         },
       }).then((response) => {
-        const movie = response.body.find((m) => m.title === movieTitle);
+        const movie = response.body.find((m) => m.id === movieCreated.id);
         expect(movie).to.not.be.undefined;
         expect(response.status).to.eq(200);
         expect(movie.id).to.be.a("number");
@@ -88,7 +88,7 @@ describe("Pesquisa de Filmes", () => {
             bearer: localUser.accessToken,
           },
         }).then((response) => {
-          const movie = response.body.find((m) => m.title === movieTitle);
+          const movie = response.body.find((m) => m.id === movieCreated.id);
           expect(movie).to.not.be.undefined;
           expect(response.status).to.eq(200);
           expect(movie.id).to.be.a("number");
@@ -113,7 +113,7 @@ describe("Pesquisa de Filmes", () => {
             bearer: localUser.accessToken,
           },
         }).then((response) => {
-          const movie = response.body.find((m) => m.title === movieTitle);
+          const movie = response.body.find((m) => m.id === movieCreated.id);
           expect(movie).to.not.be.undefined;
           expect(response.status).to.eq(200);
           expect(movie.id).to.be.a("number");
@@ -135,7 +135,7 @@ describe("Pesquisa de Filmes", () => {
       method: "GET",
       url: "/api/movies/search?title=" + movieTitle,
     }).then((response) => {
-      const movie = response.body.find((m) => m.title === movieTitle);
+      const movie = response.body.find((m) => m.id === movieCreated.id);
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
@@ -153,7 +153,7 @@ describe("Pesquisa de Filmes", () => {
   it("Deve ser possível efetuar uma pesquisa utilizando parte do título do filme", () => {
     const partialTitle = movieTitle.slice(0, Math.floor(movieTitle.length / 2));
     cy.searchMovie(partialTitle).then((response) => {
-      const movie = response.body.find((m) => m.title.includes(partialTitle));
+      const movie = response.body.find((m) => m.id === movieCreated.id);
       expect(movie).to.not.be.undefined;
       expect(response.status).to.eq(200);
       expect(movie.id).to.be.a("number");
