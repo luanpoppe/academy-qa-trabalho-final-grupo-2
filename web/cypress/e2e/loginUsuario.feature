@@ -16,9 +16,9 @@ Funcionalidade: Login Usuário
       Então usuário deve autenticar-se com sucesso
     
     Cenário: A sessão de autenticação deve expirar após 60 min
-      Quando o usuário informa as credenciais cadastradas
+      E o usuário informa as credenciais cadastradas
       E acessa a funcionalidade de logar
-      E realiza tentativa de atualizar dados após 60 minutos de sessão de Login
+      Quando realiza tentativa de atualizar dados após 60 minutos de sessão de Login
       Então o site deve redirecionar o usuário para página de login
     
     Cenário: Usuário não deve conseguir autenticar-se sem informar e-mail
