@@ -1,8 +1,18 @@
 ///  <reference types="cypress" />
 
-import { Given, When, Then, Before, After } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  Given,
+  When,
+  Then,
+  Before,
+  After,
+} from "@badeball/cypress-cucumber-preprocessor";
 import LoginPage from "../pages/loginPage";
+import CadastroPage from "../pages/cadastroPage";
+import listagemDeFilmesPage from "../pages/ListagemDeFilmesPage";
 
+const listFilmes = new listagemDeFilmesPage();
+const regisUser = new CadastroPage();
 const loginUser = new LoginPage();
 let usuarioCriado;
 
@@ -79,6 +89,11 @@ When(
   }
 );
 
+When("encerra a sessão acessando a funcionalidade Logout", function () {
+  loginUser.clickPerfil();
+  loginUser.clickLogout();
+});
+
 Then("o site deve redirecionar o usuário para página de login", function () {
   cy.get("h3").should("contains", "Login");
   cy.get("span").should("contains", "Entre com suas credenciais");
@@ -89,7 +104,7 @@ Then("usuário deve autenticar-se com sucesso", function () {
     expect(intercept.response.statusCode).to.equal(200);
   });
   cy.get(loginUser.linkAuth).eq(1).contains("Perfil");
-  cy.location("pathname").should('equal', "/")
+  cy.location("pathname").should("equal", "/");
 });
 
 Then(
@@ -110,5 +125,13 @@ Then("ao clicar no botão OK deve retornar para o formulário", function () {
   loginUser.clickOK();
   cy.get(loginUser.campoForm).eq(0).should("be.visible");
   cy.get(loginUser.campoForm).eq(1).should("be.visible");
-  cy.get(loginUser.divModal).should('not.exist')
+  cy.get(loginUser.divModal).should("not.exist");
 });
+
+Then(
+  "usuário deve ser deslogado sendo redirecionado para a página principal",
+  function () {
+    listFilmes.verificaListaDeFilmesExiste();
+    cy.get(regisUser.buttonsHeader).contains("Registre-se");
+  }
+);

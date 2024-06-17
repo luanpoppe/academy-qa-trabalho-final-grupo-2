@@ -42,3 +42,9 @@ Funcionalidade: Login Usuário
       E acessa a funcionalidade de logar
       Então o site exibe mensagem "Usuário ou senha inválidos."
       E ao clicar no botão OK deve retornar para o formulário
+    
+    Cenário: Usuário deve conseguir encerrar a sessão
+      E o usuário informa as credenciais cadastradas
+      E acessa a funcionalidade de logar
+      Quando encerra a sessão acessando a funcionalidade Logout
+      Então usuário deve ser deslogado sendo redirecionado para a página principal
