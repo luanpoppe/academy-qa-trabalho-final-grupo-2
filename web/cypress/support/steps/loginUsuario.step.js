@@ -131,7 +131,8 @@ Then("ao clicar no botão OK deve retornar para o formulário", function () {
 Then(
   "usuário deve ser deslogado sendo redirecionado para a página principal",
   function () {
-    listFilmes.verificaListaDeFilmesExiste();
+    listFilmes.listaDeFilmes().should("exist")
     cy.get(regisUser.buttonsHeader).contains("Registre-se");
+    cy.location("pathname").should("equal", "/")
   }
 );
