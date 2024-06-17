@@ -9,9 +9,9 @@ import {
 } from "@badeball/cypress-cucumber-preprocessor";
 import LoginPage from "../pages/loginPage";
 import CadastroPage from "../pages/cadastroPage";
-import listagemDeFilmesPage from "../pages/ListagemDeFilmesPage";
+import ListagemDeFilmesPage from "../pages/ListagemDeFilmesPage";
 
-const listFilmes = new listagemDeFilmesPage();
+const listFilmes = new ListagemDeFilmesPage();
 const regisUser = new CadastroPage();
 const loginUser = new LoginPage();
 let usuarioCriado;

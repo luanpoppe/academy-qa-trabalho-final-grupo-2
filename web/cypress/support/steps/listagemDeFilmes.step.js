@@ -7,13 +7,13 @@ import {
   BeforeAll,
   AfterAll,
 } from "@badeball/cypress-cucumber-preprocessor";
-import listagemDeFilmesPage from "../pages/ListagemDeFilmesPage";
+import ListagemDeFilmesPage from "../pages/ListagemDeFilmesPage";
 import LoginPage from "../pages/loginPage";
 import CadastroPage from "../pages/cadastroPage";
 
 const cadastroPage = new CadastroPage();
 const loginPage = new LoginPage();
-const listFilmePage = new listagemDeFilmesPage();
+const listFilmePage = new ListagemDeFilmesPage();
 let user;
 let filmes = [];
 let usuarioCriado;
@@ -47,6 +47,33 @@ Given("que usuário acessou a página de listagem de filme", () => {
   listFilmePage.listaDeFilmes().should("exist");
 });
 
+Given("que usuário acessou a página inicial de listagem de filme", () => {
+  cy.intercept("GET", "/api/movies/*").as("getMovie");
+  listFilmePage.visit();
+  cy.wait("@getFilmes")
+  listFilmePage.listaDeFilmes().should("exist");
+});
+
+Given('que usuário está na segunda página de listagem de filmes', function () {
+  cy.intercept("GET", "/api/movies/*").as("getMovie");
+  listFilmePage.visit();
+  cy.wait("@getFilmes")
+  listFilmePage.listaDeFilmes().should("exist");
+  listFilmePage.botaoAvancarFilmesDestaque().click()
+})
+
+Given('que existem mais de 5 filmes na lista', function () {
+  cy.intercept("GET", "/api/movies", {
+    fixture: "responses/responseBodyGetMovies6.json",
+  }).as("getFilmes");
+})
+
+Given('que não existem filmes cadastrados', function () {
+  cy.intercept("GET", "/api/movies", {
+    body: [],
+  }).as("getFilmes0")
+})
+
 When("o usuário não está autenticado", () => {
   cy.get(cadastroPage.buttonsHeader).contains("Registre-se");
 });
@@ -75,7 +102,7 @@ When("o usuário administrador está autenticado", function () {
   });
 });
 
-When("o usuário estiver na lista de filmes", () => {});
+When("o usuário estiver na lista de filmes", () => { });
 
 When("selecionar um filme da lista", () => {
   listFilmePage.selecionarPrimeiroFilme();
@@ -86,9 +113,20 @@ When("acessar lista de filmes mais bem avaliados", () => {
   cy.get("h3").contains("Mais bem avaliados");
 });
 
-When("houver mais filmes do que podem ser exibidos em uma página", () => {
-  cy.get(".featured-movies .movie-card").should("have.length", 5);
+Given("que há mais filmes do que podem ser exibidos em uma página", () => {
+  cy.intercept("GET", "/api/movies", {
+    fixture: "responses/responseBodyGetMovies6.json",
+  }).as("getFilmes");
 });
+
+When('tentar retornar para a primeira parte', function () {
+  listFilmePage.botaoRetornarFilmesDestaque().click()
+})
+
+When('usuário acessar a página de listagem de filmes', function () {
+  listFilmePage.visit();
+  cy.wait("@getFilmes0")
+})
 
 Then("verá os filmes listados na ordem em que foram cadastrados", () => {
   let filmeAnterior = 0;
@@ -128,7 +166,7 @@ Then("verá os filmes listados com os mais avaliados primeiro", () => {
 });
 
 Then("visualizar opções de paginação", () => {
-  cy.get(".navigation").eq(1).should("exist").and("be.enabled");
+  listFilmePage.botaoAvancarFilmesDestaque().should("exist").and("be.enabled");
 });
 
 When("acessar a próxima página", () => {
@@ -141,43 +179,39 @@ When("selecionar o primeiro filme da lista", () => {
 });
 
 Then("verá informações detalhadas sobre o filme", () => {
-  cy.get(".movie-grid").within(() => {
-    cy.get(".movie-details-title").should("exist");
-    cy.get(".movie-detail-description").should("exist");
-    cy.get(".movie-details-info-with-icon").should("exist");
-    cy.get(".movie-details-info-with-icon").eq(0).should("exist");
-    cy.get(".movie-details-info-with-icon").eq(1).should("exist");
-    cy.get(".movie-details-info-with-icon").eq(2).should("exist");
+  cy.get(listFilmePage.gridFilme).within(() => {
+    cy.get(listFilmePage.tituloFilme).should("exist");
+    cy.get(listFilmePage.descricaoFilme).should("exist");
+    cy.get(listFilmePage.iconeFilme).should("exist");
+    cy.get(listFilmePage.iconeFilme).eq(0).should("exist");
+    cy.get(listFilmePage.iconeFilme).eq(1).should("exist");
+    cy.get(listFilmePage.iconeFilme).eq(2).should("exist");
   });
 });
 
-When("existem menos de 5 filmes na lista", () => {
+Given("que existem menos de 5 filmes na lista", () => {
   cy.intercept("GET", "/api/movies", {
     fixture: "responses/responseBodyGetMovies2.json",
-  }).as("getFilmes2");
-  listFilmePage.visit();
-  listFilmePage.listaDeFilmes().eq(0).should("exist");
+  }).as("getFilmes");
 });
 
 When("visualizar a lista de filmes", () => {
   cy.wait("@getFilmes2");
 });
 
-Then("não verá opções de paginação", () => {
-  cy.get("button.navigation").eq(1).should("exist").and("be.disabled");
-});
-
-When("existem mais de 5 filmes na lista", () => {
-  cy.intercept("GET", "/api/movies", {
-    fixture: "responses/responseBodyGetMovies6.json",
-  }).as("getFilmes6");
+When('usuário acessar a lista de filmes', function () {
   listFilmePage.visit();
   listFilmePage.listaDeFilmes().eq(0).should("exist");
+  cy.wait("@getFilmes")
+})
+
+Then("não verá opções de paginação", () => {
+  listFilmePage.botaoAvancarFilmesDestaque().should("exist").and("be.disabled");
 });
 
 When("visualizar uma opção de paginação", () => {
-  cy.wait("@getFilmes6");
-  cy.get("button.navigation").eq(1).should("be.enabled");
+  cy.get(".featured-movies .movie-card").should("have.length", 5);
+  listFilmePage.botaoAvancarFilmesDestaque().should("be.enabled");
 });
 
 When("acessar a proxima pagina", () => {
@@ -185,21 +219,29 @@ When("acessar a proxima pagina", () => {
 });
 
 Then("verá a próxima página de filmes", () => {
-  cy.get(".carousel-data").eq(0).should("exist");
-  cy.get(".navigation").eq(0).should("be.enabled");
-  cy.get(".featured-movies .movie-card").should("have.length.at.least", 1);
+  listFilmePage.listaDeFilmes().eq(0).should("exist");
+  listFilmePage.botaoRetornarFilmesDestaque().should("be.enabled");
+  cy.get(listFilmePage.cardsFilmesEmDestaque).should("have.length.at.least", 1);
 });
 
 Then(
   "será possível ver informações sobre os filmes na página de listagem",
   function () {
-    cy.get(".movie-card").each((filme) => {
+    cy.get(listFilmePage.cardsTodosFilmes).each((filme) => {
       cy.wrap(filme).within(() => {
-        cy.get(".movie-poster").should("exist");
-        cy.get(".movie-card-footer label").should("exist");
-        cy.get(".movie-title").should("exist");
+        cy.get(listFilmePage.postersFilmes).should("exist");
+        cy.get(listFilmePage.porcentagemFilme).should("exist");
+        cy.get(listFilmePage.tituloFilmes).should("exist");
         cy.get("p").should("exist");
       });
     });
-  }
-);
+  });
+
+Then('deve conseguir retornar com sucesso', function () {
+  listFilmePage.botaoRetornarFilmesDestaque().should("be.disabled")
+  listFilmePage.botaoAvancarFilmesDestaque().should("be.enabled")
+})
+
+Then('deverá ver mensagem informando que não há filmes cadastrados', function () {
+  cy.get(".main").should("contain.text", "Ops! Parece que ainda não temos nenhum filme.")
+})

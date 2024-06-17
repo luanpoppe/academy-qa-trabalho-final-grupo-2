@@ -1,8 +1,13 @@
-class listagemDeFilmesPage {
+class ListagemDeFilmesPage {
   gridFilme = ".movie-grid";
   tituloFilme = ".movie-details-title";
   descricaoFilme = ".movie-detail-description";
   iconeFilme = ".movie-details-info-with-icon";
+  cardsTodosFilmes = ".movie-card"
+  cardsFilmesEmDestaque = ".featured-movies .movie-card"
+  postersFilmes = ".movie-poster"
+  tituloFilmes = ".movie-title"
+  porcentagemFilme = ".movie-card-footer label"
 
   login = "[href='/login']";
 
@@ -26,6 +31,13 @@ class listagemDeFilmesPage {
   navegarParaProximaPaginaCadastro() {
     cy.get(".navigation").eq(1).click();
   }
+
+  botaoAvancarFilmesDestaque() {
+    return cy.get("button.navigation").eq(1)
+  }
+  botaoRetornarFilmesDestaque() {
+    return cy.get("button.navigation").eq(0)
+  }
 }
 
-export default listagemDeFilmesPage;
+export default ListagemDeFilmesPage;
