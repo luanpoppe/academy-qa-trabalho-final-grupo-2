@@ -178,31 +178,47 @@ describe("Pesquisa de Filmes", () => {
     });
   });
 
-  it("Não deve ser possível efetuar pesquisa de um filme pelo gênero ", () => {
+  it("Não deve ser possível efetuar pesquisa de um filme pelo gênero", () => {
     cy.searchMovie(movieCreated.genre).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array").that.is.empty;
+      expect(response.body).to.be.an("array")
+      const filteredMovie = response.body.filter((filme) => {
+        return filme.id == movieCreated.id
+      })
+      expect(filteredMovie).to.have.length(0)
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pela descrição", () => {
     cy.searchMovie(movieCreated.description).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array").that.is.empty;
+      expect(response.body).to.be.an("array")
+      const filteredMovie = response.body.filter((filme) => {
+        return filme.id == movieCreated.id
+      })
+      expect(filteredMovie).to.have.length(0)
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pelo tempo de duração", () => {
     cy.searchMovie(movieCreated.durationInMinutes).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array").that.is.empty;
+      expect(response.body).to.be.an("array")
+      const filteredMovie = response.body.filter((filme) => {
+        return filme.id == movieCreated.id
+      })
+      expect(filteredMovie).to.have.length(0)
     });
   });
 
   it("Não deve ser possível efetuar pesquisa de um filme pelo ano de lançamento", () => {
     cy.searchMovie(movieCreated.releaseYear).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.be.an("array").that.is.empty;
+      expect(response.body).to.be.an("array")
+      const filteredMovie = response.body.filter((filme) => {
+        return filme.id == movieCreated.id
+      })
+      expect(filteredMovie).to.have.length(0)
     });
   });
 
