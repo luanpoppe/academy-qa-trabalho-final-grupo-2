@@ -9,10 +9,11 @@ export default class LoginPage {
   linkAuth = ".movies-page-link";
   erroFormulario = ".input-error";
   msgErro = ".modal-body .error-message";
-  divModal = ".modal-content"
+  divModal = ".modal-content";
 
   perfil = "[href='/profile']";
   conta = "[href='/account']";
+  logout = "[href='/logout']";
 
   campoForm = ".input-container";
 
@@ -46,6 +47,10 @@ export default class LoginPage {
 
   clickConta() {
     cy.get(this.conta).click();
+  }
+
+  clickLogout() {
+    cy.get(this.logout).click();
   }
 
   login(userInfo) {
