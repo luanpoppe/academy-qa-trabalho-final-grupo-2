@@ -32,7 +32,6 @@ declare namespace Cypress {
 
         getUser(userId: number, token?: string): Chainable<any>
 
-        // reviewMovie(movieInfo: { movieId: number, score: number, reviewText: string }, token: string): Chainable<any>
         reviewMovie(movieId: number, scoreMovie: number, reviewText: string, token: string): Chainable<any>
 
         getUserReviews(token: string): Chainable<any>
