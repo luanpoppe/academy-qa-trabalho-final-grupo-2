@@ -257,7 +257,7 @@ describe("Avaliação de filmes", function () {
     });
 
     // Teste com bug --> Não está sendo possível criar um filme com uma reviewText sendo uma string vazia
-    it("Deve ser possível criar uma review com uma avaliação do filme sendo um texto em branco", function () {
+    it("A review administrador deve ser diferente do tipo audiência geral e crítico", function () {
       const localReviewBody = {
         ...defaultReviewBody,
         reviewText: "",
